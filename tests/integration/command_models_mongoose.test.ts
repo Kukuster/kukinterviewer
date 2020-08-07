@@ -1,7 +1,6 @@
 import Command, { IIMessage, Command_prepare, Command_match, Command_execute, Command_display } from "../../core/Command/Command"
 import { Message } from "node-telegram-bot-api";
 import mongoose from "../../core/sheet/mongoose";
-import { anyJSONvalue, anyJSONobject } from "../../core/anyJSONvalue.type";
 import { Document } from "mongoose";
 
 beforeAll(async () => {
@@ -69,13 +68,6 @@ const execute: Command_execute<
                     }, null, 2)));
                     return;
                 }
-
-                // let result = chat.Questions;
-
-                // // if qids provided, then output only those
-                // if (qids) {
-                //     result = result.filter((e: { qid: number; }) => qids.includes(e.qid));
-                // }
 
                 resolve({
                     result: chat

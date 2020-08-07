@@ -5,9 +5,10 @@ const ec = {
     /**
      * no telegram bot api TOKEN provided
     */
-    'noTelegramBotApiTOKEN': 1,
+    noTelegramBotApiTOKEN: 1,
 
-}
+} as const
+type ec = typeof ec[keyof typeof ec];
 
 process.on('exit', function (code) {
     let o = '';

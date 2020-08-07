@@ -9,7 +9,7 @@
  */
 function IS_TAG_STR()   { return  /^([0-9_]*([a-zA-Z]+[0-9_]*)+)$/g; }
 function IS_TAG_wHASH() { return /^#([0-9_]*([a-zA-Z]+[0-9_]*)+)$/g; }
-function TAG_IN_A_WORD(){ return /^#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;  }
+function TAG_IN_A_WORD(){ return  /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;  }
 
 
 export function validateTagStr(tagStr: string){

@@ -2,13 +2,14 @@
 import { Iquestion } from "../../models/QuestionModel";
 //import queryReadChat from "../functions/queryReadChat";
 import queryChat from "../functions/queryChat";
+import { validateTagStr } from "../functions/hashtag";
 
 
 export type questionsQuery = {
     qids?:             [number, ...number[]],
     questionTextParts?:[string, ...string[]],
     enabled?:          boolean,
-    Tags?:             [string, ...string[]]
+    Tags?:             [string, ...string[]] | 'no' | 'any'
 };
 
 /**
@@ -65,12 +66,22 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 
             // leave only those that have any of provided Tags (if provided)
             if (query.Tags !== undefined){
-                const validated_queryTags = query.Tags.filter(t => t!=='');
-                if (validated_queryTags.length > 0){
+                if (Array.isArray(query.Tags)){
+                    const validated_queryTags = query.Tags.filter(t => validateTagStr(t));
+                    if (validated_queryTags.length > 0) {
+                        filteringQuestions = filteringQuestions.filter(q =>
+                            validated_queryTags.some(t => q.Tags.includes(t))
+                        );
+                    };
+                } else 
+                if (query.Tags === 'no'){
                     filteringQuestions = filteringQuestions.filter(q =>
-                        validated_queryTags.some(t => q.Tags.includes(t))
+                        q.Tags.length === 0
                     );
-                };
+                } else
+                if (query.Tags === 'any'){
+
+                }
             };
 
             // leave only those that contain any of provided strings (if provided)

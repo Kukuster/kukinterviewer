@@ -1,15 +1,18 @@
-const exitCodes = {
+/**
+ * nodejs exit codes (if a FATAL ERROR occurs)
+ */
+const ec = {
     /**
      * no telegram bot api TOKEN provided
     */
-    'noTOKEN': 1,
+    'noTelegramBotApiTOKEN': 1,
 
 }
 
 process.on('exit', function (code) {
     let o = '';
     switch(code){
-        case exitCodes.noTOKEN:
+        case ec.noTelegramBotApiTOKEN:
             o =
 `terminating node.js with exit code ${code}.
 ERROR: no telegram bot api TOKEN provided. One must be provided in order to instantiate a bot`;
@@ -20,4 +23,5 @@ ERROR: no telegram bot api TOKEN provided. One must be provided in order to inst
     return console.log(o);
 });
 
-module.exports = exitCodes;
+
+export default ec;

@@ -1,0 +1,116 @@
+#kukinterviewer 
+
+delete -> all
+✓ delete all untagged questions [ delete -> all -> untagged -> questions ]
+✓ delete all not tagged questions [ delete -> all -> no[t] -> tag -> questions ]
+✓ delete all turned off questions [ delete -> all -> turn -> onoff -> question ]
+✓ delete all disabled questions [ delete -> all -> (en|dis)able -> questions ]
+✓ delete all #todelete questions [ delete -> all -> # -> questions ]
+✓ erase all #todelete questions [ delete -> all -> # -> questions ]
+✓ delete all not turned on questions [ delete -> all -> no[t] -> turn -> on -> questions ]
+✓ delete all not tagged questions [ delete -> all -> no[t] -> tag -> questions ]
+✓ delete all not enabled questions [ delete -> all -> no[t] -> (en|dis)able -> questions ]
+
+
+delete -> all -> questions
+✓ delete all the questions [ delete -> all -> questions ]
+✓ delete all added question [ delete -> all -> question ]
+✓ delete all added questions [ delete -> all -> questions ]
+✓ delete all questions that are untagged [ delete -> all -> questions -> untagged ]
+✓ could you please do me a favor and delete all questions that have no tags? [ delete -> all -> questions -> no[t] -> tags ]
+✓ delete all questions with not a single tag [ delete -> all -> questions -> no[t] -> tag ]
+✓ delete all questions without a single tag [ delete -> all -> questions -> without -> tag ]
+✓ delete all the questions without any tags [ delete -> all -> questions -> without -> tags ]
+✓ can you please delete all questions that are turned on? [ delete -> all -> questions -> turn -> onoff ]
+✓ delete all the questions that are turned off [ delete -> all -> questions -> turn -> onoff ]
+✓ delete all questions tagged #todelete [ delete -> all -> questions -> tagged -> # ]
+
+✓ would you mind deleting all the questions for me? [ delete -> all -> questions ]
+✓ delete all the questions tagged #web [ delete -> all -> questions -> tag -> # ]
+✓ delete all the questions with #tag1 tag [ delete -> all -> questions -> # -> tag ]
+✓ delete all questions that are #web [ delete -> all -> questions -> # ]
+
+
+delete -> questions
+✓ delete question #3  [ delete -> question -> N]
+✓ delete questions 3, 4 & 5 [ delete -> questions -> dig ]
+✓ remove question 3 [ delete -> question -> dig ]
+✓ delete question 3, questions 4 and question 5 [ -> dig]
+✓ delete questions with #todelete tag [ -> # -> tag ]
+✓ delete questions tagged #web [ -> tag -> #]
+✓ delete questions with #web tag [ -> # -> tag]
+✓ delete questions that are about #web [ -> #]
+✓ delete questions without tags [ -> without -> tag]
+✓ delete questions that have no tags [ -> no -> tag]
+✓ delete questions that don't have any tag [ -> don't -> tag]
+✓ delete questions that are not disabled [ -> no -> (en|dis)able]
+✓ delete questions that are untagged [ -> untagged]
+✓ delete questions that are turned on [ -> turn -> onoff]
+✓ delete questions which are enabled [ -> (en|dis)able ]
+✓ delete those questions which haven't been turned off [ -> don't -> turn -> onoff]
+
+delete -> [(en|dis)able, turn, #, tag, untagged, no, N, dig]
+✓ delete disabled questions [ -> (en|dis)able -> questions]
+✓ delete turned on questions [ -> turn -> onoff -> questions]
+✓ delete untagged questions [ -> untagged -> questions]
+✓ delete not tagged questions [ -> no[t] -> tag -> questions]
+✓ delete not untagged questions [ -> no[t] -> untagged -> questions]
+✓ delete not enabled questions [ -> no[t] -> (en|dis)able -> questions]
+✓ delete not turned on questions [ -> no[t] -> turn -> onoff -> questions]
+✓ delete 3rd & 4th questions [ -> dig -> questions]
+✓ delete #3 and #4 questions [ -> N -> questions]
+✓ could you please delete 3rd, 5th and 10th questions? [ -> N -> questions ]
+✓ delete tagged questions [ -> tag -> questions]
+✓ delete tagged #web questions [ -> tag -> # -> questions]
+✓ delete #web questions [ -> # -> questions]
+
+
+
+
+
+
+
+[ frb ]
+✕ list delete [ frb ]
+✕ add delete all questions [ frb ]
+✕ insert delete of questions [ frb ]
+✕ turn delete off questions all [ frb ]
+✕ search and delete questions that are turned off [ frb ]
+
+[ ... -> frb ]
+✕ delete listed questions [ delete -> frb ]
+✕ delete add question 3 [ delete -> frb ]
+✕ delete next question [ delete -> frb ]
+✕ delete ask question 3, 4 [ delete -> frb ]
+✕ delete all tags question [ delete -> all -> frb ]
+✕ delete all questions tags [ delete -> all -> questions -> frb ]
+✕ delete searched questions [ delete -> frb ]
+
+[ ... -> ✕ ]
+✕ delete gnelete [ delete -> ✕ ]
+✕ delete yourself, fucking bot [ delete -> ✕ ]
+✕ delete turn off [ delete -> turn -> onoff -> ✕ ]
+✕ delete question [ delete -> question -> ✕ ]
+✕ delete all questions without anything [ delete -> all -> questions -> without -> ✕ ]
+✕ delete all not questions [ delete -> all -> no[t] -> ✕ ]
+
+[ neg ]
+✕ don't delete the following questions: 3, 4, 6 [ neg ]
+✕ never delete all the questions [ neg ]
+
+[ wrong_path ]
+✕ delete turned off tags [ delete -> turn -> onoff -> tag[s] ]
+✕ would you mind deleting disabled tags questions? [ delete -> (en|dis)able -> tag[s] ]
+✕ delete questioned tags [ delete -> question -> tag[s] ]
+✕ delete enabled tags [ delete -> (en|dis)able -> tag[s] ]
+✕ questions tagged deleted [ questions -> tag ]
+✕ delete tag question [ delete -> tag -> question ]
+
+
+
+
+
+(maybe) ✓ delete questions with #todelete tag that are disabled [ -> # -> tag -> (en|dis)abled ]
+(maybe) ✓ delete all #todelete questions that are turned off [ delete -> all -> # -> questions -> turn -> onoff ]
+(maybe) ✓ delete all enabled #todelete questions [ delete -> all -> (en|dis)able -> # -> questions ]
+

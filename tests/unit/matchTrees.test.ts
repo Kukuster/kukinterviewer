@@ -5,6 +5,10 @@ import { turnQuestionsOnOff_testCases } from "../../Interpretation/Commands/turn
 import { turnQuestionsOnOff_tree }      from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
 import turnQuestionsOnOff_match         from "../../Interpretation/Commands/turnQuestionsOnOff/match";
 import turnQuestionsOnOff_prepare       from "../../Interpretation/Commands/turnQuestionsOnOff/prepare";
+import { start_testCases } from "../../Interpretation/Commands/start/matchTree_testCases";
+import { start_tree } from "../../Interpretation/Commands/start/matchTree";
+import start_match from "../../Interpretation/Commands/start/match";
+import start_prepare from "../../Interpretation/Commands/start/prepare";
 
 
 
@@ -20,6 +24,13 @@ import turnQuestionsOnOff_prepare       from "../../Interpretation/Commands/turn
  */
 const Cs: {[key: string]: {testCases: any, tree: nodeC, matchfunc: Command_match<any>, prepfunc: Command_prepare<any,any> }} = {
     
+    start: {
+        testCases: start_testCases,
+        tree: start_tree,
+        matchfunc: start_match,
+        prepfunc: start_prepare
+    },
+
     turnQuestionsOnOff: {
         testCases: turnQuestionsOnOff_testCases,
         tree: turnQuestionsOnOff_tree,
@@ -77,25 +88,41 @@ export async function traverseAllTestCases<PrepArgs, ExecArgs>(tree: nodeC, test
 ////////////////////////////////////////////////////////
 
 
+const Cs_got_res: { [key: string]: any[] } = {
+
+};
+
+beforeAll(async () => {
+    for (const c in Cs) {
+        Cs_got_res[c] = await traverseAllTestCases(Cs[c].tree, Cs[c].testCases, Cs[c].matchfunc, Cs[c].prepfunc);
+    };
+});
+
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////             Run Test             ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+
 for (const c in Cs) {
-    
-    const Cmd = Cs[c];
-
-    test('test matchTree '+c+'(match, prepare)', async (done) => {
         
-        const results = await traverseAllTestCases(Cmd.tree, Cmd.testCases, Cmd.matchfunc, Cmd.prepfunc);
+    const casesLen = Cs[c].testCases.length;
 
-        const casesLen = Cmd.testCases.length;
-        for (let i = 0; i < casesLen; i++){
+    for (let i = 0; i < casesLen; i++){
+        test(c+'matchTree message #'+i+': "' + Cs[c].testCases[i].m + '": ', () => {
             expect(
-                JSON.stringify(results[i])
+                JSON.stringify(Cs_got_res[c][i])
             ).toEqual(
-                JSON.stringify(Cmd.testCases[i].res)
+                JSON.stringify(Cs[c].testCases[i].res)
             );
-        }
+        });
 
-        done();
-    });
+    }
 
 };
 

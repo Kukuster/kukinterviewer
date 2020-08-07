@@ -6,7 +6,7 @@ import { validateTags } from "../functions/hashtag";
 type result =
 {
     hasChanges: false,
-    reason: 'no correct Tags' |
+    reason: 'no such Tags' |
             'no questions with such qids' |
             'the questions already don\'t have the Tags'
 }
@@ -25,7 +25,7 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function removeTagsFromQuestions(chatId: number, Tags: [string, ...string[]] | 'all', qids: [number, ...number[]] | 'all')
+export default async function removeTagsFromQuestions(chatId: number, Tags: string[] | 'all', qids: number[] | 'all')
 {
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
@@ -42,7 +42,7 @@ export default async function removeTagsFromQuestions(chatId: number, Tags: [str
         if (validatedTags.length === 0){
             return {
                 hasChanges: false,
-                reason: 'no correct Tags'
+                reason: 'no such Tags'
             };
         };
 

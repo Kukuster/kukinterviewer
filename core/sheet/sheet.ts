@@ -12,6 +12,10 @@ import getQuestions from "./methods/questions/getQuestions";
 import deleteQuestions from "./methods/questions/deleteQuestions";
 import addTagsToQuestions from "./methods/questions/addTagsToQuestions";
 import removeTagsFromQuestions from "./methods/questions/removeTagsFromQuestions";
+import turnQuestionsOnOff from "./methods/questions/turnQuestionsOnOff";
+
+import getTags from "./methods/tags/getTags";
+import turnTagsOnOff from "./methods/tags/turnTagsOnOff";
 
 
 /**
@@ -31,6 +35,10 @@ class sheet {
     public deleteQuestions = deleteQuestions;
     public addTagsToQuestions = addTagsToQuestions;
     public removeTagsFromQuestions = removeTagsFromQuestions;
+    public turnQuestionsOnOff = turnQuestionsOnOff;
+
+    public getTags = getTags;
+    public turnTagsOnOff = turnTagsOnOff;
 
 
 

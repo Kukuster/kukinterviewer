@@ -2,6 +2,10 @@
     - sheet methods
         - addTagsToQuestions
         - removeTagsFromQuestions
+        - turnQuestionsOnOff
+        - getTags
+        - turnTagsOnOff
+
 
 • Add data encryption for user data, specifically Questions text and tags
 

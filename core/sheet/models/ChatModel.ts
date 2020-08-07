@@ -1,7 +1,7 @@
 'use strict';
 
 import {Document, Schema, model} from "mongoose";
-import { Iquestion } from "./QuestionModel";
+import { Iquestion, questionSchema } from "./QuestionModel";
 // import { Schema } from "mongoose";
 // const mong = mongoose.default;
 
@@ -10,9 +10,10 @@ import { Iquestion } from "./QuestionModel";
 // const model = mong.model;
 
 
+
 export interface Ichat extends Document {
     chatId: number;
-    Questions?: [Iquestion];
+    Questions?: Iquestion[];
     lastqid?: number;
     Pending_to_delete?: [{
         msg_id: Schema.Types.ObjectId,
@@ -33,8 +34,13 @@ export interface Ichat extends Document {
 
 const chatSchema = new Schema({
     chatId:     { type: Number,                              required: true, unique: true },
-    // Questions:  { type: Schema.Types.DocumentArray,          required: false },
-    lastqid:    { type: Number,                              required: false },
+    Questions:  { type: [questionSchema],                    required: false },
+    lastqid:    { 
+        type: Number,
+        get: (v: number) => Math.round(v),
+        set: (v: number) => Math.round(v),
+        required: false
+    },
     Pending_to_delete: { 
         type: [{
             msg_id: Schema.Types.ObjectId, 

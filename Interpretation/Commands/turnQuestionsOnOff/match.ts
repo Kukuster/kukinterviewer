@@ -1,10 +1,10 @@
 import { IIMessage } from "../../../core/Command/Command";
 import { splitToWords } from "../../matchTree/splitToWords";
-import { traverse, nodeStep } from "../../matchTree/walk";
+import { traverse, treeStep } from "../../matchTree/walk";
 import { turnQuestionsOnOff_tree } from "./matchTree";
 
 
-export default async function turnQuestionsOnOff_match(msg: IIMessage): Promise<nodeStep[] | null> {
+export default async function turnQuestionsOnOff_match(msg: IIMessage): Promise<treeStep[] | null> {
     // console.log('turnQuestionsOnOff.match');
     const message = msg.text;
     if (!message) {
@@ -16,7 +16,7 @@ export default async function turnQuestionsOnOff_match(msg: IIMessage): Promise<
         return null;
     }
 
-    const path: nodeStep[] = [];
+    const path: treeStep[] = [];
     
     traverse(turnQuestionsOnOff_tree, Words, path);
     

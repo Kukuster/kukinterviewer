@@ -1,67 +1,31 @@
 import { nodeC } from "../../../Interpretation/matchTree/node";
 import { nodeStep, walk } from "../../../Interpretation/matchTree/walk";
+import { IIMessage, Command_match, Command_prepare } from "../../../core/Command/Command";
 
 
-function check_walk(tree: nodeC, message: string){
-    const Words = message.match(/\S+|\s+/g);
-    if (!Words || !Array.isArray(Words)) {
-        return null;
+const mock_telegram_message = (text: string): IIMessage => ({
+    text: text,
+    message_id: 222222222,
+    date: 333333333,
+    chat: {
+        id: 444444444,
+        type: 'private'
     }
+})
 
-    const path = [] as nodeStep[];
-    walk(tree, Words, path);
 
-    return path.length !== 0 ?
-        path[path.length - 1].shoot :
-        null;
+async function walk_match_prepare<PrepArgs,ExecArgs>(tree: nodeC, msg: IIMessage, matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs,ExecArgs>)  {
+    const path = await matchfunc(msg);
+   return path ? await prepfunc (msg, path) : null;
 }
 
 
-function check_walk_log(tree: nodeC, message: string) {
-    const Words = message.match(/\S+|\s+/g);
-    if (!Words || !Array.isArray(Words)) {
-        return null;
-    }
-    console.log(Words);
-    const path = [] as nodeStep[];
-    walk(tree, Words, path);
+export async function testWalk<PrepArgs,ExecArgs>(tree: nodeC, test_cases: any[], matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs,ExecArgs>){
 
-    return path.length !== 0 ?  
-        path[path.length - 1].shoot :
-        null;
+    return Promise.all(test_cases.map((testCase)=>{
+        const m = testCase.m;
+        return walk_match_prepare(tree, mock_telegram_message(m), matchfunc, prepfunc);
+    }))
+
 }
-
-
-export function test_walk(tree: nodeC, test_cases: any[]){
-    const msg_lng = test_cases.length;
-    for (var i = 0; i < msg_lng; i++) {
-        if (process.env.NODE_ENV == 'test') {
-            const msg = test_cases[i];
-            const m = msg.m;
-            const res = !!msg.res;
-            const walkres = !!check_walk(tree, m);
-            test('testing message #'+i+': "' + m + '": ', () => {
-                expect(walkres).toBe(res);
-            });
-
-        } else {
-
-            const msg = test_cases[i];
-            const m = msg.m;
-            const res = !!msg.res;
-            var walkres = !!check_walk(tree, m);
-            if (i < 5){
-                walkres = !!check_walk_log(tree, m);
-            }
-
-            console.log();
-            //console.log('message_test:', messages_test[i]);
-
-            console.log('testing message #'+i+': "' + m + '": ');
-            console.log(walkres===res);
-        }
-
-    }
-}
-//console.log(messages_test.length);
 

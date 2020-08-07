@@ -29,14 +29,14 @@ const telegram_msg_mock: Message = {
 const chatDocumentId = '5eba8f27091ebc3f2033738e';
 
 
-const match: Command_match = async function (msg: IIMessage) {
+const match: Command_match<RegExpMatchArray> = async function (msg: IIMessage) {
     // console.log('findChats.match');
     return msg.text ?
                 msg.text.match(/\/findChats( *)(.*)/) :
                 null;
 }
 
-const prepare: Command_prepare<{ qids: number[] | undefined }> = async function (msg: IIMessage, match: RegExpMatchArray): Promise<{ qids: number[] | undefined }> {
+const prepare: Command_prepare<RegExpMatchArray, { qids: number[] | undefined }> = async function (msg: IIMessage, match: RegExpMatchArray): Promise<{ qids: number[] | undefined }> {
     // console.log('findChats.prepare');
     let qids;
     if (Array.isArray(match) && match.length && match[2] && match[2].length) {

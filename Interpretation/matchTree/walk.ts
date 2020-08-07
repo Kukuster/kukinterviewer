@@ -1,14 +1,23 @@
+'use strict';
+
 import { nodeC, nodeLike } from "./node";
 
 
 export type nodeStep = { childIndex: number; match: RegExpMatchArray; word: string; shoot: any; };
 
 
+/**
+ * 
+ * @param node a tree to traverse
+ * @param Words strings to use to walk on a tree
+ * @param path steps made through the tree are appended to this array
+ * @returns void, but it rewrites `path` argument (passed by reference, because it's an array)
+ */
 export function walk(node: nodeLike, Words: string[], path: nodeStep[]) {
     let word: string, match: RegExpMatchArray | null;
     //console.log('walk: on node ' + node.match.source);
     if (!node.children || node.children.length === 0 || Words.length === 0) {
-        return path;
+        return void(0);
     }
     //console.log('{');
     //console.log('walk: looping...');
@@ -33,5 +42,6 @@ export function walk(node: nodeLike, Words: string[], path: nodeStep[]) {
             }
         }
     }
+
     //console.log('}');
 }

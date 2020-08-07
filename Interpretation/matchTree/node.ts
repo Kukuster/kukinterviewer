@@ -1,43 +1,12 @@
 'use strict';
 
-// export const PARENTs_CHILDREN: "parent`s children" = "parent`s children" as const;
-// export const SELF: "self" = "self" as const;
-//type node = {id: number}
-// type nodechild = node | typeof SELF | typeof PARENTs_CHILDREN
-
-
-/**
- * 
- * @param arr1 array to replace in
- * @param start index in *arr1*, where to inject
- * @param deleteCount no. of elements to delete starting with *start* incl.
- * @param arr2 array of elements to inject from
- * @returns index of the last added element
- */
-function replaceInArray(arr1: any[], start: number, deleteCount: number, arr2: any[]) {
-    arr1.splice(start, deleteCount);
-    
-    const arr2len = arr2.length;
-    for (let i=0; i<arr2len; ++i) {
-        arr1.splice(start + i, 0, arr2[i]);
-    }
-
-    return start + arr2len - 1;
-}
-
-
-
-
 
 export interface nodeLike {
     pattern: RegExp | null;
     children: nodeLike[];
     shoot?: any;
-
     special?: symbol;
-
     matchedBy(word: string): RegExpMatchArray | null;
-    
 }
 
 
@@ -115,9 +84,11 @@ export class nodeC extends nodeLike {
                         // if an i`th child`s child is not a node, but a string 'parent`s children',
                         // it is replaced by one's children, including that i`th child,
                         // meaning, the i`th child`s siblings (and itself) become the children of the i`th child
-                        // thus forming an infinitely (recursively) descending branch
-                        j = replaceInArray(igrandchildren, j, 1, this.children);
-                        // console.log('new j: ', j = replaceInArray(igrandchildren, j, 1, this.children));
+
+                        igrandchildren.splice(j, 1, ...this.children);
+                        j += this.children.length - 1;
+
+                        // console.log('new j: ', j);
                     }
                     
                 }

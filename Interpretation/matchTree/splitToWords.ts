@@ -1,0 +1,1 @@
+export const splitToWords = (message: string) => message.match(/\S+|\s+/g);

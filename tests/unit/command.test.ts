@@ -17,7 +17,7 @@ import { Message } from "node-telegram-bot-api";
 //     expect(dummyCommand.monospace).toBe(monospace);
 // })
 
-const dummyMatch = async function (this: Command<any,any>, msg: IIMessage) {
+const dummyMatch = async function (this: Command<any,any,any>, msg: IIMessage) {
     //msg.text.match('');
 
     return new Promise<RegExpMatchArray|null>((resolve, reject) => {
@@ -28,7 +28,7 @@ const dummyMatch = async function (this: Command<any,any>, msg: IIMessage) {
     });
 }
 
-const dummyPrepare = async function (this: Command<any,any>, msg: IIMessage, match: RegExpMatchArray) {
+const dummyPrepare = async function (this: Command<any,any,any>, msg: IIMessage, match: RegExpMatchArray) {
     //msg.text;
 
     return new Promise<object>((resolve, reject) => {
@@ -36,7 +36,7 @@ const dummyPrepare = async function (this: Command<any,any>, msg: IIMessage, mat
     });
 }
 
-const dummyExecute = async function (this: Command<any,any>, msg: IIMessage, args: object) {
+const dummyExecute = async function (this: Command<any,any,any>, msg: IIMessage, args: object) {
     //msg.text;
 
     return new Promise<string>((resolve, _) => {

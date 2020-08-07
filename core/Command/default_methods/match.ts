@@ -8,7 +8,7 @@ import Command from "../Command";
  * @return {Promise<RegExpMatchArray|null>}
  *
  */
-export default async function default_match(this: Command<any>, msg: any): Promise<RegExpMatchArray | null> {
+export default async function default_match(this: Command<any,any,any>, msg: any): Promise<RegExpMatchArray | null> {
     //console.log('default {Command_class}.match');
     //const message = msg.text;
     //return message.match(); // matches everything

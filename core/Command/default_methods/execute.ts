@@ -9,7 +9,7 @@ import Command from "../Command";
  * @return {Promise<string>}
  *
  */
-export default async function default_execute(this: Command<any>, msg: any, args: object): Promise<string> {
+export default async function default_execute(this: Command<any,any,any>, msg: any, args: object): Promise<string> {
     //console.log('default {Command_class}.execute');
     return JSON.stringify({
         result: 'dummy execute function response',

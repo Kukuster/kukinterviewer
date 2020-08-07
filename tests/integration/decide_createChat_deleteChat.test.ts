@@ -74,7 +74,7 @@ type createChatExecArgs = { chatId: number };
 type createChatDispArgs = { result?: Ichat, error?: any, reply: string };
 
 
-const createChatMatch: Command_match 
+const createChatMatch: Command_match<RegExpMatchArray>
 = async function(msg: IIMessage){
     // console.log('createChat: Match');
     const message = msg.text;
@@ -82,7 +82,7 @@ const createChatMatch: Command_match
 }
 
 
-const createChatPrepare: Command_prepare<createChatExecArgs> 
+const createChatPrepare: Command_prepare<RegExpMatchArray, createChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('createChat: Prepare');
     return { 'chatId': msg.chat.id };
@@ -162,7 +162,7 @@ type deleteChatDispArgs = {
 
 
 
-const deleteChatMatch: Command_match 
+const deleteChatMatch: Command_match<RegExpMatchArray>
 = async function(msg: IIMessage){
     // console.log('deleteChat: Match');
     const message = msg.text;
@@ -170,7 +170,7 @@ const deleteChatMatch: Command_match
 }
 
 
-const deleteChatPrepare: Command_prepare<deleteChatExecArgs> 
+const deleteChatPrepare: Command_prepare<RegExpMatchArray, deleteChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('deleteChat: Prepare');
     return { 'chatId': msg.chat.id };
@@ -256,30 +256,22 @@ const States = [greetState, readyState];
 
 
 
+test('decide_createChat_deleteChat: on greeting', async () => {
+    const resp1 = await decide(telegram_msg_mock, States, greetState);
 
-(async ()=>{
-    //const db = await mongoose.dbPromise;
+    expect(resp1.reply).toEqual('Greetings, '+user_mock.first_name+'!');
+    expect(resp1.result.chatId).toEqual(chatId);
+    expect(resp1.result.state).toEqual('ready');
+})
+
+test('decide_createChat_deleteChat: on \'forget me!\'', async () => {
+    const resp2 = await decide(telegram_msg2_mock, States, greetState);
     
-    test('decide_createChat_deleteChat: on greeting', async () => {
-        const resp1 = await decide(telegram_msg_mock, States, greetState);
-
-        expect(resp1.reply).toEqual('Greetings, '+user_mock.first_name+'!');
-        expect(resp1.result.chatId).toEqual(chatId);
-        expect(resp1.result.state).toEqual('ready');
-    })
-
-    test('decide_createChat_deleteChat: on \'forget me!\'', async () => {
-        const resp2 = await decide(telegram_msg2_mock, States, greetState);
-        
-        expect(resp2.reply).toEqual('Goodbye, '+user_mock.first_name+'! I won\'t remebmer you! :(');
-        expect(resp2.result.n).toEqual(1);
-        expect(resp2.result.ok).toEqual(1);
-        expect(resp2.result.deletedCount).toEqual(1);
-    })
-
-    //await db.disconnect();
-    
-})();
+    expect(resp2.reply).toEqual('Goodbye, '+user_mock.first_name+'! I won\'t remebmer you! :(');
+    expect(resp2.result.n).toEqual(1);
+    expect(resp2.result.ok).toEqual(1);
+    expect(resp2.result.deletedCount).toEqual(1);
+})
 
 
 

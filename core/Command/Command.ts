@@ -36,25 +36,29 @@ export interface IIMessage {
 }
 
 
-export type Command_match                       = (msg: IIMessage)                           => Promise<RegExpMatchArray|null|undefined>;
 /**
+ * @param ArgsPrep argument for the corresponding `Command_prepare` function
+ */
+export type Command_match<ArgsPrep>             = (msg: IIMessage)                      => Promise<ArgsPrep|null|undefined>;
+/**
+ * @param ArgsPrep argument for _this_ `Command_prepare` function
  * @param ArgsExec argument for the corresponding `Command_execute` function
  */
-export type Command_prepare<ArgsExec>           = (msg: IIMessage, match: RegExpMatchArray)  => Promise<ArgsExec>;
+export type Command_prepare<ArgsPrep,ArgsExec>  = (msg: IIMessage, match: ArgsPrep)     => Promise<ArgsExec>;
 /**
  * @param ArgsExec argument for _this_ `Command_execute` function
  * @param ArgsDisp argument for the corresponding `Command_display` function
  */
-export type Command_execute<ArgsExec,ArgsDisp>  = (msg: IIMessage, args: ArgsExec)           => Promise<ArgsDisp>;
+export type Command_execute<ArgsExec,ArgsDisp>  = (msg: IIMessage, args: ArgsExec)      => Promise<ArgsDisp>;
 /**
  * @param ArgsDisp argument for the corresponding `Command_display` function
  */
-export type Command_display<ArgsDisp>           = (msg: IIMessage, resonse: ArgsDisp)        => Promise<any>;
+export type Command_display<ArgsDisp>           = (msg: IIMessage, resonse: ArgsDisp)   => Promise<any>;
 
 
 export interface ICommand {
-    match:   Command_match; 
-    prepare: Command_prepare<any>;
+    match:   Command_match<any>; 
+    prepare: Command_prepare<any,any>;
     execute: Command_execute<any,any>;
     display: Command_display<any>;
 
@@ -83,9 +87,9 @@ export interface ICommand {
     
 // }
 
-export default class Command<ArgsExec, ArgsDisp> implements ICommand{
-    public match:   Command_match; 
-    public prepare: Command_prepare<ArgsExec>;
+export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand{
+    public match:   Command_match  <ArgsPrep>; 
+    public prepare: Command_prepare<ArgsPrep,ArgsExec>;
     public execute: Command_execute<ArgsExec,ArgsDisp>;
     public display: Command_display<ArgsDisp>;
     /**
@@ -100,8 +104,8 @@ export default class Command<ArgsExec, ArgsDisp> implements ICommand{
      * @param {Function} display Produces output of the result of execute method
      */
     constructor(
-            match:    Command_match,
-            prepare:  Command_prepare<ArgsExec>,
+            match:    Command_match  <ArgsPrep>,
+            prepare:  Command_prepare<ArgsPrep,ArgsExec>,
             execute:  Command_execute<ArgsExec,ArgsDisp>,
             display?: Command_display<ArgsDisp>
         ){

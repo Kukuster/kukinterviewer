@@ -31,7 +31,7 @@ export default async function deleteQuestions(chatId: number, questions: number[
             let deletedQuestions = [];
 
 
-            if (!Array.isArray(chat.Questions) || !chat.Questions.length){
+            if (!Array.isArray(chat.Questions)){
                 chat.Questions = [];
 
             } else {

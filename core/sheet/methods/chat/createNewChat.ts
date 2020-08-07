@@ -27,6 +27,6 @@ export default async function createNewChat(chatId: number){
         //running: false,
         state: 'ready',
         //Schedule: { qid: -1, datetime: new Date() }
-    }).save()
+    }).save();
 
 }

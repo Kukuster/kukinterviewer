@@ -10,6 +10,6 @@ import ChatModel from "../../models/ChatModel";
  */
 export default async function deleteChat(chatId: number) {
 
-    return ChatModel.deleteOne({ chatId: chatId })
+    return ChatModel.deleteOne({ chatId: chatId });
 
 }

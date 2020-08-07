@@ -5,17 +5,7 @@ import default_execute from "../../core/Command/default_methods/execute";
 import default_display from "../../core/Command/default_methods/display";
 import monospace from "../../core/Command/prototype/monospace";
 import { Message } from "node-telegram-bot-api";
-//import { Message } from "node-telegram-bot-api";
 
-// const dummyCommand = new Command<any>();
-
-// test('Command, default_methods', () => {
-//     expect(dummyCommand.match  ).toBe(default_match);
-//     expect(dummyCommand.prepare).toBe(default_prepare);
-//     expect(dummyCommand.execute).toBe(default_execute);
-//     expect(dummyCommand.display).toBe(default_display);
-//     expect(dummyCommand.monospace).toBe(monospace);
-// })
 
 const dummyMatch = async function (this: Command<any,any,any>, msg: IIMessage) {
     //msg.text.match('');

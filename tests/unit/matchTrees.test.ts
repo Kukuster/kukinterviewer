@@ -13,6 +13,18 @@ import { addQuestion_testCases } from "../../Interpretation/Commands/addQuestion
 import { addQuestion_tree } from "../../Interpretation/Commands/addQuestion/matchTree";
 import addQuestion_match from "../../Interpretation/Commands/addQuestion/match";
 import addQuestion_prepare from "../../Interpretation/Commands/addQuestion/prepare";
+import { addTagsToQuestions_testCases } from "../../Interpretation/Commands/addTagsToQuestions/matchTree_testCases";
+import { addTagsToQuestions_tree } from "../../Interpretation/Commands/addTagsToQuestions/matchTree";
+import addTagsToQuestions_match from "../../Interpretation/Commands/addTagsToQuestions/match";
+import addTagsToQuestions_prepare from "../../Interpretation/Commands/addTagsToQuestions/prepare";
+import { askMeAQuestion_testCases } from "../../Interpretation/Commands/askMeAQuestion/matchTree_testCases";
+import { askMeAQuestion_tree } from "../../Interpretation/Commands/askMeAQuestion/matchTree";
+import askMeAQuestion_match from "../../Interpretation/Commands/askMeAQuestion/match";
+import askMeAQuestion_prepare from "../../Interpretation/Commands/askMeAQuestion/prepare";
+import { deleteQuestions_testCases } from "../../Interpretation/Commands/deleteQuestions/matchTree_testCases";
+import { deleteQuestions_tree } from "../../Interpretation/Commands/deleteQuestions/matchTree";
+import deleteQuestions_match from "../../Interpretation/Commands/deleteQuestions/match";
+import deleteQuestions_prepare from "../../Interpretation/Commands/deleteQuestions/prepare";
 
 
 
@@ -42,11 +54,32 @@ const Cs: {[key: string]: {testCases: any, tree: nodeC, matchfunc: Command_match
         prepfunc: turnQuestionsOnOff_prepare
     },
 
-    addQuestions: {
+    addQuestion: {
         testCases: addQuestion_testCases,
         tree: addQuestion_tree,
         matchfunc: addQuestion_match,
         prepfunc: addQuestion_prepare
+    },
+
+    addTagsToQuestions: {
+        testCases: addTagsToQuestions_testCases,
+        tree: addTagsToQuestions_tree,
+        matchfunc: addTagsToQuestions_match,
+        prepfunc: addTagsToQuestions_prepare
+    },
+
+    askMeAQuestion: {
+        testCases: askMeAQuestion_testCases,
+        tree: askMeAQuestion_tree,
+        matchfunc: askMeAQuestion_match,
+        prepfunc: askMeAQuestion_prepare
+    },
+
+    deleteQuestions: {
+        testCases: deleteQuestions_testCases,
+        tree: deleteQuestions_tree,
+        matchfunc: deleteQuestions_match,
+        prepfunc: deleteQuestions_prepare
     },
 
 };

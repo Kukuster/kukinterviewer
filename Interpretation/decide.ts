@@ -1,3 +1,4 @@
+'use strict';
 import { IIMessage } from "../core/Command/Command";
 import State from "../core/State/State";
 import ChatModel from "../core/sheet/models/ChatModel";

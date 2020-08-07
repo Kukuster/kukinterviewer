@@ -1,3 +1,5 @@
+'use strict';
+
 import * as config from './config.json';
 import { anyJSONvalue } from './core/anyJSONvalue.type';
 

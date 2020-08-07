@@ -1,3 +1,4 @@
+'use strict';
 import * as config from '../../conf';
 import mongoose from 'mongoose';
 

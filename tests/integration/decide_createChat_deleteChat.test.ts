@@ -5,6 +5,7 @@ import State from "../../core/State/State";
 import Command, { Command_match, IIMessage, Command_prepare, Command_execute, Command_display } from "../../core/Command/Command";
 import ChatModel, { Ichat } from "../../core/sheet/models/ChatModel";
 import * as fs from 'fs'
+import sheet from "../../core/sheet/sheet";
 
 
 
@@ -93,40 +94,13 @@ const createChatExecute: Command_execute<createChatExecArgs, createChatDispArgs>
     // console.log('createChat: Execute');
     
     const chatId = msg.chat.id;
-
-    const findChatResult = await ChatModel.find({ chatId: chatId }).select({"_id": true}).exec();
     
-    if (findChatResult.length && findChatResult[0]._id) {
+    if ((await sheet.hasChat(chatId))) {
         const chatDocAlreadyExistsErr = new Error(`executing createChat command, while the chat document already exists.
 This command should not be available for those who already started!`);
         console.error(chatDocAlreadyExistsErr);
         return { error: JSON.stringify(chatDocAlreadyExistsErr.message), reply: '' };
     }
-
-    const mongooseDB = await mongoose.dbPromise;
-
-    const chat = new ChatModel({
-        _id: new mongooseDB.Types.ObjectId(),
-        chatId: chatId,
-        Questions: [],
-        lastqid: 0,
-        Pending_to_delete: [],
-        Settings: {
-            enabled: false,
-            //timezone: undefined,
-            //asking_period_mins: 120,
-            //asking_time_of_day: { from_hour: 10, to_hour: 18 }
-        },
-        //last_time_asked: new Date(),
-        //running: false,
-        state: 'ready',
-        //Schedule: { qid: -1, datetime: new Date() }
-    });
-
-    //dev
-    // console.log('// Formed chat object (document):');
-    // console.log(chat);
-    // console.log('// going to write this to the DB');
 
     const reply =
         msg.from?.first_name ?
@@ -135,7 +109,7 @@ This command should not be available for those who already started!`);
 
     try {        
         return {
-            result: await chat.save(),
+            result: await sheet.createNewChat(chatId),
             reply: reply
         };
     } catch (e) {
@@ -209,16 +183,12 @@ const deleteChatExecute: Command_execute<deleteChatExecArgs, deleteChatDispArgs>
     
     const chatId = msg.chat.id;
 
-    const findChatResult = await ChatModel.find({ chatId: chatId }).select({"_id": true}).exec();
-    
-    if (!findChatResult.length || !findChatResult[0]._id) {
+    if (!(await sheet.hasChat(chatId))){
         const chatDocNotExistsErr = new Error(`executing deleteChat command, while the chat document doesn't exist.
 This command should not be available for those who didn't start!`);
         console.error(chatDocNotExistsErr);
         return { error: JSON.stringify(chatDocNotExistsErr.message), reply: '' };
     }
-
-    const mongooseDB = await mongoose.dbPromise;
 
     const reply =
         msg.from?.first_name ?
@@ -227,14 +197,14 @@ This command should not be available for those who didn't start!`);
 
     try {        
         return {
-            result: await ChatModel.deleteOne({ chatId: chatId }),
+            result: await sheet.deleteChat(chatId),
             reply: reply
         };
     } catch (e) {
         return {
             error: e,
             reply: `Something went wrong when i tried to forget you... Maybe you are unforgettable :)
-Sorry for that, try again later`
+Sorry for that, you can try again later`
         }
     }
 

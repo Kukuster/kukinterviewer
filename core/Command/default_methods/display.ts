@@ -1,5 +1,5 @@
+'use strict';
 import Command, { IIMessage } from "../Command";
-import { anyJSONvalue } from "../../anyJSONvalue.type";
 
 /**
  *

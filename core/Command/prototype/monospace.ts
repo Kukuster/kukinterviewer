@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Telegram formating: monospace text
  * Requires `parse_mode: 'Markdown'` option to be added to options object (3rd argument for bot.sendMessage method)

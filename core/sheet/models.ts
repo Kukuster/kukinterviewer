@@ -1,3 +1,4 @@
+'use strict';
 import QuestionModel from "./models/QuestionModel";
 import ChatModel from "./models/ChatModel";
 

@@ -4,8 +4,8 @@
   "description": "server app for Telegram Bot API",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
-    "jest": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --runInBand",
+    "jest": "jest --detectOpenHandles --runInBand",
     "build": "tsc",
     "tsc": "tsc",
     "start": "ts-node index.ts",
@@ -14,7 +14,8 @@
     "test-models": "ts-node tests/unit/models.test.ts",
     "test-command": "ts-node tests/unit/command.test.ts",
     "test-config": "ts-node tests/unit/config.test.ts",
-    "ts-node": "ts-node"
+    "ts-node": "ts-node",
+    "ts": "ts-node"
   },
   "engines": {
     "node": "13.13"

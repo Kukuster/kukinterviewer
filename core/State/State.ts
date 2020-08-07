@@ -9,9 +9,9 @@ import Command from "../Command/Command";
  */
 export default class State {
     public name: string;
-    public Commands: Command[];
+    public Commands: Command<any, any>[];
 
-    constructor(name: string, Commands: Command[]){
+    constructor(name: string, Commands: Command<any, any>[]){
         this.name = name;
         this.Commands = Commands;
     }

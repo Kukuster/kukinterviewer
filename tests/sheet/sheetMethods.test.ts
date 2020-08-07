@@ -1,9 +1,8 @@
 import ChatModel, { Ichat, settingsSet, settingsKey } from "../../core/sheet/models/ChatModel";
 import mongoose from "../../core/sheet/mongoose";
 import sheet from "../../core/sheet/sheet";
-import getChat from "../../core/sheet/methods/chat/getChat";
 import { Iquestion } from "../../core/sheet/models/QuestionModel";
-import deleteQuestions from "../../core/sheet/methods/questions/deleteQuestions";
+import { questionsQuery } from "../../core/sheet/methods/questions/getQuestions";
 
 
 
@@ -20,23 +19,8 @@ var chatId = 1729;
 const args: number[] | 'all' = [2];
 
 
-const questionsToAdd:
-    { questionText: string,                         Tags: string[], qid?: number}[]
- = [
-    { questionText: 'Question1 Text',               Tags: [] },
-    { questionText: 'Question2',                    Tags: [] },
-    { questionText: '#third\nQuestion3Text',        Tags: ["#third"] },
-    { questionText: 'Question NUMBER four',         Tags: [] },
-    { questionText: 'question#5',                   Tags: [] },
-    { questionText: 'question №6',                  Tags: [] },
-    { questionText: 'SEVENTH question',             Tags: [] },
-    { questionText: 'E.I.G.H.T.H. Q',               Tags: [] },
-    { questionText: 'Q 9INE',                       Tags: [] },
-];
-
-
 const settingsToSetObj: settingsSet[]
- = [
+= [
     {
         'enabled': true,
         'timezone': 2,
@@ -71,6 +55,60 @@ const settingsToSetKeyAndValue: [settingsKey, settingsSet[settingsKey]][] = [
 
 
 
+const questionsToAdd:
+    { questionText: string,                             Tags: string[],        enabled: boolean, qid?: number}[]
+ = [
+    { questionText: 'Question1 Text',                   Tags: [],              enabled: false },
+    { questionText: 'Question2',                        Tags: [],              enabled: false },
+    { questionText: '#tag1\nQuestion3Text',             Tags: ["tag1"],        enabled: true  },
+    { questionText: '#tag1 #tag2\nQuestion NUMBER four',Tags: ["tag1","tag2"], enabled: false },
+    { questionText: 'question#5',                       Tags: [],              enabled: false },
+    { questionText: '#tag1\nquestion №6',               Tags: ["tag1"],        enabled: true  },
+    { questionText: '#tag3\nSEVENTH question',          Tags: ["tag3"],        enabled: true  },
+    { questionText: 'E.I.G.H.T.H. Q',                   Tags: [],              enabled: false },
+    { questionText: 'Q 9INE',                           Tags: [],              enabled: true  },
+];
+
+
+
+const getQuestionsQueries_and_Results: [NonNullable<questionsQuery>, number[]][] = [
+    [{qids: [7]},                               [7]               ],
+    [{qids: [7, 2 ,5]},                         [2,5,7]           ],
+    [{ enabled: true },                         [3,6,7,9]         ],
+    [{ enabled: false },                        [1,2,4,5,8]       ],
+    [{ Tags: ["tag1"] },                        [3,4,6]           ],
+    [{ Tags: ["tag1","tag3"] },                 [3,4,6,7]         ],
+    [{ questionTextParts: ["ques"] },           [1,2,3,4,5,6,7]   ],
+    [{ questionTextParts: ["ques","9"] },       [1,2,3,4,5,6,7,9] ],
+     
+    [{ Tags: ["tag1","tag3"],
+       questionTextParts: ["ques", "9"] },      [3,4,6,7]         ],
+       
+    [{ Tags: ["tag1"],
+       questionTextParts: ["text"] },           [3]               ],
+
+    [{ enabled: false,
+       Tags: ["tag1"],},                        [4]               ],
+
+    [{ enabled: true,
+       Tags: ["tag1"],},                        [3,6]             ],
+
+    [{ qids: [7, 2, 3, 5],
+       enabled: true,
+       Tags: ['tag1', 'tag3'],},                [3,7]             ],
+
+    [{ qids: [7, 2, 3, 5],
+       enabled: true,
+       Tags: ['tag1', 'tag3', ''],},            [3,7]             ],
+
+    [{ qids: [7, 2, 3, 5],
+       enabled: true,
+       Tags: ['tag1', 'tag3', ''],
+       questionTextParts: ['']},                [3,7]             ],
+
+]
+
+
 
 const deleteQuestionsArgs: (number | number[] | 'all')[] = [
     2,
@@ -95,6 +133,8 @@ var DBconnection: typeof import("mongoose"),
     getChatResultBeforeAddQuestions: Ichat | null,
     getQuestionsResultsAfterAddQuestions: { questionText: string, Tags: any; }[],
     getChatResultAfterAddQuestions: Ichat | null,
+
+    getQuestionsByQueryObjResults: Iquestion[][] = [],
 
     getQuestionsResultAfterDeleteQuestionsArr: Iquestion[][] = [],
     questionsToAdd_qids_exhausting: number[],
@@ -199,6 +239,15 @@ beforeAll(async () => {
     getChatResultAfterAddQuestions = await sheet.getChat(chatId, { "_id": true, "Questions": true, "lastqid": true, "chatId": true });    
 
     ///// END TEST ADD QUESTIONS /////
+
+
+
+
+    ///// BEGIN TEST GET QUESTIONS /////
+    for (let i = 0; i<getQuestionsQueries_and_Results.length; i++){
+        getQuestionsByQueryObjResults[i] = await sheet.getQuestions(chatId, getQuestionsQueries_and_Results[i][0]);
+    }
+    ///// END TEST GET QUESTIONS /////
 
 
 
@@ -377,6 +426,18 @@ test('questions were correctly created with addQuestion(), and data from getChat
     }
 
 });
+
+
+test('getQuestions works correctly when passing a questionsQuery object', () => {
+    for (let i = 0; i < getQuestionsQueries_and_Results.length; i++) {
+        expect(JSON.stringify(
+            getQuestionsByQueryObjResults[i].map(q=>q.qid).sort()
+        )).toEqual(JSON.stringify(
+            getQuestionsQueries_and_Results[i][1].sort()
+        ));
+    }
+});
+
 
 
 test('deleteQuestion() works correctly with variety of supported types of arguments', () => {

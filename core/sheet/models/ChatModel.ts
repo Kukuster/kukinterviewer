@@ -11,6 +11,23 @@ import { Iquestion, questionSchema } from "./QuestionModel";
 
 
 
+
+
+export type settingsSet = {
+        enabled?: boolean,
+        timezone?: number,
+        asking_period_mins?: number,
+        asking_time_of_day?: { from_hour: number, to_hour: number }
+};
+
+export type Settings = Ichat["Settings"];
+
+export type settingsKey = keyof Settings;
+
+export type settingsSetOrKey = settingsSet | settingsKey;
+
+
+
 export interface Ichat extends Document {
     chatId: number;
     Questions?: Iquestion[];
@@ -19,7 +36,7 @@ export interface Ichat extends Document {
         msg_id: Schema.Types.ObjectId,
         delete_time: Date
     }];
-    Settings?: {
+    Settings: {
         enabled: boolean,
         timezone?: number,
         asking_period_mins?: number,
@@ -50,7 +67,7 @@ const chatSchema = new Schema({
     },
     Settings: { 
         type: {
-            enabled: Boolean,
+            enabled:  { type: Boolean, required: true },
             timezone: { type: Number, required: false },
             asking_period_mins: { type: Number, required: false },
             asking_time_of_day: { 
@@ -61,7 +78,7 @@ const chatSchema = new Schema({
                     required: false
             }
         },
-        required: false
+        required: true
     },
     last_time_asked: { type: Date,          required: false },
     running:         { type: Boolean,       required: false },

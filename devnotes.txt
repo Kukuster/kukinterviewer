@@ -1,0 +1,279 @@
+#################################################
+#                                               #
+#                     Notes                     #
+#                                               #
+#################################################
+
+# "server_hellonode.js"
+# https://nodejs.org/en/download/package-manager/
+
+
+# "index_express.js"
+# didn't work out
+#as per the following guide: https://www.sohamkamani.com/blog/2016/09/21/making-a-telegram-bot/
+
+# https://aqueous-plains-66613.herokuapp.com/
+
+# Ctrl+Shift+B - run a task (here: 'npm start')
+
+
+
+
+#################################################
+#                                               #
+#                    VS Code                    #
+#                                               #
+#################################################
+
+# Ctrl+Shift+P >Task
+
+
+#################################################
+#                                               #
+#                    Node.js                    #
+#                                               #
+#################################################
+
+#run server:
+node server.js
+
+#run server (debug):
+node --inspect server,js
+
+# install npm package <package> locally
+npm install <package>
+# globally
+sudo npm install -g <package>
+
+
+
+
+#################################################
+#                                               #
+#               Telegram Bot API                #
+#                                               #
+#################################################
+
+
+
+#=====# Webhooks #=====#
+
+#webhooks info:
+# https://core.telegram.org/bots/api#getting-updates
+
+#check current webhook
+curl https://api.telegram.org/bot<TOKEN>/getWebhookInfo
+
+
+#set webhook to ZEIT now (runs in local)
+curl -F "url=https://kukinterviewer-dev.now.sh/new-message"  https://api.telegram.org/bot<TOKEN>/setWebhook
+#which is equivalent to
+curl https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://kukinterviewer-dev.now.sh/new-message
+
+#set webhook to heroku
+curl -F "url=https://aqueous-plains-66613.herokuapp.com/new-message"  https://api.telegram.org/bot<TOKEN>/setWebhook
+#which is equivalent to
+curl https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://aqueous-plains-66613.herokuapp.com/new-message
+
+
+
+#################################################
+#                                               #
+#        Node Telegram Bot API (module)         #
+#                                               #
+#################################################
+
+# https://github.com/yagop/node-telegram-bot-api
+
+
+
+
+#################################################
+#                                               #
+#                      NOW                      #
+#                                               #
+#################################################
+
+#=====# Run (runs on the local machine) #=====#
+now login
+now
+now --prod
+node index.js
+
+
+#################################################
+#                                               #
+#                    Heroku                     #
+#                                               #
+#################################################
+# https://devcenter.heroku.com/articles/heroku-cli
+
+Heroku requires an app to listen to the port specified by Heroku in an env var PORT.
+Otherwise it shuts the app down within a minute.
+
+app domain: https://aqueous-plains-66613.herokuapp.com/
+
+#=====# Create #=====#
+
+git add -A && git commit -m 'Telegram API test run'
+heroku create
+git remote -v
+heroku git:remote -a aqueous-plains-66613
+git push heroku master
+
+
+#=====# Run (local) #=====#
+
+heroku login   #when running first time, or logged out
+heroku local web
+
+
+#=====# Run (server) #=====#
+
+git add -A && git commit -m "<commit_name>"
+heroku login   #when running first time, or logged out
+git push heroku master
+heroku open
+
+#turn service off:
+heroku ps:scale web=0
+#turn service on:
+heroku ps:scale web=1
+
+#OR:
+bash pushheroku.sh "<commit_message>"
+#to change the message of last commit:
+bash pushheroku.sh --amend
+#to restart heroku web service
+bash pushheroku.sh restart
+
+
+#=====# Log (server) #=====#
+# https://devcenter.heroku.com/articles/logging
+# << Logs originate from many sources (router nodes, dynos, etc.) and are assembled into a single log stream by Logplex.
+#    So logs might be collected and delivered out of order >>
+
+# all logs, tail
+heroku logs --tail
+
+# all logs, tail 200 lines
+heroku logs -n 200
+
+# dynos router
+heroku logs --dyno router
+
+# source app
+heroku logs --source app
+
+# source app, then dyno worker
+heroku logs --source app --dyno worker
+
+
+#################################################
+#                                               #
+#                   Dev log                     #
+#                                               #
+#################################################
+
+#this source 
+#https://medium.com/make-school/how-to-deploy-your-node-js-mongodb-app-to-the-web-using-heroku-63d4bccf2675
+#suggests:
+heroku addons:create mongolab:sandbox
+
+#the following found addon suggests it is free for up to 496 MB:
+#https://elements.heroku.com/addons/mongolab
+
+#from the command above it said check
+#https://devcenter.heroku.com/categories/billing   and
+#https://heroku.com/verify
+#I checked, added credit card, and ran the command again, so that it installed the addon
+#dashboard https://dashboard.heroku.com/apps/aqueous-plains-66613 says addon added and its still $0.00/month plan
+
+#proceeding on the medium article above:
+npm install mongoose
+npm install dotenv
+
+#<< push your .env variables to Heroku (if you have any): >>
+heroku config:set DATABASE_URI=database_uri_here
+
+# --- 2020.04.30 
+# finished CRUD
+# - add internal incremental id field 'qid' to the Question schema
+# - test deleting recieved and sent message
+# - rewrite bot.onText to one single function that reacts on any text, then switch case with regex.
+# - there has to be a global exported condition checking if bot's reaction function is already running, so that bot won't react on second pending message
+# - 
+# - add userfrieldly commands
+# - add deleting queue for bot
+
+# --- Mongoose DB structure notes:
+# Schemas are like tables in a RDBMS, also are recipes for Models.
+# Models are like run-time validation objects compiled from corresponding Schemas for table entries, but model is instead of a table.
+# Documents like are those entries, except they are not rows, but rather instance objects of corresponding Model class.
+
+
+
+# --- 2020.06.25
+# new file structure:
+/
+    /core/
+        Command/
+            default_methods/
+                match.js
+                prepare.js
+                execute.js
+                display.js
+            command_class.js
+            command.js
+        State/
+            state.js
+            state_class.js
+        sheet [orm]/
+            schemas/
+                chat.js
+                question.js
+            methods/
+                addNewChat.js
+                deleteChat.js
+                .
+                .
+                .
+            models.js
+            mongoose.js
+            sheet_class.js
+            sheet.js
+
+    
+    /interpreter/
+        commands/
+            listQuestions/
+                match.js
+                prepare.js
+                execute.js
+            echo/
+                match.js
+                prepare.js
+                execute.js
+                display.js
+
+            listQuestions.js
+            echo.js
+        states/
+            meet.js
+            ready.js
+            prompt.js
+        decide.js
+        commands.js
+        states.js
+    
+    index.js [ dependencies, config ]
+    server.js
+    ec.js
+    bot.js [ defines bot, reads TOKEN from config ]
+    read_sheet.js [binds bot and models to the classes]
+    config.json: [
+        polling_error: True [meaning exec `bot.on("polling_error", ...)` in index.js  ]
+        log_message: False
+    ]
+    [envs: TOKEN, env (heroku/local/dev), dbname, dbuser, dbpass]
+

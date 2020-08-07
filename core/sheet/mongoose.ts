@@ -8,6 +8,13 @@ const mongoURI = config.app_url_mongo;
 const mongoPORT = config.mongoPORT;
 const options: mongoose.ConnectionOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 
+/*
+    probably a temporary fix to a deprecation warning:
+<< DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead. >>
+
+    see: https://github.com/Automattic/mongoose/issues/6890
+*/
+mongoose.set('useCreateIndex', true);
 
 const dbPromise:Promise<Mongoose> = mongoose.connect(mongoURI, options);
 dbPromise.then((res) => {

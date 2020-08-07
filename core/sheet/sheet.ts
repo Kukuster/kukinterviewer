@@ -10,6 +10,8 @@ import setSettings from "./methods/chat/setSettings";
 import addQuestion from "./methods/questions/addQuestion";
 import getQuestions from "./methods/questions/getQuestions";
 import deleteQuestions from "./methods/questions/deleteQuestions";
+import addTagsToQuestions from "./methods/questions/addTagsToQuestions";
+import removeTagsFromQuestions from "./methods/questions/removeTagsFromQuestions";
 
 
 /**
@@ -27,6 +29,8 @@ class sheet {
     public addQuestion = addQuestion;
     public getQuestions = getQuestions;
     public deleteQuestions = deleteQuestions;
+    public addTagsToQuestions = addTagsToQuestions;
+    public removeTagsFromQuestions = removeTagsFromQuestions;
 
 
 

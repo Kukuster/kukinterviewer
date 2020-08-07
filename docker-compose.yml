@@ -1,0 +1,11 @@
+version: "3"
+services: 
+    kukinterviewer:
+        build: ./kukinterviewer_docker/
+        volumes: 
+            - ./kukinterviewer_docker:/kukinterviewer_docker
+        hostname: kukinterviewer_docker
+
+
+volumes:
+    kukinterviewer_docker:

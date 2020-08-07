@@ -34,7 +34,6 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 Promise<Iquestion[]>
 {
 
-
     return new Promise((resolve, reject) => {
         ChatModel.findOne({ chatId: chatId })
         .select({ "_id": false, "Questions": true })
@@ -130,16 +129,5 @@ Promise<Iquestion[]>
             console.error(error);
         });
     });
-
-    // const questionsFromDB = res?.Questions;
-
-    // if (Array.isArray(query) && query.length && questionsFromDB) {
-
-    //     return questionsFromDB.filter((e) => query.includes(e.qid)) || [];
-
-    // } else {
-
-    //     return questionsFromDB || [];
-    // }
 
 }

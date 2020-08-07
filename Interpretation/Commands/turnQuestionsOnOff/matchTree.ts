@@ -6,54 +6,109 @@ import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
 // (?:\?|\!|\.|,|;|:|$)+
 const rootRE = /[\s\S]+/g;
 const turnRE = /^turn(ing|ed)?[\?\!\.,;:]*$/i
-const endisableRE = /^(en|dis)abl(e|ing|ed)[\?\!\.,;:]*$/i;
-const onoffRE = /^(on|off)[\?\!\.,;:]*$/i;
+const enableRE  =  /^enabl(e|ing|ed)[\?\!\.,;:]*$/i;
+const disableRE = /^disabl(e|ing|ed)[\?\!\.,;:]*$/i;
+const onRE  =  /^on[\?\!\.,;:]*$/i;
+const offRE = /^off[\?\!\.,;:]*$/i;
 const questionRE = /^questions?(\S*)*/i;
-const allRE = /^all[\?\!\.,;:]*$/i;
+const allRE = /^(all|each|every)[\?\!\.,;:]*$/i;
 const digitRE = /(\d+)/g;
 
 
-let digitshoot: nodeLike,
-    lvl2: nodeLike[];
+let OnDigitRecursiveShoot: nodeLike,
+   OffDigitRecursiveShoot: nodeLike,
+    turnOnBranch: nodeLike[],
+    turnOffBranch:nodeLike[] ;
+
+
+export type shoot = { turn: 'on'|'off', questions: 'all'|'some' };
+
+const allOn  :shoot = { turn: 'on',  questions: 'all' },
+      allOff :shoot = { turn: 'off', questions: 'all' },
+     someOn  :shoot = { turn: 'on',  questions: 'some' },
+     someOff :shoot = { turn: 'off', questions: 'some' }
+
 
 export const turnQuestionsOnOff_tree =
     node(rootRE, [
         node(turnRE, [
 
-            node(onoffRE, lvl2 = [
+            //turn
+            node(onRE, turnOnBranch = [
                 node(allRE, [
-                    node(questionRE, [], 'shoot'),
+                    node(questionRE, [], allOn as shoot),
                 ]),
                 node(questionRE, [
-                    digitshoot = node(digitRE, [SELF], 'shoot')
+                    node(digitRE, [SELF], someOn as shoot)
                 ]),
                 node(digitRE, [
-                    node(questionRE, [digitshoot], 'shoot'),
+                    node(questionRE, [
+                        node(digitRE, [SELF], someOn as shoot)
+                    ], someOn as shoot),
                     SELF
                 ])
             ]),
 
+            //turn
+            node(offRE, turnOffBranch = [
+                node(allRE, [
+                    node(questionRE, [], allOff as shoot),
+                ]),
+                node(questionRE, [
+                    node(digitRE, [SELF], someOff as shoot)
+                ]),
+                node(digitRE, [
+                    node(questionRE, [
+                        node(digitRE, [SELF], someOff as shoot)
+                    ], someOff as shoot),
+                    SELF
+                ])
+            ]),
+
+            //turn
             node(allRE, [
                 node(questionRE, [
-                    node(onoffRE, [], 'shoot'),
+                    node(onRE,  [], allOn as shoot),
+                    node(offRE, [], allOff as shoot),
                 ]),
             ]),
 
+            //turn
             node(questionRE, [
-                node(onoffRE, [digitshoot]),
+                node(onRE,  [
+                    node(digitRE, [SELF], someOn as shoot)
+                ]),
+                node(offRE, [
+                    node(digitRE, [SELF],someOff as shoot)
+                ]),
                 node(digitRE, [
-                    node(onoffRE, [], 'shoot'),
+                    node(onRE,  [], someOn as shoot),
+                    node(offRE, [],someOff as shoot),
                     SELF
                 ])
             ]),
 
+            //turn
             node(digitRE, [
-                node(onoffRE, [
-                    node(questionRE, [digitshoot], 'shoot'),
+                node(onRE, [
+                    node(questionRE, [
+                        node(digitRE, [SELF], someOn as shoot)
+                    ], someOn as shoot),
+                    node(digitRE, [PARENTs_CHILDREN])
+                ]),
+                node(offRE, [
+                    node(questionRE, [
+                        node(digitRE, [SELF],someOff as shoot)
+                    ],someOff as shoot),
                     node(digitRE, [PARENTs_CHILDREN])
                 ]),
                 node(questionRE, [
-                    node(onoffRE, [digitshoot], 'shoot'),
+                    node(onRE,  [
+                        node(digitRE, [SELF], someOn as shoot)
+                    ], someOn as shoot),
+                    node(offRE,  [
+                        node(digitRE, [SELF],someOff as shoot)
+                    ],someOff as shoot),
                     node(digitRE, [PARENTs_CHILDREN])
                 ]),
                 SELF
@@ -62,6 +117,7 @@ export const turnQuestionsOnOff_tree =
         ]),
 
         // "enable" and "disable" are treated as "turn on" and "turn off" respectively
-        node(endisableRE, lvl2),
+        node(enableRE,  turnOnBranch),
+        node(disableRE, turnOffBranch),
 
     ]);

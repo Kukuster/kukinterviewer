@@ -37,19 +37,3 @@ if (ij){
 
 }
 
-
-
-// {
-//     "app_url": {
-//         "env": "MONGODB_URI",
-//         "default": "localhost"
-//     },
-//     "db_name": {
-//         "env": "",
-//         "default": "kukinterviewer"
-//     },
-//     "mongoPORT": {
-//         "env": "",
-//         "default": 27017
-//     }
-// }

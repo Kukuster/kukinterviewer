@@ -9,17 +9,17 @@ import ChatModel from "../sheet/models/ChatModel";
 import QuestionModel from "../sheet/models/QuestionModel";
 
 
+type TTChatType = 'private' | 'group' | 'supergroup' | 'channel';
+
 export interface IIChat {
     id: number;
-
-    // [key: string]: any;
+    type: TTChatType;
 }
 
 export interface IIUser {
     id: number,
     first_name: string,
-
-    // [key: string]: any;
+    is_bot: boolean
 }
 
 export interface IIMessage {
@@ -31,22 +31,30 @@ export interface IIMessage {
     author_signature?: string;
     text?: string;
     reply_markup?: { inline_keyboard: any[][]; };
-    
-    //[ key: string ]: any;
 }
 
 
-export type Command_match           = (msg: IIMessage)                               => Promise<RegExpMatchArray|null>;
-export type Command_prepare<Args>   = (msg: IIMessage, match: RegExpMatchArray)      => Promise<Args>;
-export type Command_execute<Args>   = (msg: IIMessage, args: Args)                   => Promise<string>;
-export type Command_display         = (msg: IIMessage, response: string)             => Promise<any>;
+export type Command_match                       = (msg: IIMessage)                           => Promise<RegExpMatchArray|null|undefined>;
+/**
+ * @param ArgsExec argument for the corresponding `Command_execute` function
+ */
+export type Command_prepare<ArgsExec>           = (msg: IIMessage, match: RegExpMatchArray)  => Promise<ArgsExec>;
+/**
+ * @param ArgsExec argument for _this_ `Command_execute` function
+ * @param ArgsDisp argument for the corresponding `Command_display` function
+ */
+export type Command_execute<ArgsExec,ArgsDisp>  = (msg: IIMessage, args: ArgsExec)           => Promise<ArgsDisp>;
+/**
+ * @param ArgsDisp argument for the corresponding `Command_display` function
+ */
+export type Command_display<ArgsDisp>           = (msg: IIMessage, resonse: ArgsDisp)        => Promise<any>;
 
 
 export interface ICommand {
     match:   Command_match; 
     prepare: Command_prepare<any>;
-    execute: Command_execute<any>;
-    display: Command_display;
+    execute: Command_execute<any,any>;
+    display: Command_display<any>;
 
     ChatModel?: Model<Document>;
 
@@ -73,11 +81,11 @@ export interface ICommand {
     
 // }
 
-export default class Command<Args> implements ICommand{
+export default class Command<ArgsExec, ArgsDisp> implements ICommand{
     public match:   Command_match; 
-    public prepare: Command_prepare<Args>;
-    public execute: Command_execute<Args>;
-    public display: Command_display;
+    public prepare: Command_prepare<ArgsExec>;
+    public execute: Command_execute<ArgsExec,ArgsDisp>;
+    public display: Command_display<ArgsDisp>;
     /**
      * 
      * @param {Function} match Accepts {TelegramBot.Message} and returns message text or {RegExpMatchArray},
@@ -91,9 +99,9 @@ export default class Command<Args> implements ICommand{
      */
     constructor(
             match:    Command_match,
-            prepare:  Command_prepare<Args>,
-            execute:  Command_execute<Args>,
-            display?: Command_display
+            prepare:  Command_prepare<ArgsExec>,
+            execute:  Command_execute<ArgsExec,ArgsDisp>,
+            display?: Command_display<ArgsDisp>
         ){
         this.match   = match   //? match   : default_match;
         this.prepare = prepare //? prepare : default_prepare;

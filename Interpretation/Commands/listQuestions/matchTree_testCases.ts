@@ -1,9 +1,11 @@
+'use strict';
+
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 
 export type listQuestions_testCase = 
     { m: string,                                                res: questionsQuery | 'all' | null };
 export const listQuestions_testCases: listQuestions_testCase[] = [
-    // [list -> all]
+    // list -> all
     { m: "list all untagged questions",
       res: {
             Tags: 'no'
@@ -45,7 +47,7 @@ export const listQuestions_testCases: listQuestions_testCase[] = [
         } },
 
 
-    // [list -> all -> questions]
+    // list -> all -> questions
 
     { m: "list all questions",
       res: 'all' },
@@ -106,7 +108,7 @@ export const listQuestions_testCases: listQuestions_testCase[] = [
 
 
 
-    // [list -> questions]
+    // list -> questions
 
     { m: "list question #3",
       res: {

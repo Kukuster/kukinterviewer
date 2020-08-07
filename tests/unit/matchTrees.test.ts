@@ -9,6 +9,10 @@ import { start_testCases } from "../../Interpretation/Commands/start/matchTree_t
 import { start_tree } from "../../Interpretation/Commands/start/matchTree";
 import start_match from "../../Interpretation/Commands/start/match";
 import start_prepare from "../../Interpretation/Commands/start/prepare";
+import { addQuestion_testCases } from "../../Interpretation/Commands/addQuestion/matchTree_testCases";
+import { addQuestion_tree } from "../../Interpretation/Commands/addQuestion/matchTree";
+import addQuestion_match from "../../Interpretation/Commands/addQuestion/match";
+import addQuestion_prepare from "../../Interpretation/Commands/addQuestion/prepare";
 
 
 
@@ -36,6 +40,13 @@ const Cs: {[key: string]: {testCases: any, tree: nodeC, matchfunc: Command_match
         tree: turnQuestionsOnOff_tree,
         matchfunc: turnQuestionsOnOff_match,
         prepfunc: turnQuestionsOnOff_prepare
+    },
+
+    addQuestions: {
+        testCases: addQuestion_testCases,
+        tree: addQuestion_tree,
+        matchfunc: addQuestion_match,
+        prepfunc: addQuestion_prepare
     },
 
 };
@@ -114,7 +125,7 @@ for (const c in Cs) {
     const casesLen = Cs[c].testCases.length;
 
     for (let i = 0; i < casesLen; i++){
-        test(c+'matchTree message #'+i+': "' + Cs[c].testCases[i].m + '": ', () => {
+        test(c+'.matchTree message #'+(i+1)+': "' + Cs[c].testCases[i].m + '": ', () => {
             expect(
                 JSON.stringify(Cs_got_res[c][i])
             ).toEqual(

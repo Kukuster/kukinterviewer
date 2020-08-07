@@ -1,3 +1,5 @@
+'use strict';
+
 export type turnQuestionsOnOff_testCase = 
     { m: string,                                                res: { turn: 'on'|'off', questions: 'all'|number[] } | null };
 export const turnQuestionsOnOff_testCases: turnQuestionsOnOff_testCase[] = [

@@ -62,7 +62,7 @@ export default async function getSettings(chatId: number, setting?: settingsKey 
                 resolve(chat.Settings[setting]);
             } else {
                 resolve(chat.Settings);
-            }
+            };
 
         })
         .catch(error => {

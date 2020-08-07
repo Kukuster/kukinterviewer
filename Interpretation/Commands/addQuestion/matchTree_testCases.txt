@@ -1,0 +1,64 @@
+#kukinterviewer
+
+escape "\n" as "\\\n"
+
+[OK] add -> question -> \n -> *text*
+✓ add question \\\nwhat programming languages do you know?   [ add -> question -> \n -> *text* ] 
+✓ add new question \\\ndo you know php?   [ add -> question -> \n -> *text ]
+✓ new question \\\ndo you know python? [ new -> question -> \n -> *text* ]
+✓ create question \\\ndo you know javascript? [ create -> question -> \n -> *text* ]
+
+
+[OK] add -> question -> \n -> "* -> *text* -> *"
+✓ create new question \\\n"do you know typescript?" [ create -> question -> \n -> " -> *text* -> " ]
+
+[OK] add -> question: -> "* -> *text* -> *"
+✓ add a question: <<do you know python?>>  [ add -> question: -> << -> *text* -> >> ]
+✓ add a question: «do you know python?»  [ add -> question: -> « -> *text* -> » ]
+✓ add a question: "do you know python?"  [ add -> question: -> " -> *text* -> " ]
+✓ add a question: 'do you know python?'  [ add -> question: -> ' -> *text* -> ' ]
+✓ add a question. 'do you know python?'  [ add -> question. -> ' -> *text* -> ' ]
+✓ add a question. '#python do you know python?'  [ add -> question. -> ' -> # -> *text* -> ' ]
+✓ create question: "do you know C++?" [ create -> question: -> " -> *text* -> " ]
+✓ create a question: "do you know C?" [ create -> question: -> " -> *text* -> " ]
+✓ create question: <<#go #languages do you know Go?>> [ create -> question: -> << -> # -> *text* -> >> ]
+✓ could you please add a question: «do you know C#?» [ add -> question: -> « -> *text* -> » ]
+✓ hey! Can you add the following question, please: «do you know .NET?» [ add -> question, -> « -> *text* -> » ]
+✓ hey! Can you add the following question, please: «#dotNET\\\n do you know .NET?» [ add -> question, -> « -> # -> *text* -> » ]
+✓ add new question\\\n<<#php #python\\\n #htmlcss       \\\n\\\n \\\n>>   [ add -> question -> \n -> << -> # -> *whitespace* -> >> ]
+
+
+[OK] question -> add -> \n -> «* -> *text* -> *»
+✓ hi! Here's question I want you to add:\\\n«do you know data structures?» [ question -> add: -> \n -> «* -> *text* -> *» ]
+
+
+[ wrong_path ]
+✕ add new question\\\n<<       \\\n\\\n \\\n>>   [ add -> question -> \n -> << -> *whitespace* -> >> ]
+
+
+[ forbidden ]
+✕ erase question: <<do you know HTML/CSS?>>  [ frb ]
+✕ remove new question: <<do you know HTML/CSS?>> [ frb ]
+✕ turn new question on: <<do you know anything?>> [ frb ]
+✕ delete new question "do you know anything?"  [ frb ]
+
+✕ add delete question "do you know anything?"  [ add -> frb ]
+✕ add turn question: <<do you know anything?>> [ add -> frb ]
+✕ new question delete "do you know anything?"  [ new -> question -> frb ]
+
+✕ add new questions 'do you know anything?'  [ add -> questions ]
+✕ add 2 questions \\\n<<do you know HTML?>>\\\n<<do you know CSS?>>> [ add -> questions ]
+✕ add new 2 questions \\\n<<do you know HTML?>>\\\n<<do you know CSS?>> [ add -> questions ]
+
+
+[ ... -> ✕ ]
+✕ add new question << [ add -> question -> << -> ✕ ]
+✕ add question " [ add -> question -> " ]
+✕ add new question: \\\n [  add -> question: -> \n -> ✕ ] 
+✕ add new question [ add -> question -> ✕ ]
+✕ question [ question -> ✕ ]
+
+
+[ neg ]
+✕ don't add me a question: "do you use negations in queries to the bot?" [ neg ]
+✕ never add a question: "do you know anything?" [ neg ]

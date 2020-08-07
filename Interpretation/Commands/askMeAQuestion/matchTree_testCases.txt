@@ -1,0 +1,112 @@
+#kukinterviewer
+
+
+[OK] next -> question
+✓ next question [ next -> question ]
+✓ next question, please [ next -> question ]
+
+[OK] ask -> me -> question
+✓ ask me another question! [ ask -> me -> question ] 
+✓ ask me a question, please [ ask -> me -> question ]
+✓ would you mind asking me more questions, please? [ ask -> me -> question ]
+
+[OK] ask -> me -> anything
+✓ ask me something [ ask -> me -> anything ]
+✓ ask me anything [ ask -> me -> anything ]
+
+[OK] A -> M -> A
+✓ A M A
+
+[OK] AMA
+✓ AMA
+
+[OK] another -> question
+✓ another question [ another -> question ]
+✓ a question [ a -> question ]
+✓ any question, please [ any -> question ]
+
+[OK] more -> question
+✓ one more question [ more -> question ]
+✓ more questions [ more -> questions ]
+
+[OK] question -> please
+✓ question, please [ question -> please ]
+
+[OK] interview me
+✓ interview me [ interview -> me ]
+
+
+
+[OK] question -> dig
+✓ question number 3, please [ question -> dig ]
+✓ question 3 [ question -> dig ]
+✓ question of id 3 [ question -> dig ]
+
+[OK] dig -> question
+✓ 3rd question [ question -> dig ]
+✓ ask me 3rd question [ question -> dig ]
+
+
+
+
+
+
+
+[OK] next -> question -> #
+✓ next question from #web, please [ next -> question -> # ]
+
+[OK] next -> # -> question
+✓ next #web question [ next -> # -> question ]
+
+[OK] ask -> me -> # -> question
+✓ ask me a #web question! [ ask -> me -> # -> question ]
+✓ ask me any #web question! [ ask -> me -> # -> question ]
+
+[OK] ask -> me -> question -> #
+✓ ask me a question from #web [ ask -> me -> question -> # ]
+✓ give me a question from #web [ ask -> me -> question -> # ]
+
+
+[OK] another -> # -> question
+✓ another #web question! [ another -> # -> question ]
+
+[OK] a -> # -> question
+✓ a #web question, please! [ a -> # -> question ]
+
+[OK] a -> question -> #
+✓ a question from #web [ a -> question -> # ]
+
+[OK] more -> # -> question
+✓ more #web questions [ more -> # -> question ]
+
+[OK] more -> question -> #
+✓ more questions on #web [ more -> question -> # ]
+
+[OK] # -> question -> please
+✓ #web question, please [ # -> question -> please ]
+
+[OK] question -> # -> please
+✓ question from #web, please [ question -> # -> please ]
+
+[OK] question -> please -> #
+✓ question please, from #web [ question -> please -> # ]
+
+[OK] interview -> me -> #
+✓ interview me on #web [ interview -> me -> # ]
+
+
+
+
+
+[ ... -> ✕ ]
+✕ question [ question -> ✕ ]
+
+
+[ neg ]
+✕ don't ask me questions [ neg ]
+✕ ask me no questions [ turn -> all ]
+
+
+[ forbidden ]
+✕ ask me questions [ ask -> me -> frb(questions) ]
+

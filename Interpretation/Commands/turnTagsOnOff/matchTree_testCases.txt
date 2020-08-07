@@ -1,0 +1,69 @@
+#kukinterviewer
+
+escape "\n" as "\\\n"
+
+[OK] turn -> # -> on/off
+✓ turn #tag1 tag on [ turn -> # -> tag -> on ]
+✓ turn tags #tag1 #tag2 #web off [ turn -> tag -> # -> off ]
+✓ would you mind turning #web off? [ turn -> # -> off ]
+✓ hey, maybe turn #web off? [ turn -> # -> off ]
+✓ can I please have tags #web #css turned off? [ tags -> # -> turn -> off ]
+✓ turn #web off! [ turn -> # -> off ]
+
+[OK] turn -> on/off -> #
+✓ turn off #tag tag [ turn -> off -> # > tag ]
+✓ turn off #tag1 #tag2 #tag3 tags [ turn -> off -> # -> tags ]
+
+[OK] enable/disable -> #
+✓ enable tag #tag1 [ enable -> tag -> # ]
+✓ disable #web [ disable -> # ]
+✓ enable #tag1 #tag2 [ enable -> # ]
+✓ how about disabling #web tag? [ disable -> # -> tag ]
+✓ don't mind enabling #web ?! [ enable -> # ]
+
+[OK] turn -> on/off -> all -> tags
+✓ turn on all the tags [ turn -> on -> all -> tags ]
+
+[OK] turn -> all -> tags -> on/off
+✓ turn all the tags off [ turn -> all -> tags -> off ]
+
+[OK] enable/disable -> all -> tags
+✓ enable all tags [ enable -> all -> tags ]
+
+
+
+[ wrong_path ]
+
+
+[ ... -> ✕ ]
+✕ how about you turn yourself off, fucking bot. [ turn -> off -> ✕ ]
+✕ turn on the tag [ turn -> on -> tag -> ✕ ]
+✕ turnage all the tags [ turn -> all -> tags -> ✕ ]
+✕ turn #tag1 #tag2 #web tags [ turn -> # -> tags -> ✕ ]
+✕ tags #tag1 #tag2 turn off [ turn -> off -> ✕ ]
+✕ enable tags [ enable -> tag -> ✕ ]
+✕ turn tags [ turn -> tags -> ✕ ]
+✕ turn all [ turn -> all -> ✕ ]
+
+
+[ neg ]
+✕ don't enable #tag1 [ neg ]
+✕ turn all not #tag3 tags [ turn -> all -> neg ]
+
+
+[ forbidden ]
+✕ turn off #tag1 #tag2 #tag3 questions tags [ turn -> off -> # -> frb ]
+✕ disable on tags #tag1 #tag2 [ disabled -> frb ]
+✕ turn off and on all the tags [ turn -> off -> frb ]
+✕ turn all the questions with #tag1 #tag2 #web off [ turn -> all -> frb ]
+✕ turning all the questions on [ turn -> all -> frb ]
+✕ turn off all tagged #tag1 [ turn -> off -> all -> frb(tagged) ]
+✕ disable everything tagged #tag2 [ disable -> frb(everything) ]
+
+
+frbs:
+• everything, anything, question, chat
+
+
+
+

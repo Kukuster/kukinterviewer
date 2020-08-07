@@ -1,0 +1,51 @@
+#kukinterviewer
+
+escape "\n" as "\\\n"
+
+[OK] add -> # -> question -> dig
+✓ add #tag1 to the question 3   [ add -> # -> question -> dig ]
+✓ add #tag to questions 3, 4, 5   [ add -> # -> questions -> dig ]
+✓ would you mind adding #tag1 tag to questions 6, 7, 10? [ add -> # -> questions -> dig ]
+✓ include #tag1 in questions 3, 4 & 6, please [ include -> # -> questions -> dig ]
+✓ add tags #tag1 #tag2 to question 3 [ add -> tags -> # -> # -> question -> dig]
+
+[OK] add -> # -> all -> questions
+✓ add #tag1 to all questions [ add -> # -> all -> questions ]
+
+[OK] tag -> question -> dig -> #
+✓ tag question 3 #tag1     [ tag -> question -> dig -> # ]
+✓ tag question 3 with #tag1  [ tag -> question -> dig -> # ]
+✓ how about tagging questions 3, 4, & 7 with #tag1? [ tag -> questions -> dig -> # ]
+
+[OK] tag -> dig -> question -> #
+✓ tag 3rd question #tag1   [ tag -> dig -> question -> # ]
+
+[OK] tag -> # -> all -> questions
+✓ tag #tag1 all questions [ tag -> # -> all -> questions ]
+
+[OK] get -> questions -> dig -> tag -> #
+✓ how about getting questions 3, 4 & 5 tagged with #tag1 #tag2 [ get -> questions -> dig -> tag -> # ]
+
+
+
+
+[ ... -> ✕ ]
+✕ add #tag1 to questions [ add -> # -> questions -> ✕ ]
+✕ add tag to question 3 [ add -> tag -> question -> dig -> ✕ ]
+
+
+[ neg ]
+✕ don't add #tag1 to question 3 [ neg ]
+✕ add #tag3 to no questions [ add -> # -> neg ]
+
+
+[ forbidden ]
+✕ remove all tags [ frb ]
+✕ delete all the questions [ frb ]
+✕ delete questions 3, 4 & 5 from tags #tag1 #tag2 [ frb ]
+✕ remove from questions tag #tag1 #tag2 [ frb ]
+✕ remove all tags [ frb ]
+
+
+
+

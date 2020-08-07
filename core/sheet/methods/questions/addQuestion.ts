@@ -6,7 +6,7 @@ import mongoose from "../../mongoose";
 /**
  * 
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
- * @param question a question document to add
+ * @param question a question document to add. Sets a question to be enabled by default
  * @state leaves unchanged
  * @returns return of `save()` when saving `chat` document, or an error if any occured on the way
  * 

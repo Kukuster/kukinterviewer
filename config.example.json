@@ -10,5 +10,17 @@
     "mongoPORT": {
         "env": "",
         "default": 27017
+    },
+    "TOKEN": {
+        "env": "TOKEN",
+        "default": null
+    },
+    "PORT": {
+        "env": "PORT",
+        "default": 5000
+    },
+    "HOST": {
+        "env": "HOST",
+        "default": "0.0.0.0"
     }
 }

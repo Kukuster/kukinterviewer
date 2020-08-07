@@ -9,7 +9,8 @@ export type questionsQuery = {
     qids?:             [number, ...number[]],
     questionTextParts?:[string, ...string[]],
     enabled?:          boolean,
-    Tags?:             [string, ...string[]] | 'no' | 'any'
+    Tags?:             [string, ...string[]] | 'no' | 'any',
+    random?:           true
 };
 
 /**
@@ -23,6 +24,12 @@ function isProperQuestionsQuery(query: number[] | 'all' | questionsQuery): query
            (query as questionsQuery).enabled!           !== undefined ||
            (query as questionsQuery).Tags!              !== undefined;
 };
+
+
+function isNotEmptyArray<T>(arr: T[] | string | undefined): arr is [T, ...T[]]{
+    return Array.isArray(arr) && arr.length > 0;
+}
+
 
 /**
  * 
@@ -99,6 +106,12 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
                     );
                 };
             };
+
+
+            if (query.random === true) {
+                filteringQuestions = [ filteringQuestions[Math.floor(Math.random() * filteringQuestions.length)] ];
+            }
+
 
             return filteringQuestions;
             

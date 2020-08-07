@@ -1,9 +1,18 @@
-import ChatModel, { Ichat } from "../../core/sheet/models/ChatModel";
+import ChatModel, { Ichat, settingsSet, settingsKey } from "../../core/sheet/models/ChatModel";
 import mongoose from "../../core/sheet/mongoose";
 import sheet from "../../core/sheet/sheet";
 import getChat from "../../core/sheet/methods/chat/getChat";
 import { Iquestion } from "../../core/sheet/models/QuestionModel";
 import deleteQuestions from "../../core/sheet/methods/questions/deleteQuestions";
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////             Test data            ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
 
 //const chatId = 231079996;
 var chatId = 1729;
@@ -26,6 +35,42 @@ const questionsToAdd:
 ];
 
 
+const settingsToSetObj: settingsSet[]
+ = [
+    {
+        'enabled': true,
+        'timezone': 2,
+        'asking_period_mins': 180,
+        'asking_time_of_day': {
+            'from_hour': 8,
+            'to_hour': 20
+        }
+    },
+    {
+        'enabled': false,
+        'timezone': 3,
+        'asking_time_of_day': {
+            'from_hour': 9,
+            'to_hour': 19
+        }
+    },
+
+]
+
+
+type settingsKeyValueTuple<T extends settingsKey> = [T, settingsSet[T]];
+
+const settingsToSetKeyAndValue: [settingsKey, settingsSet[settingsKey]][] = [
+    ['enabled', true],
+    ['timezone', 2],
+    ['asking_time_of_day', {
+        from_hour: 10,
+        to_hour: 18
+    }]
+];
+
+
+
 
 const deleteQuestionsArgs: (number | number[] | 'all')[] = [
     2,
@@ -39,6 +84,13 @@ var DBconnection: typeof import("mongoose"),
     chatDocId: any,
     
     createChatResult: Ichat,
+
+    getChatSettingsSingleResult_BeforeSetSettings: Ichat["Settings"][keyof Ichat["Settings"]],
+    getChatSettingsAllResult_BeforeSetSettingsObj: Ichat["Settings"],
+    getChatSettingsAllResult_AfterSetSettingsObj: Ichat["Settings"][] = [],
+    getChatSettingsAllResult_AfterAllSetSettingsObj_BeforeAnySetSettingsKeyAndValue: Ichat["Settings"],
+    getChatSettingsAllResult_AfterSetSettingsKeyAndValue: Ichat["Settings"][] = [],
+    getChatSettingsAllResult_AfterAllSetSettings:  Ichat["Settings"],
     
     getChatResultBeforeAddQuestions: Ichat | null,
     getQuestionsResultsAfterAddQuestions: { questionText: string, Tags: any; }[],
@@ -49,6 +101,16 @@ var DBconnection: typeof import("mongoose"),
     
     deleteChatResult: { ok?: number | undefined; n?: number | undefined; } & { deletedCount?: number | undefined; };
 
+
+
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+/////////// Perform all queries, gather data ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
 
 
 beforeAll(async () => {
@@ -70,6 +132,53 @@ beforeAll(async () => {
     // remember this mongoDB document ID of this chat
     chatDocId = createChatResult._id;
 
+
+
+    ///// BEGIN TEST SETTINGS /////
+
+    // get 'enabled' setting
+    getChatSettingsSingleResult_BeforeSetSettings = await sheet.getSettings(chatId,"enabled");
+
+
+    // this is to compare with the first result of setSettings with object
+    getChatSettingsAllResult_BeforeSetSettingsObj
+     = await sheet.getSettings(chatId);
+    
+    // sets new Settings with object
+    for (let i = 0; i<settingsToSetObj.length; i++){
+        await sheet.setSettings(chatId, settingsToSetObj[i]);
+        
+        getChatSettingsAllResult_AfterSetSettingsObj.push(
+            await sheet.getSettings(chatId)
+        );
+    };
+
+    // this is to compare with the first result of setSettings with key-value pairs
+    getChatSettingsAllResult_AfterAllSetSettingsObj_BeforeAnySetSettingsKeyAndValue
+     = await sheet.getSettings(chatId);
+
+    // sets new Settings with key-value pairs 
+    for (let i = 0; i<settingsToSetKeyAndValue.length; i++){
+        await sheet.setSettings(chatId, 
+            settingsToSetKeyAndValue[i][0], 
+            settingsToSetKeyAndValue[i][1]
+        );
+
+        getChatSettingsAllResult_AfterSetSettingsKeyAndValue.push(
+            await sheet.getSettings(chatId)
+        );
+    };
+
+    // get all Setting after they were set
+    getChatSettingsAllResult_AfterAllSetSettings =  await sheet.getSettings(chatId);
+
+    ///// END TEST SETTINGS /////
+
+
+
+
+    ///// BEGIN TEST ADD QUESTIONS /////
+
     // getChat
     getChatResultBeforeAddQuestions = await sheet.getChat(chatId, { "_id": true, "Questions": true, "lastqid": true, "Settings": true });
 
@@ -85,22 +194,30 @@ beforeAll(async () => {
         questionsToAdd[i].qid = i+1;
     }
 
-
-    // defined exhausting list of qids, meaning it will be rewritten on tests
-    questionsToAdd_qids_exhausting = questionsToAdd.map(e => e.qid!);
-
-
     // check questions with getQuestions and getChat
     getQuestionsResultsAfterAddQuestions = await sheet.getQuestions(chatId);
     getChatResultAfterAddQuestions = await sheet.getChat(chatId, { "_id": true, "Questions": true, "lastqid": true, "chatId": true });    
 
+    ///// END TEST ADD QUESTIONS /////
+
+
+
+
+    ///// BEGIN TEST DELETE QUESTIONS /////
+
+    // defined exhausting list of qids, meaning it will be rewritten on tests
+    questionsToAdd_qids_exhausting = questionsToAdd.map(e => e.qid!);
 
     // multiple deleteQuestion queries
     for (let i=0; i<deleteQuestionsArgs.length; i++){
         await sheet.deleteQuestions(chatId, deleteQuestionsArgs[i]);
         getQuestionsResultAfterDeleteQuestionsArr.push(await sheet.getQuestions(chatId));
     }
+
+    ///// END TEST DELETE QUESTIONS /////
     
+
+
 
     // delete chat
     deleteChatResult = await sheet.deleteChat(chatId);
@@ -110,6 +227,16 @@ beforeAll(async () => {
 
 }); // beforeAll
 
+
+
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////        Test gathered data        ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
 
 
 test('response from createNewChat() matches the data', () => {
@@ -123,6 +250,86 @@ test('response from createNewChat() matches the data', () => {
     ).toBeTruthy();
 
 });
+
+
+test('Settings filed in newly created Chat document has correct predefined data', () => {
+
+    expect(getChatSettingsSingleResult_BeforeSetSettings).toBe(false)
+
+});
+
+
+test('setSettings() rewrites only specified fields when passing object', () => {
+    for (let i = 0; i < settingsToSetObj.length; i++) {
+
+        if (i === 0){
+
+            expect(JSON.stringify(
+                Object.assign(
+                    {},
+                    getChatSettingsAllResult_BeforeSetSettingsObj,
+                    settingsToSetObj[i]
+                )
+            )).toEqual(JSON.stringify(
+                getChatSettingsAllResult_AfterSetSettingsObj[i]
+            ));
+
+        } else {
+
+            expect(JSON.stringify(
+                Object.assign(
+                    {},
+                    getChatSettingsAllResult_AfterSetSettingsObj[i-1],
+                    settingsToSetObj[i]
+                )
+            )).toEqual(JSON.stringify(
+                getChatSettingsAllResult_AfterSetSettingsObj[i]
+            ));
+
+        }
+
+    }; // for i
+}); // test setSettings when passing object
+
+
+test('setSettings() sets a specified setting when passing a key and a value', () => {
+    for (let i = 0; i < settingsToSetObj.length; i++) {
+
+        let oneSettingObj: { [key in settingsKey]?: settingsSet[settingsKey] } = {};
+        oneSettingObj[settingsToSetKeyAndValue[i][0]] = settingsToSetKeyAndValue[i][1];
+
+        if (i === 0) {
+
+            expect(JSON.stringify(
+                Object.assign(
+                    {},
+                    getChatSettingsAllResult_AfterAllSetSettingsObj_BeforeAnySetSettingsKeyAndValue,
+                    oneSettingObj
+                )
+            )).toEqual(JSON.stringify(
+                getChatSettingsAllResult_AfterSetSettingsKeyAndValue[i]
+            ));
+
+
+        } else {
+
+            expect(JSON.stringify(
+                Object.assign(
+                    {},
+                    getChatSettingsAllResult_AfterSetSettingsKeyAndValue[i-1],
+                    oneSettingObj
+                )
+            )).toEqual(JSON.stringify(
+                getChatSettingsAllResult_AfterSetSettingsKeyAndValue[i]
+            ));
+
+        };
+
+    }; // for i
+}); // test setSettings when passing key-value pair
+
+
+
 
 
 test('data from getChat() matches the data used on createNewChat()', () => {
@@ -141,7 +348,9 @@ test('data from getChat() matches the data used on createNewChat()', () => {
         JSON.stringify(createChatResult.Questions)
     );
 
-})
+});
+
+
 
 test('questions were correctly created with addQuestion(), and data from getChat() and getQuestions(\'all\') match with each other and with previous data', () => {
     expect(
@@ -171,7 +380,6 @@ test('questions were correctly created with addQuestion(), and data from getChat
 
 
 test('deleteQuestion() works correctly with variety of supported types of arguments', () => {
-
     for (let i = 0; i < deleteQuestionsArgs.length; i++) {
 
         const deleteQuestionsArgs_i = deleteQuestionsArgs[i];
@@ -203,8 +411,7 @@ test('deleteQuestion() works correctly with variety of supported types of argume
         }
 
     } // for i
-    
-});
+}); //test deleteQuestion()
 
 
 test('the test chat (chatId='+chatId+') was deleted successfully', () => {

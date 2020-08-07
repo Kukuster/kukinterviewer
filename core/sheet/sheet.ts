@@ -4,6 +4,8 @@ import hasChat from "./methods/chat/hasChat";
 import createNewChat from "./methods/chat/createNewChat";
 import deleteChat from "./methods/chat/deleteChat";
 import getChat from "./methods/chat/getChat";
+import getSettings from "./methods/chat/getSettings";
+import setSettings from "./methods/chat/setSettings";
 
 import addQuestion from "./methods/questions/addQuestion";
 import getQuestions from "./methods/questions/getQuestions";
@@ -19,6 +21,8 @@ class sheet {
     public createNewChat = createNewChat;
     public deleteChat = deleteChat;
     public getChat = getChat;
+    public getSettings = getSettings;
+    public setSettings = setSettings;
 
     public addQuestion = addQuestion;
     public getQuestions = getQuestions;

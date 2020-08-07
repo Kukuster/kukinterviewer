@@ -3,7 +3,7 @@
 import { nodeC, nodeLike } from "./node";
 
 
-export type nodeStep = { childIndex: number; match: RegExpMatchArray; word: string; shoot: any; };
+export type treeStep = { childIndex: number; match: RegExpMatchArray; word: string; shoot: any; };
 
 
 /**
@@ -13,7 +13,7 @@ export type nodeStep = { childIndex: number; match: RegExpMatchArray; word: stri
  * @param path steps made through the tree are appended to this array
  * @returns `path`, but it rewrites `path` argument (passed by reference, because it's an array)
  */
-export function traverse(node: nodeLike, Words: string[], path: nodeStep[]) {
+export function traverse(node: nodeLike, Words: string[], path: treeStep[]) {
     let word: string, match: RegExpMatchArray | null;
 
     if (!node.children || node.children.length === 0 || Words.length === 0) {

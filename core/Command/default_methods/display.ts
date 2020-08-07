@@ -13,7 +13,7 @@ import Command, { IIMessage } from "../Command";
 export default async function default_display(this: Command<any,any,any>, msg: IIMessage, response: any): Promise<any> {
     //console.log('default {Command_class}.display');
     const chatId = msg.chat.id;
-    console.log(JSON.stringify(response), null, 2);
+    console.log(JSON.stringify(response, null, 2));
 
     // console.log('this.bot:');
     //console.log(this.bot);

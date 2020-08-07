@@ -1,10 +1,10 @@
-import { nodeC } from "../../../Interpretation/matchTree/node";
-import { Command_match, Command_prepare, IIMessage } from "../../../core/Command/Command";
+import { nodeC } from "../../Interpretation/matchTree/node";
+import { Command_match, Command_prepare, IIMessage } from "../../core/Command/Command";
 
-import { turnQuestionsOnOff_testCases } from "../../../Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
-import { turnQuestionsOnOff_tree }      from "../../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
-import turnQuestionsOnOff_match         from "../../../Interpretation/Commands/turnQuestionsOnOff/match";
-import turnQuestionsOnOff_prepare       from "../../../Interpretation/Commands/turnQuestionsOnOff/prepare";
+import { turnQuestionsOnOff_testCases } from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
+import { turnQuestionsOnOff_tree }      from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
+import turnQuestionsOnOff_match         from "../../Interpretation/Commands/turnQuestionsOnOff/match";
+import turnQuestionsOnOff_prepare       from "../../Interpretation/Commands/turnQuestionsOnOff/prepare";
 
 
 

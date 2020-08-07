@@ -100,9 +100,9 @@ export class nodeC extends nodeLike {
 
 /**
  * 
- * @param pattern a {`RegExp`} the node is being checked for on the tree traverse.
- * @param children 
- * @param shoot 
+ * @param pattern on tree traverse, if an iterating word {`string`} matches this _pattern_, then `tranverse` function steps on this `node` and continues on checking its _children_
+ * @param children when on current `node`, its _children_ are checked for their _pattern_
+ * @param shoot sets _shoot_ property to a new `node`. A `node` which has this non-falsy property is _a shoot_. Only if tree traverse ends on a _shoot_, then the tree is considered to be traversed successfully, and the _shoot_ value is used as the result. _A shoot_ is not necessarily _a leaf_.
  */
 export function node(pattern: RegExp, children: nodeLike[], shoot?: any){
     return new nodeC(pattern, children, shoot || null);

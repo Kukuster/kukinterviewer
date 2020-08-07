@@ -5,6 +5,7 @@
         - turnQuestionsOnOff
         - getTags
         - turnTagsOnOff
+        - getQuestions (only additional questionsQuery Tags flags: 'any' and 'no')
 
 
 • Add data encryption for user data, specifically Questions text and tags

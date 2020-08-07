@@ -1,6 +1,6 @@
-export type turnQuestionsOfOff_testCase = 
+export type turnQuestionsOnOff_testCase = 
     { m: string,                                                res: { turn: 'on'|'off', questions: 'all'|number[] } | null };
-export const turnQuestionsOnOff_testCases: turnQuestionsOfOff_testCase[] = [
+export const turnQuestionsOnOff_testCases: turnQuestionsOnOff_testCase[] = [
     // [ turn -> all -> questions -> onoff ]
     { m: "Turn all questions off",                              res: { turn: 'off', questions: 'all' } },
 

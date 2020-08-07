@@ -9,7 +9,9 @@ export interface nodeLike {
     matchedBy(word: string): RegExpMatchArray | null;
 }
 
-
+/**
+ * A building block of a _matchTree_
+ */
 export class nodeLike {
 
     constructor(pattern: RegExp | null, children: nodeLike[], shoot?: any, special?: symbol){
@@ -33,7 +35,7 @@ export class nodeLike {
 export const SELF             = new nodeLike(null, [], null, Symbol('self'));
 
 /**
- * if a node has this as a child, this special `nodeLike` will be replaced by one's own parent's children.
+ * if a node has this as a child, this special `nodeLike` will be replaced by one's own parent's children in `nodeC` constructor.
  * So the node will have oneself and one's own siblings as children.
  */
 export const PARENTs_CHILDREN = new nodeLike(null, [], null, Symbol('parent`s children'));
@@ -41,7 +43,7 @@ export const PARENTs_CHILDREN = new nodeLike(null, [], null, Symbol('parent`s ch
 
 
 /**
- * 
+ * A main building block of a tree. A tree must have `nodeC` instance as a root node, and a processed tree should have only `nodeC` instances
  */
 export class nodeC extends nodeLike {
     pattern: RegExp;
@@ -55,14 +57,10 @@ export class nodeC extends nodeLike {
         this.children = children;
         this.shoot = shoot;
 
-
-        // console.log(this.pattern);
         /**
-         * parses each node only two levels down
+         * Processing tree definition. Parses each node only two levels down (up to grandchildren), checking for {`nodeLike`} `SELF` and `PARENTs_CHILDREN`.
          */
         for (let i=0; i<this.children.length; i++) {
-
-            // console.log('child #'+i, children[i].pattern || children[i].special);
 
             if (this.children[i] === SELF){
                 this.children[i] = this;
@@ -72,23 +70,14 @@ export class nodeC extends nodeLike {
                 continue;
 
             } else if (this.children[i] instanceof nodeC) {
-                let igrandchildren = (this.children[i]).children;
 
-                // igrandchildren.length && console.log('looping through children of child #'+i+':');
+                let igrandchildren = (this.children[i]).children;
                 
                 for (let j=0; j<igrandchildren.length; j++){
-
-                    // console.log('grandchild j=#'+j, igrandchildren[j].pattern || igrandchildren[j].special);
                     
                     if (igrandchildren[j] === PARENTs_CHILDREN){
-                        // if an i`th child`s child is not a node, but a string 'parent`s children',
-                        // it is replaced by one's children, including that i`th child,
-                        // meaning, the i`th child`s siblings (and itself) become the children of the i`th child
-
                         igrandchildren.splice(j, 1, ...this.children);
                         j += this.children.length - 1;
-
-                        // console.log('new j: ', j);
                     }
                     
                 }
@@ -97,7 +86,7 @@ export class nodeC extends nodeLike {
 
         } // for i (this.children)
 
-    }
+    } //constructor
 
 
     matchedBy(word: string): RegExpMatchArray | null {
@@ -105,49 +94,18 @@ export class nodeC extends nodeLike {
     }
 
 
-}
+} // nodeC
 
 
 
+/**
+ * 
+ * @param pattern a {`RegExp`} the node is being checked for on the tree traverse.
+ * @param children 
+ * @param shoot 
+ */
 export function node(pattern: RegExp, children: nodeLike[], shoot?: any){
     return new nodeC(pattern, children, shoot || null);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// // TEST replaceInArray
-
-// let parents_children: ({id: number}|string)[] = [{id: 1}, {id: 2}, {id:3}, {id:4}]
-// let children: ({id: number}|string)[] = [{id: 11},{id: 12},{id: 13},'parent`s children',{id: 14}, {id: 15}]
-
-// console.log('`children` before injection');
-// let chilen = children.length;
-// for (let i=0; i<chilen; i++){
-//     console.log(i, ': ', children[i]);
-// }
-
-// let new_index = replaceInArray(children,3,1,parents_children);
-
-// console.log();
-// console.log('`children` after injection');
-//     chilen = children.length;
-// for (let i = 0; i < chilen; i++) {
-//     console.log(i, ': ', children[i]);
-// }
-
-
-// console.log();
-// console.log('returned `new_index`: '+new_index);
-
-
 
 

@@ -3,8 +3,7 @@ import { decide } from "../../Interpretation/decide";
 import mongoose from "../../core/sheet/mongoose";
 import State from "../../core/State/State";
 import Command, { Command_match, IIMessage, Command_prepare, Command_execute, Command_display } from "../../core/Command/Command";
-import ChatModel, { Ichat } from "../../core/sheet/models/ChatModel";
-import * as fs from 'fs'
+import { Ichat } from "../../core/sheet/models/ChatModel";
 import sheet from "../../core/sheet/sheet";
 
 

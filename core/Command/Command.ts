@@ -1,3 +1,5 @@
+'use strict';
+
 import default_match   from "./default_methods/match";
 import default_prepare from "./default_methods/prepare";
 import default_execute from "./default_methods/execute";

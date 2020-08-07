@@ -1,4 +1,12 @@
 • Add data encryption for user data, specifically Questions text and tags
+
 • Add a "revert last action" command. For this, i'll have to save data about last executed command in the database, including contents of Questions and etc. to be able to restore it after edition or deletion.
+
 • Add support for attached stuff to be saved with Questions, if user wants a picture, a file or whatever to be attached with a question.
+
+• Add support for complex query logic.
+E.g.:
+- «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
+- «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
+For inspiration see mongoDB aggregation: $match, $and, $or operators.
 

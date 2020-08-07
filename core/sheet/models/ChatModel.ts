@@ -18,9 +18,9 @@ export interface Ichat extends Document {
     }];
     Settings?: {
         enabled: boolean,
-        timezone: number,
-        asking_period_mins: number,
-        asking_time_of_day: { from_hour: number, to_hour: number }
+        timezone?: number,
+        asking_period_mins?: number,
+        asking_time_of_day?: { from_hour: number, to_hour: number }
     };
     last_time_asked?: Date;
     running?: boolean;
@@ -43,11 +43,14 @@ const chatSchema = new Schema({
     Settings: { 
         type: {
             enabled: Boolean,
-            timezone: Number,
-            asking_period_mins: Number,
-            asking_time_of_day: {
-                from_hour: Number,
-                to_hour: Number
+            timezone: { type: Number, required: false },
+            asking_period_mins: { type: Number, required: false },
+            asking_time_of_day: { 
+                type: {
+                    from_hour: Number,
+                    to_hour: Number
+                },
+                    required: false
             }
         },
         required: false

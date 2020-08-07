@@ -1,6 +1,8 @@
 import Command, { IIMessage, Command_prepare, Command_match, Command_execute, Command_display } from "../../core/Command/Command"
 import { Message } from "node-telegram-bot-api";
 import mongoose from "../../core/sheet/mongoose";
+import { anyJSONvalue, anyJSONobject } from "../../core/anyJSONvalue.type";
+import { Document } from "mongoose";
 
 beforeAll(async () => {
     // console.log('executing beforeAll');
@@ -28,14 +30,14 @@ const chatDocumentId = '5eba8f27091ebc3f2033738e';
 
 
 const match: Command_match = async function (msg: IIMessage) {
-    console.log('findChats.match');
+    // console.log('findChats.match');
     return msg.text ?
                 msg.text.match(/\/findChats( *)(.*)/) :
                 null;
 }
 
 const prepare: Command_prepare<{ qids: number[] | undefined }> = async function (msg: IIMessage, match: RegExpMatchArray): Promise<{ qids: number[] | undefined }> {
-    console.log('findChats.prepare');
+    // console.log('findChats.prepare');
     let qids;
     if (Array.isArray(match) && match.length && match[2] && match[2].length) {
         qids = match[2].match(/(\d+)/g)?.map(e => parseInt(e));
@@ -44,8 +46,13 @@ const prepare: Command_prepare<{ qids: number[] | undefined }> = async function 
 
 }
 
-const execute: Command_execute<{ qids: number[] | undefined }> = async function (this: Command<{ qids: number[] | undefined }>, msg: IIMessage, args: { qids: number[] | undefined }) {
-    console.log('findChats.execute');
+const execute: Command_execute<
+    { qids: number[] | undefined }, 
+    { error?: any, result?: Document[] }
+> 
+= async function (msg: IIMessage, args: { qids: number[] | undefined }) {
+
+    // console.log('findChats.execute');
     const chatId = msg.chat.id;
     const qids = args.qids;
 
@@ -56,10 +63,10 @@ const execute: Command_execute<{ qids: number[] | undefined }> = async function 
             .then(chat => {
 
                 if (!chat) {
-                    console.log('failed to query Questions: Chat document is absent');
-                    reject(JSON.stringify({
-                        error: 'There is no such chat document'+chatId ? ': '+chatId+'.' : '.',
-                    }, null, 2));
+                    console.error('failed to query Questions: Chat document is absent');
+                    reject(new Error(JSON.stringify({
+                        error: 'There is no such chat document'+chatId ? (': '+chatId+'.') : '.',
+                    }, null, 2)));
                     return;
                 }
 
@@ -70,33 +77,35 @@ const execute: Command_execute<{ qids: number[] | undefined }> = async function 
                 //     result = result.filter((e: { qid: number; }) => qids.includes(e.qid));
                 // }
 
-                resolve(JSON.stringify({
+                resolve({
                     result: chat
-                }, null, 2));
+                });
 
             })
             .catch(error => {
-                resolve(JSON.stringify({
+                resolve({
                     error: error
-                }, null, 2));
+                });
             });
 
     });
     
-}
+} //const execute
 
-const display: Command_display = async function (msg: IIMessage, response: string) {
-    console.log('findChats.display');
 
-    const resp = JSON.parse(response);
+const display: Command_display<
+    { error?: any, result?: Document[] }
+>
+= async function (msg: IIMessage, response: { error?: any, result?: Document[] }) {
+    // console.log('findChats.display');
 
-    if (resp.error){
-        console.error(resp.error);
-    } else if (resp.result) {
-        return resp.result[0]._id;
+    if (response?.error){
+        console.error(response.error);
+    } else if (response.result) {
+        return response.result[0]?._id;
         // console.log(resp.result);
     } else {
-        console.log('got neither error nor result, which souldn\'t happaned!');
+        console.error('got neither error nor result, which souldn\'t happen!');
     }
 
     return null;
@@ -116,7 +125,7 @@ test('Command, custom command run', async (done) => {
         const args  = await findChats.prepare(telegram_msg_mock, match);
         const resp  = await findChats.execute(telegram_msg_mock, args);
         const _     = await findChats.display(telegram_msg_mock, resp);
-        expect(_).toBe(chatDocumentId)
+        expect(JSON.stringify(_)).toEqual(JSON.stringify(chatDocumentId))
         done();
     });
 })

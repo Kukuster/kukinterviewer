@@ -1,6 +1,6 @@
 'use strict';
-import ChatModel from "../models/ChatModel";
-import mongoose from "../mongoose";
+import ChatModel from "../../models/ChatModel";
+import mongoose from "../../mongoose";
 
 
 /**

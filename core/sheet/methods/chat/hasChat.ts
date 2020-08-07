@@ -1,5 +1,5 @@
 'use strict';
-import ChatModel from "../models/ChatModel";
+import ChatModel from "../../models/ChatModel";
 
 
 /**

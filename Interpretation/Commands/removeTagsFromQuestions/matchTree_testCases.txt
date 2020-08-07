@@ -1,0 +1,44 @@
+#kukinterviewer
+
+escape "\n" as "\\\n"
+
+[OK] remove -> # -> question -> dig
+✓ remove #tag1 from question 3  [ remove -> # -> question -> dig ]
+✓ erase #tag1 from questions 4, 5, 6 [ remove -> # -> questions -> dig ]
+
+[OK] remove -> # -> all -> questions
+✓ remove tag #tag1 from all questions [ remove -> tag -> # -> all -> questions ]
+
+[OK] untag -> questions -> dig
+✓ what about untagging questions 3, 4 & 5? [ untag -> questions -> dig ]
+[OK] remove -> all -> tags -> questions -> dig
+✓ remove all tags from questions 3, 4, 5 [ remove -> all -> tags -> questions -> dig ]
+[OK] untag -> all -> questions
+✓ untag all questions
+[OK] remove -> all -> tags -> all -> questions
+✓ remove all tags from all questions
+
+
+[OK] untag -> # -> all -> questions
+✓ untag #tag1 from all questions [ untag -> # -> all -> questions ]
+
+
+
+[ wrong_path ]
+✕ delete all the questions [ remove -> all -> questions ]
+✕ delete questions 3, 4 & 5 from tags #tag1 #tag2 [ remove -> questions -> dig -> tag -> # ]
+✕ remove from questions tag #tag1 #tag2 [ remove -> questions -> tag -> # ]
+
+[ ... -> ✕ ]
+✕ remove all tags [ remove -> all -> tags -> ✕ ]
+
+[ neg ]
+✕ don't remove all tags [ neg ]
+✕ remove #tag1 from no questions [ remove -> # -> neg ]
+
+[ forbidden ]
+✕ add #tag1 to questions [ frb ]
+✕ add tag to question 3 [ frb ]
+✕ remove add tag #web to question 3 [ remove -> frb ]
+
+

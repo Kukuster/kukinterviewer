@@ -1,0 +1,92 @@
+#kukinterviewer 
+
+[OK] list -> all
+✓ list all untagged questions [ list -> all -> untagged -> questions ]
+✓ list all not tagged questions [ list -> all -> no[t] -> tag -> questions ]
+✓ list all turned on questions [ list -> all -> turn -> onoff -> questions ]
+✓ list all disabled questions [ list -> all -> (en|dis)able -> questions ]
+✓ show me all disabled questions [ list -> all -> (en|dis)able -> questions ]
+✓ list all #web questions [ list -> all -> # -> question ]
+✓ list all not turned on questions [ list -> all -> no[t] -> turn -> on -> questions ]
+✓ list all not tagged questions [ list -> all -> no[t] -> tag -> questions ]
+✓ list all not enabled questions [ list -> all -> no[t] -> (en|dis)able -> questions ]
+
+[OK] list -> all -> questions
+✓ list all questions [ list -> all -> questions]
+✓ list all added question [ list -> all -> question ]
+✓ list all added questions [ list -> all -> questions ]
+✓ list all questions that are untagged [ list -> all -> questions -> untagged ]
+✓ could you please do me a favor and list all questions that have no tags? [ list -> all -> questions -> no[t] -> tags ]
+✓ list all questions with not a single tag [ list -> all -> questions -> no[t] -> tag ]
+✓ can I please get all questions that are turned on? [ get -> all -> questions -> turn -> onoff ]
+✓ please, list all questions that are tagged #web [ list -> all -> questions -> tag -> # ]
+✓ list all the questions without any tags [ list -> all -> questions -> without -> tags ]
+✓ would you mind listing all the questions for me? [ list -> all -> questions ]
+✓ list all the questions tagged #web [ list -> all -> questions -> tag -> # ]
+✓ list all the questions with #tag1 tag [ list -> all -> questions -> # -> tag ]
+✓ list all questions that are #web [ list -> all -> questions -> # ]
+
+[OK] list -> questions
+[tag, #, untagged, turn, (en|dis)able, no, without, don't, N, dig]
+✓ list question #3 [ -> N]
+✓ list questions 3, 4 & 5 [ -> dig]
+✓ list question 3, questions 4 and question 5 [ -> dig]
+✓ list questions tagged #web [ -> tag -> #]
+✓ list questions with #web tag [ -> # -> tag]
+✓ list questions that are about #web [ -> #]
+✓ list questions without tags [ -> without -> tag]
+✓ list questions that have no tags [ -> no -> tag]
+✓ list questions that don't have any tag [ -> don't -> tag]
+✓ list questions that are not disabled [ -> no -> (en|dis)able]
+✓ list questions that are untagged [ -> untagged]
+✓ list questions that are turned on [ -> turn -> onoff]
+✓ list questions which are enabled [ -> (en|dis)able ]
+✓ list those questions which haven't been turned off [ -> don't -> turn -> onoff]
+
+[OK] list -> [(en|dis)able, turn, #, tag, untagged, no, N, dig]
+✓ list disabled questions [ -> (en|dis)able -> questions]
+✓ list turned on questions [ -> turn -> onoff -> questions]
+✓ list untagged questions [ -> untagged -> questions]
+✓ list not tagged questions [ -> no[t] -> tag -> questions]
+✓ list not untagged questions [ -> no[t] -> untagged -> questions]
+✓ list not enabled questions [ -> no[t] -> (en|dis)able -> questions]
+✓ list not turned on questions [ -> no[t] -> turn -> onoff -> questions]
+✓ list 3rd & 4th questions [ -> dig -> questions]
+✓ list #3 and #4 questions [ -> N -> questions]
+✓ list tagged questions [ -> tag -> questions]
+✓ list tagged #web questions [ -> tag -> # -> questions]
+✓ list #web questions [ -> # -> questions]
+
+
+[ frb ]
+✕ add list all questions [ frb ]
+✕ insert list of questions [ frb ]
+
+[ ... -> frb ]
+✕ list delete question 3 [ list -> frb ]
+✕ list deleted question [ list -> frb ]
+✕ list remove question 3, 4 [ list -> frb ]
+✕ list all not deleted questions [ list -> all -> no[t] -> frb ]
+
+[ ... -> ✕ ]
+✕ list gnilist [ list -> ✕ ]
+✕ list question [ list -> question -> ✕ ]
+✕ list all questions without anything [ list -> all -> questions -> without -> ✕ ]
+
+[ neg ]
+✕ don't list me the following questions: 3, 4, 6 [ neg ]
+✕ never list me all the questions [ neg ]
+
+[ wrong_path ]
+✕ list turned off tags [ list -> turn -> onoff -> tag[s] ]
+✕ would you mind listing disabled tags questions [ list -> (en|dis)able -> tag[s] ]
+✕ show questioned tags [ list -> question -> tag[s] ]
+✕ list enabled tags [ list -> (en|dis)able -> tag[s] ]
+✕ questions tagged listed [ questions -> tag ]
+✕ list tag question [ list -> tag -> question ]
+
+
+
+
+(maybe) ✓ list all enabled #web questions [ list -> all -> (en|dis)able -> # -> question ]
+

@@ -37,82 +37,78 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 
     return queryChat(chatId, { "_id": false, "Questions": true }, (chat)=>{
 
-            const questionsFromDB = chat.Questions;
+        const chatQuestions = Array.isArray(chat.Questions) ? chat.Questions : [];
 
-            if (!Array.isArray(questionsFromDB)) {
-                return [];
-            };
-            
+        /* Depending on `query` type: */
+    
+        // if is array of numbers (qids)
+        if (Array.isArray(query) && query.length){
+            // console.log('is Array');
+            return chatQuestions.filter(q => 
+                query.includes(q.qid)
+            );
+        } 
 
-            /* Depending on `query` type: */
-        
-            // if is array of numbers (qids)
-            if (Array.isArray(query) && query.length){
-                // console.log('is Array');
-                return questionsFromDB.filter(q => 
-                    query.includes(q.qid)
+        // if is questionsQuery
+        else if (query && isProperQuestionsQuery(query)){
+            // console.log('is questionsQuery');
+            let filteringQuestions = chatQuestions;
+
+            // leave only those that match `enabled` field (if provided) and qids (if provided)
+            if (query.qids !== undefined || query.enabled !== undefined){
+                // console.log('filtering by qids and enabled');
+                filteringQuestions = filteringQuestions.filter(q =>
+                    ( query.qids === undefined    || query.qids!.includes(q.qid) )
+                    &&
+                    ( query.enabled === undefined || !!q.enabled === !!query.enabled )
                 );
-            } 
+            };
 
-            // if is questionsQuery
-            else if (query && isProperQuestionsQuery(query)){
-                // console.log('is questionsQuery');
-                let filteringQuestions = questionsFromDB;
-
-                // leave only those that match `enabled` field (if provided) and qids (if provided)
-                if (query.qids !== undefined || query.enabled !== undefined){
-                    // console.log('filtering by qids and enabled');
+            // leave only those that have any of provided Tags (if provided)
+            if (query.Tags !== undefined){
+                // console.log('filtering by Tags');
+                const validated_queryTags = query.Tags.filter(t => t!=='');
+                if (validated_queryTags.length > 0){
                     filteringQuestions = filteringQuestions.filter(q =>
-                        ( query.qids === undefined    || query.qids!.includes(q.qid) )
-                        &&
-                        ( query.enabled === undefined || !!q.enabled === !!query.enabled )
+                        validated_queryTags.some(t => q.Tags.includes(t))
                     );
                 };
- 
-                // leave only those that have any of provided Tags (if provided)
-                if (query.Tags !== undefined){
-                    // console.log('filtering by Tags');
-                    const validated_queryTags = query.Tags.filter(t => t!=='');
-                    if (validated_queryTags.length > 0){
-                        filteringQuestions = filteringQuestions.filter(q =>
-                            validated_queryTags.some(t => q.Tags.includes(t))
-                        );
-                    };
+            };
+
+            // leave only those that contain any of provided strings (if provided)
+            if (query.questionTextParts !== undefined) {
+                // console.log('filtering by questionTextParts');
+                let questionTextRegexps: RegExp[] = [];
+                query.questionTextParts.forEach(s => {
+                    if (s){
+                        questionTextRegexps.push(new RegExp(s, 'i'));
+                    }
+                });
+
+                if (questionTextRegexps.length > 0){
+                    filteringQuestions = filteringQuestions.filter(q =>
+                        questionTextRegexps.some(r => q.questionText.match(r))
+                    );
                 };
+            };
 
-                // leave only those that contain any of provided strings (if provided)
-                if (query.questionTextParts !== undefined) {
-                    // console.log('filtering by questionTextParts');
-                    let questionTextRegexps: RegExp[] = [];
-                    query.questionTextParts.forEach(s => {
-                        if (s){
-                            questionTextRegexps.push(new RegExp(s, 'i'));
-                        }
-                    });
-
-                    if (questionTextRegexps.length > 0){
-                        filteringQuestions = filteringQuestions.filter(q =>
-                            questionTextRegexps.some(r => q.questionText.match(r))
-                        );
-                    };
-                };
-
-                return filteringQuestions;
-                
-            } // if is questionsQuery
-
-            // if is 'all' or unset
-            else if (query === 'all' || !query){
-                // console.log('is \'all\'');
-                return questionsFromDB;
-            } 
+            return filteringQuestions;
             
-            else {
-                // console.log('is neither (else)');
-                return questionsFromDB;
-            };        
+        } // if is questionsQuery
 
-    });
+        // if is 'all' or unset
+        else if (query === 'all' || !query){
+            // console.log('is \'all\'');
+            return chatQuestions;
+        } 
+        
+        else {
+            // console.log('is neither (else)');
+            return chatQuestions;
+        };        
+
+        
+    }); // return queryChat
 
 
 }

@@ -2,14 +2,6 @@
 
 import {Document, Schema, model} from "mongoose";
 import { Iquestion, questionSchema } from "./QuestionModel";
-// import { Schema } from "mongoose";
-// const mong = mongoose.default;
-
-// const Schema = mong.Schema;
-// const Document = mong.Document;
-// const model = mong.model;
-
-
 
 
 
@@ -32,10 +24,14 @@ export interface Ichat extends Document {
     chatId: number;
     Questions?: Iquestion[];
     lastqid?: number;
-    Pending_to_delete?: [{
+    Tags?: {
+        str: string,
+        enabled: boolean
+    }[];
+    Pending_to_delete?: {
         msg_id: Schema.Types.ObjectId,
         delete_time: Date
-    }];
+    }[];
     Settings: {
         enabled: boolean,
         timezone?: number,
@@ -58,6 +54,12 @@ const chatSchema = new Schema({
         set: (v: number) => Math.round(v),
         required: false
     },
+    Tags: {
+        type: [{
+            str: String,
+            enabled: Boolean
+        }],
+        required: false },
     Pending_to_delete: { 
         type: [{
             msg_id: Schema.Types.ObjectId, 

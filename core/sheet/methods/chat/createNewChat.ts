@@ -16,6 +16,7 @@ export default async function createNewChat(chatId: number){
         chatId: chatId,
         Questions: [],
         lastqid: 0,
+        Tags: [],
         Pending_to_delete: [],
         Settings: {
             enabled: false,

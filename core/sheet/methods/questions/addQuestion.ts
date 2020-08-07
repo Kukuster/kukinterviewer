@@ -2,6 +2,7 @@
 import QuestionModel from "../../models/QuestionModel";
 import mongoose from "../../mongoose";
 import queryChat from "../functions/queryChat";
+import { validateTags } from "../functions/hashtag";
 
 /**
  * 
@@ -15,7 +16,12 @@ export default async function addQuestion(chatId: number, question: { questionTe
 
     const DBconnection = await mongoose.dbPromise;
 
-    return queryChat(chatId, {}, (chat, save)=>{
+    return queryChat(chatId, {"Questions": true, "lastqid": true, "Tags": true}, (chat, save)=>{
+
+        const chatQuestions = Array.isArray(chat.Questions)? chat.Questions: [];
+        const chatTags      = Array.isArray(chat.Tags)     ? chat.Tags     : [];
+        const questionTags  = Array.isArray(question.Tags) ? validateTags(question.Tags) : [];
+
 
         chat.lastqid = chat.lastqid ? chat.lastqid+1 : 1;
 
@@ -24,8 +30,8 @@ export default async function addQuestion(chatId: number, question: { questionTe
             qid: chat.lastqid,
             questionText: question.questionText,
             Tags: 
-                Array.isArray(question.Tags) && question.Tags.length ? 
-                    question.Tags :
+                questionTags.length ? 
+                    questionTags :
                     [],
             enabled:
                 question.enabled === undefined ?
@@ -33,12 +39,25 @@ export default async function addQuestion(chatId: number, question: { questionTe
                     !!question.enabled
         });
 
+        chatQuestions.push(newQuestion);
 
-        if (!Array.isArray(chat.Questions)) {
-            chat.Questions = [];
+
+        // if there are new, add tags to the Tags list
+        if (questionTags.length){
+            for (let i = 0; i < questionTags.length; i++){
+                if (!chatTags.some(t => t.str === questionTags[i]) ){
+                // if a new question's tag is absent in the Tags list
+                    // add a new Tag
+                    chatTags.push({
+                        str: questionTags[i],
+                        enabled: true
+                    });
+                };
+            };
         };
 
-        chat.Questions.push(newQuestion);
+        chat.Questions = chatQuestions;
+        chat.Tags      = chatTags;
 
         save();
 

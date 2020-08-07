@@ -1,6 +1,5 @@
 'use strict';
-import ChatModel from "../../models/ChatModel";
-import mongoose from "../../mongoose";
+import queryChat from "../functions/queryChat";
 
 /**
  * 
@@ -12,70 +11,41 @@ import mongoose from "../../mongoose";
  */
 export default async function deleteQuestions(chatId: number, questions: number[] | number | 'all') {
 
-    const DBconnection = await mongoose.dbPromise;
-    
-    return new Promise((resolve,reject)=>{
-        ChatModel.findOne({ chatId: chatId })
-        .select( { "_id": true, "Questions": true } )
-        .exec()
-        .then(chat => {
 
-            if (!chat) {
-                const error = new Error('tried to query Questions from the chat with chatId=' + chatId + ', which doesn\'t exist');
-                console.error(error);
-                reject(error);
-                return;
-            };
+    return queryChat(chatId, { "_id": true, "Questions": true }, (chat, save)=>{
+
+        let deletedQuestions = [];
 
 
-            let deletedQuestions = [];
+        if (!Array.isArray(chat.Questions)) {
+            chat.Questions = [];
 
+        } else {
 
-            if (!Array.isArray(chat.Questions)){
-                chat.Questions = [];
+            const last = chat.Questions.length - 1;
 
-            } else {
-
-                const last = chat.Questions.length - 1;
-
-                if (typeof questions === 'number'){
-                    questions = [questions];
-                }
-                if (Array.isArray(questions)){
-                    // a way to Array.prototype.filter(), except this rewrites existing array instead of returning new
-                    for (var i = last; i >= 0; --i) {
-                        if (questions.includes(chat.Questions[i].qid)) {
-                            deletedQuestions.push(chat.Questions[i]);
-                            chat.Questions.splice(i, 1);
-                        }
+            if (typeof questions === 'number') {
+                questions = [questions];
+            }
+            if (Array.isArray(questions)) {
+                // a way to Array.prototype.filter(), except this rewrites existing array instead of returning new
+                for (var i = last; i >= 0; --i) {
+                    if (questions.includes(chat.Questions[i].qid)) {
+                        deletedQuestions.push(chat.Questions[i]);
+                        chat.Questions.splice(i, 1);
                     }
                 }
-                if (questions === 'all'){
-                    deletedQuestions = chat.Questions;
-                    chat.Questions = [];
-                }
+            }
+            if (questions === 'all') {
+                deletedQuestions = chat.Questions;
+                chat.Questions = [];
+            }
 
-            };
+        };
 
-
-            chat.save()
-                .then(chat => {
-                    resolve(chat);
-                })
-                .catch(error => {
-                    console.error('Error while trying to save chat doc!', 'chatId = '+chatId);
-                    reject(error);
-                });
-
-
-        })
-        .catch(error => {
-            console.error('Error while trying to query chat doc! ', 'chatId = '+chatId);
-            reject(error);
-        })
-    
-    }); //return Promise
-    
+        save();
+        return chat;
+    });
 
 
 }

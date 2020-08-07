@@ -1,5 +1,5 @@
-import ChatModel, { Ichat, settingsSet, settingsKey, Settings } from "../../models/ChatModel";
-import mongoose from "../../mongoose";
+import { Ichat, settingsSet, settingsKey, Settings } from "../../models/ChatModel";
+import queryChat from "../functions/queryChat";
 
 /**
  *
@@ -36,45 +36,20 @@ export default async function setSettings<T extends settingsKey>(chatId: number,
     : Promise<Ichat>
 {
 
-    const DBconnection = await mongoose.dbPromise;
+    return queryChat(chatId, { "Settings": true }, (chat, save)=>{
 
-    return new Promise((resolve, reject) => {
-        ChatModel.findOne({ chatId: chatId })
-        .select({ "Settings": true })
-        .exec()
-        .then(chat => {
+        if (typeof settings === 'object') {
+            chat.Settings = Object.assign(chat.Settings, settings);
+        } else {
+            chat.Settings[settings] = value;
+        };
 
-            if (!chat) {
-                const error = new Error('tried to query Questions from the chat with chatId=' + chatId + ', which doesn\'t exist');
-                console.error(error);
-                reject(error);
-                return;
-            };
+        chat.markModified('Settings');
 
-            if (typeof settings === 'object'){
-                chat.Settings = Object.assign(chat.Settings, settings);
-            } else {
-                chat.Settings[settings] = value;
-            };
+        save();
+        return chat;
 
-            chat.markModified('Settings');
-
-            chat.save()
-            .then(chat => {
-                resolve(chat);
-            })
-            .catch(error => {
-                console.error('sheet.setSettings: Error while trying to save chat doc! ', 'chatId = ' + chatId);
-                reject(error);
-            });
-
-        })
-        .catch(error => {
-            console.error('Error while trying to query chat doc! ', 'chatId = ' + chatId);
-            reject(error);
-        })
-    
-    }); // return new Promise
+    });
     
 
 }

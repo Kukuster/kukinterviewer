@@ -1,6 +1,7 @@
 'use strict';
-import ChatModel from "../../models/ChatModel";
 import { Iquestion } from "../../models/QuestionModel";
+//import queryReadChat from "../functions/queryReadChat";
+import queryChat from "../functions/queryChat";
 
 
 export type questionsQuery = {
@@ -30,28 +31,16 @@ function isProperQuestionsQuery(query: number[] | 'all' | questionsQuery): query
  * @returns array of question documents that matched the request. Empty array if no questions matched
  * 
  */
-export default async function getQuestions(chatId: number, query?: number[] | 'all' | questionsQuery):
-Promise<Iquestion[]>
+export default async function getQuestions(chatId: number, query?: number[] | 'all' | questionsQuery)
+    : Promise<Iquestion[]>
 {
 
-    return new Promise((resolve, reject) => {
-        ChatModel.findOne({ chatId: chatId })
-        .select({ "_id": false, "Questions": true })
-        .exec()
-        .then(chat => {
-
-            if (!chat) {
-                const error = new Error('tried to query Questions from the chat with chatId=' + chatId + ', which doesn\'t exist');
-                console.error(error);
-                reject(error);
-                return;
-            };
+    return queryChat(chatId, { "_id": false, "Questions": true }, (chat)=>{
 
             const questionsFromDB = chat.Questions;
 
             if (!Array.isArray(questionsFromDB)) {
-                resolve([]);
-                return;
+                return [];
             };
             
 
@@ -60,9 +49,9 @@ Promise<Iquestion[]>
             // if is array of numbers (qids)
             if (Array.isArray(query) && query.length){
                 // console.log('is Array');
-                resolve(questionsFromDB.filter(q => 
+                return questionsFromDB.filter(q => 
                     query.includes(q.qid)
-                ));
+                );
             } 
 
             // if is questionsQuery
@@ -108,26 +97,22 @@ Promise<Iquestion[]>
                     };
                 };
 
-                resolve(filteringQuestions);
+                return filteringQuestions;
                 
             } // if is questionsQuery
 
             // if is 'all' or unset
             else if (query === 'all' || !query){
                 // console.log('is \'all\'');
-                resolve(questionsFromDB);
+                return questionsFromDB;
             } 
             
             else {
                 // console.log('is neither (else)');
-                resolve(questionsFromDB);
-            };
-            
+                return questionsFromDB;
+            };        
 
-        })
-        .catch(error => {
-            console.error(error);
-        });
     });
+
 
 }

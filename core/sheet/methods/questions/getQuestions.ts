@@ -51,12 +51,11 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 
         // if is questionsQuery
         else if (query && isProperQuestionsQuery(query)){
-            // console.log('is questionsQuery');
+
             let filteringQuestions = chatQuestions;
 
             // leave only those that match `enabled` field (if provided) and qids (if provided)
             if (query.qids !== undefined || query.enabled !== undefined){
-                // console.log('filtering by qids and enabled');
                 filteringQuestions = filteringQuestions.filter(q =>
                     ( query.qids === undefined    || query.qids!.includes(q.qid) )
                     &&
@@ -66,7 +65,6 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 
             // leave only those that have any of provided Tags (if provided)
             if (query.Tags !== undefined){
-                // console.log('filtering by Tags');
                 const validated_queryTags = query.Tags.filter(t => t!=='');
                 if (validated_queryTags.length > 0){
                     filteringQuestions = filteringQuestions.filter(q =>
@@ -76,8 +74,7 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
             };
 
             // leave only those that contain any of provided strings (if provided)
-            if (query.questionTextParts !== undefined) {
-                // console.log('filtering by questionTextParts');
+            if (query.questionTextParts !== undefined) {                
                 let questionTextRegexps: RegExp[] = [];
                 query.questionTextParts.forEach(s => {
                     if (s){
@@ -98,12 +95,10 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
 
         // if is 'all' or unset
         else if (query === 'all' || !query){
-            // console.log('is \'all\'');
             return chatQuestions;
         } 
         
         else {
-            // console.log('is neither (else)');
             return chatQuestions;
         };        
 

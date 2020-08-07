@@ -4,6 +4,7 @@ import {Document, Schema, model} from "mongoose";
 
 
 export interface Iquestion extends Document {
+    _id: Schema.Types.ObjectId,
     qid: number;
     questionText: string,
     enabled: boolean,
@@ -11,10 +12,17 @@ export interface Iquestion extends Document {
 }
 
 
-const questionSchema = new Schema({
-    qid:            { type: Number,  required: true, unique: true },
+export const questionSchema = new Schema({
+    _id: Schema.Types.ObjectId,
+    qid: {
+        type: Number, 
+        required: true,
+        unique: true, 
+        get: (v: number) => Math.round(v),
+        set: (v: number) => Math.round(v),
+    },
     questionText:   { type: String,  required: true},
-    enabled:        { type: Boolean, required: true },
+    enabled:        { type: Boolean, required: true},
     Tags:           { type: [String],required: true}
 })
 

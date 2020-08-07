@@ -1,0 +1,59 @@
+#kukinterviewer 
+
+[OK] list -> all
+✓ list all turned on tags [ list -> all -> turn -> onoff -> tags ]
+✓ list all disabled tags [ list -> all -> (en|dis)able -> tags ]
+✓ show me all disabled tags [ list -> all -> (en|dis)able -> tags ]
+✓ list all not turned on tags [ list -> all -> no[t] -> turn -> on -> tags ]
+✓ list all not enabled tags [ list -> all -> no[t] -> (en|dis)able -> tags ]
+
+[OK] list -> all -> tags
+✓ list all tags [ list -> all -> tags ]
+✓ list all added tag [ list -> all -> tag ]
+✓ list all added tags [ list -> all -> tags ]
+✓ can I please get all tags that are turned on? [ get -> all -> tags -> turn -> onoff ]
+✓ would you mind listing all the tags for me? [ list -> all -> tags ]
+
+[OK] list -> tag
+[#, untagged, turn, (en|dis)able, no, without, don't, N, dig]
+
+✓ list tags which are enabled [ -> (en|dis)able ]
+✓ list tags that are not disabled [ -> no -> (en|dis)able]
+✓ list tags that are turned on [ -> turn -> onoff]
+✓ list those tags which haven't been turned off [ -> don't -> turn -> onoff]
+
+[OK] list -> [(en|dis)able, turn, #, tag, untagged, no, N, dig]
+✓ list disabled tags [ -> (en|dis)able -> tags]
+✓ list turned on tags [ -> turn -> onoff -> tags]
+✓ list not enabled tags [ -> no[t] -> (en|dis)able -> tags]
+✓ list not turned on tags [ -> no[t] -> turn -> onoff -> tags]
+
+
+[ frb ]
+✕ add list all tags [ frb ]
+✕ insert list of tags [ frb ]
+✕ questions tagged listed [ frb ]
+
+[ ... -> frb ]
+✕ list delete tags 3 [ list -> frb ]
+✕ list deleted tag [ list -> frb ]
+✕ show questioned tags [ list -> frb ]
+✕ list tag question [ list -> tag -> frb ]
+✕ list all not deleted tags [ list -> all -> no[t] -> frb ]
+✕ list turned off remove tags [ list -> turn -> onoff -> frb ]
+✕ list turned off questions [ list -> turn -> onoff -> frb ]
+✕ would you mind listing disabled questions [ list -> (en|dis)able -> frb ]
+✕ list enabled questions [ list -> (en|dis)able -> frb ]
+
+[ ... -> ✕ ]
+✕ list gnilist [ list -> ✕ ]
+✕ list tag [ list -> tag -> ✕ ]
+✕ list all tags without anything [ list -> all -> tags -> without -> ✕ ]
+
+[ neg ]
+✕ don't list me the tags [ neg ]
+✕ never list me all the tags [ neg ]
+
+[ wrong_path ]
+
+

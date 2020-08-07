@@ -1,7 +1,7 @@
 'use strict';
-import ChatModel from "../../models/ChatModel";
 import QuestionModel from "../../models/QuestionModel";
 import mongoose from "../../mongoose";
+import queryChat from "../functions/queryChat";
 
 /**
  * 
@@ -15,61 +15,35 @@ export default async function addQuestion(chatId: number, question: { questionTe
 
     const DBconnection = await mongoose.dbPromise;
 
-    return new Promise((resolve, reject)=>{
-        ChatModel.findOne({ chatId: chatId })
-        .select({ "_id": true, "Questions": true, "lastqid": true })
-        .exec()
-        .then(chat => {
+    return queryChat(chatId, {}, (chat, save)=>{
 
-            if (!chat){
-                const error = new Error('tried to query Questions from the chat with chatId='+chatId+', which doesn\'t exist');
-                console.error(error);
-                reject(error);
-                return;
-            };
+        chat.lastqid = chat.lastqid ? chat.lastqid+1 : 1;
 
-            
-            chat.lastqid = chat.lastqid ? chat.lastqid+1 : 1;
-
-            const newQuestion = new QuestionModel({
-                _id: new DBconnection.Types.ObjectId(),
-                qid: chat.lastqid,
-                questionText: question.questionText,
-                Tags: 
-                    Array.isArray(question.Tags) && question.Tags.length ? 
-                        question.Tags :
-                        [],
-                enabled:
-                    question.enabled === undefined ?
-                        true :
-                        !!question.enabled
-            });
-
-
-            if (!Array.isArray(chat.Questions)) {
-                chat.Questions = [];
-            };
-
-            chat.Questions.push(newQuestion);
-
-
-            chat.save()
-            .then(chat => {
-                resolve(chat);
-            })
-            .catch(error => {
-                console.error('Error while trying to save chat doc! ', 'chatId = '+chatId);
-                reject(error);
-            });
-
-        })
-        .catch(error => {
-            console.error('Error while trying to query chat doc! ', 'chatId = '+chatId);
-            reject(error);
+        const newQuestion = new QuestionModel({
+            _id: new DBconnection.Types.ObjectId(),
+            qid: chat.lastqid,
+            questionText: question.questionText,
+            Tags: 
+                Array.isArray(question.Tags) && question.Tags.length ? 
+                    question.Tags :
+                    [],
+            enabled:
+                question.enabled === undefined ?
+                    true :
+                    !!question.enabled
         });
-        
-    }); //return Promise
 
+
+        if (!Array.isArray(chat.Questions)) {
+            chat.Questions = [];
+        };
+
+        chat.Questions.push(newQuestion);
+
+        save();
+
+        return chat;
+    });
 
 }
 

@@ -1,5 +1,6 @@
-import mongoose from "../../mongoose";
-import ChatModel, { Ichat, settingsKey, Settings } from "../../models/ChatModel";
+import { settingsKey, Settings } from "../../models/ChatModel";
+//import queryReadChat from "../functions/queryReadChat";
+import queryChat from "../functions/queryChat";
 
 
 
@@ -35,9 +36,6 @@ export default async function getSettings(chatId: number, setting?: settingsKey 
     : Promise<Settings | Settings[settingsKey]>
 {
 
-    const DBconnection = await mongoose.dbPromise;
-
-
     const selectArg: { [key: string]: boolean } = {}
     if (setting){
         selectArg["Settings" + "." + setting] = true
@@ -45,29 +43,16 @@ export default async function getSettings(chatId: number, setting?: settingsKey 
         selectArg["Settings"] = true
     }
 
-    return new Promise((resolve, reject)=>{
-        ChatModel.findOne({ chatId: chatId })
-        .select(selectArg)
-        .exec()
-        .then(chat => {
 
-            if (!chat) {
-                const error = new Error('tried to query Questions from the chat with chatId=' + chatId + ', which doesn\'t exist');
-                console.error(error);
-                reject(error);
-                return;
-            };
+    return queryChat(chatId, selectArg, (chat)=>{
 
-            if (setting){
-                resolve(chat.Settings[setting]);
-            } else {
-                resolve(chat.Settings);
-            };
+        if (setting) {
+            return chat.Settings[setting];
+        } else {
+            return chat.Settings;
+        };
 
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    }); //return new Promise
+    });
+
 
 }

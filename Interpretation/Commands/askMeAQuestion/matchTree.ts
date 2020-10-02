@@ -32,6 +32,7 @@ const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
 
 
 const frb = /^(erase|remove|turn|delete|eliminate|destroy|drop|wipe|withdraw|enable|disable|dismiss|add(ing)?|new|creat(e|ing)|insert(ing)?|submit(ing)?|includ(e|ing))[\?\!\.,;:]*$/i;
+const tagWord = /^(hash)?tag(ged|ging)?[\?\!\.,;:]*$/i;
 
 const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
 
@@ -200,6 +201,8 @@ node(root, [
         node(neg, []),
         node(frb, []),
     ]),
+
+    node(tagWord, []),
 
     node(frb, [])
 

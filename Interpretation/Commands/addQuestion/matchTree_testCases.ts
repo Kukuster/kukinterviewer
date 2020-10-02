@@ -56,10 +56,10 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
     { m: "could you please add a question: «do you know C#?» ",                            res: { 
         questionText: "do you know C#?"
      } },
-    { m: "hey! Can you add the following question, please: «do you know .NET?» ",          res: { 
+    { m: "Can you add the following question, please: «do you know .NET?» ",               res: { 
         questionText: "do you know .NET?"
      } },
-    { m: "hey! Can you add the following question, please: «#dotNET\n do you know .NET?» ", res: { 
+    { m: "Can you add the following question, please: «#dotNET\n do you know .NET?» ",     res: { 
         questionText: "#dotNET\n do you know .NET?",
         Tags: ['dotNET']
      } },
@@ -69,7 +69,7 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
     } },
 
      // question -> add -> \n -> «* -> *text* -> *»
-    { m: "hi! Here's question I want you to add:\n«do you know data structures?» ",        res: { 
+    { m: "Here's question I want you to add:\n«do you know data structures?» ",            res: { 
         questionText: "do you know data structures?"
      } },
     

@@ -20,7 +20,7 @@ export const turnQuestionsOnOff_testCases: turnQuestionsOnOff_testCase[] = [
     { m: "tuRn questions 2, 3 and 5 on",                        res: { turn: 'on',  questions: [2, 3, 5] } },
     { m: "Turn questions 2 3 and 6 on",                         res: { turn: 'on',  questions: [2, 3, 6] } },
     { m: "please Turn questions 2 question4 and #5 on",         res: { turn: 'on',  questions: [2, 4, 5] } },
-    { m: "hey, how about Turning questions 2 & 7 off?",         res: { turn: 'off', questions: [2, 7] } },
+    { m: "how about Turning questions 2 & 7 off?",              res: { turn: 'off', questions: [2, 7] } },
 
     // [ turn -> questions -> dig -> N -> onoff ]
     { m: "Turn questions 2 question4 and #6 on",                res: { turn: 'on',  questions: [2, 4, 6] } },
@@ -34,7 +34,7 @@ export const turnQuestionsOnOff_testCases: turnQuestionsOnOff_testCase[] = [
 
 
     // [ (en|dis)able -> questions -> dig ]
-    { m: "hey, maybe disable questions 4 & 5?",                 res: { turn: 'off', questions: [4, 5] } },
+    { m: "maybe disable questions 4 & 5?",                      res: { turn: 'off', questions: [4, 5] } },
     { m: "Enable questions 2 question3 and #8",                 res: { turn: 'on',  questions: [2, 3, 8] } },
     // [ (en|dis)able -> dig -> questions ]
     { m: "enable 4nd, 6rd and all the questions",               res: { turn: 'on',  questions: [4, 6] } },

@@ -7,27 +7,31 @@ import { turnQuestionsOnOff_testCases } from "../../Interpretation/Commands/turn
 import { turnQuestionsOnOff_tree }      from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
 import turnQuestionsOnOff_match         from "../../Interpretation/Commands/turnQuestionsOnOff/match";
 import turnQuestionsOnOff_prepare       from "../../Interpretation/Commands/turnQuestionsOnOff/prepare";
+
 import { start_testCases } from "../../Interpretation/Commands/start/matchTree_testCases";
 import { start_tree } from "../../Interpretation/Commands/start/matchTree";
 import start_match from "../../Interpretation/Commands/start/match";
 import start_prepare from "../../Interpretation/Commands/start/prepare";
+
 import { addQuestion_testCases } from "../../Interpretation/Commands/addQuestion/matchTree_testCases";
 import { addQuestion_tree } from "../../Interpretation/Commands/addQuestion/matchTree";
 import addQuestion_match from "../../Interpretation/Commands/addQuestion/match";
 import addQuestion_prepare from "../../Interpretation/Commands/addQuestion/prepare";
+
 import { addTagsToQuestions_testCases } from "../../Interpretation/Commands/addTagsToQuestions/matchTree_testCases";
 import { addTagsToQuestions_tree } from "../../Interpretation/Commands/addTagsToQuestions/matchTree";
 import addTagsToQuestions_match from "../../Interpretation/Commands/addTagsToQuestions/match";
 import addTagsToQuestions_prepare from "../../Interpretation/Commands/addTagsToQuestions/prepare";
+
 import { askMeAQuestion_testCases } from "../../Interpretation/Commands/askMeAQuestion/matchTree_testCases";
 import { askMeAQuestion_tree } from "../../Interpretation/Commands/askMeAQuestion/matchTree";
 import askMeAQuestion_match from "../../Interpretation/Commands/askMeAQuestion/match";
 import askMeAQuestion_prepare from "../../Interpretation/Commands/askMeAQuestion/prepare";
+
 import { deleteQuestions_testCases } from "../../Interpretation/Commands/deleteQuestions/matchTree_testCases";
 import { deleteQuestions_tree } from "../../Interpretation/Commands/deleteQuestions/matchTree";
 import deleteQuestions_match from "../../Interpretation/Commands/deleteQuestions/match";
 import deleteQuestions_prepare from "../../Interpretation/Commands/deleteQuestions/prepare";
-
 
 
 
@@ -44,42 +48,42 @@ import deleteQuestions_prepare from "../../Interpretation/Commands/deleteQuestio
 const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfunc: Command_match<any>, prepfunc: Command_prepare<any,any> }} = {
     
     start: {
-        testCases: start_testCases,
+        testCases: start_testCases.filter(tc => tc.res !== null),
         tree: start_tree,
         matchfunc: start_match,
         prepfunc: start_prepare
     },
 
     turnQuestionsOnOff: {
-        testCases: turnQuestionsOnOff_testCases,
+        testCases: turnQuestionsOnOff_testCases.filter(tc => tc.res !== null),
         tree: turnQuestionsOnOff_tree,
         matchfunc: turnQuestionsOnOff_match,
         prepfunc: turnQuestionsOnOff_prepare
     },
 
     addQuestion: {
-        testCases: addQuestion_testCases,
+        testCases: addQuestion_testCases.filter(tc => tc.res !== null),
         tree: addQuestion_tree,
         matchfunc: addQuestion_match,
         prepfunc: addQuestion_prepare
     },
 
     addTagsToQuestions: {
-        testCases: addTagsToQuestions_testCases,
+        testCases: addTagsToQuestions_testCases.filter(tc => tc.res !== null),
         tree: addTagsToQuestions_tree,
         matchfunc: addTagsToQuestions_match,
         prepfunc: addTagsToQuestions_prepare
     },
 
     askMeAQuestion: {
-        testCases: askMeAQuestion_testCases,
+        testCases: askMeAQuestion_testCases.filter(tc => tc.res !== null),
         tree: askMeAQuestion_tree,
         matchfunc: askMeAQuestion_match,
         prepfunc: askMeAQuestion_prepare
     },
 
     deleteQuestions: {
-        testCases: deleteQuestions_testCases,
+        testCases: deleteQuestions_testCases.filter(tc => tc.res !== null),
         tree: deleteQuestions_tree,
         matchfunc: deleteQuestions_match,
         prepfunc: deleteQuestions_prepare
@@ -111,7 +115,7 @@ const mock_telegram_message = (messageText: string): IIMessage => ({
 
 async function match_prepare<PrepArgs, ExecArgs>(msg: IIMessage, matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs, ExecArgs>) {
     const path = await matchfunc(msg);
-   return path ? await prepfunc (msg, path) : null;
+    return path ? await prepfunc(msg, path) : null;
 }
 
 
@@ -135,13 +139,18 @@ export async function traverseAllTestCases<PrepArgs, ExecArgs>(tree: nodeC, test
 ////////////////////////////////////////////////////////
 
 
-const Cs_got_res: { [key: string]: any[] } = {
+const Cs_got_res: { [key: string]: { [key: string]: any[] } } = {
 
 };
 
 beforeAll(async () => {
     for (const c in Cs) {
-        Cs_got_res[c] = await traverseAllTestCases(Cs[c].tree, Cs[c].testCases, Cs[c].matchfunc, Cs[c].prepfunc);
+        Cs_got_res[c] = {};
+        for (const against_c in Cs){
+            if (against_c === c)
+                continue;
+            Cs_got_res[c][against_c] = await traverseAllTestCases(Cs[c].tree, Cs[against_c].testCases, Cs[c].matchfunc, Cs[c].prepfunc);
+        };
     };
 });
 
@@ -157,19 +166,23 @@ beforeAll(async () => {
 
 
 for (const c in Cs) {
-        
-    const casesLen = Cs[c].testCases.length;
+    for (const against_c in Cs){
+        if (against_c === c)
+            continue;
 
-    for (let i = 0; i < casesLen; i++){
-        test(c+'.matchTree message #'+(i+1)+': "' + Cs[c].testCases[i].m + '": ', () => {
-            expect(
-                JSON.stringify(Cs_got_res[c][i])
-            ).toEqual(
-                JSON.stringify(Cs[c].testCases[i].res)
-            );
-        });
+        const casesLen = Cs[against_c].testCases.length;
 
-    }
+        for (let i = 0; i < casesLen; i++) {
+            test(c + '.matchTree against ' + against_c + ' message #' + (i + 1) + ': "' + Cs[against_c].testCases[i].m + '": ', () => {
+                expect(
+                    Cs_got_res[c][against_c][i]
+                ).toEqual(
+                    null
+                );
+            });
+        };
+
+    };
 
 };
 

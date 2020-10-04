@@ -2,14 +2,68 @@ import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
 import { uniquifyArray } from "../../../core/misc";
+import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
 
 
-export default async function removeTagsFromQuestions_prepare (msg: IIMessage, path: treeStep[]): Promise<{  }> {
-
+export default async function removeTagsFromQuestions_prepare (msg: IIMessage, path: treeStep[])
+    : Promise<{ qids: number[] | 'all', Tags: string[] | 'all' }>
+{
 
     const theShoot: shoot = path[path.length - 1].shoot;
 
-    return {};
+    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
+
+
+
+    let Tags: string[] = [];
+
+
+    if (theShoot.questions === 'all') {
+
+        if (theShoot.Tags === 'all'){
+            return { qids: 'all', Tags: 'all' };
+        } else {
+
+            for (let i = 1; i < path.length; i++) {
+                const parsedTags = parseTags(path[i].word);
+                if (parsedTags) {
+                    Tags = Tags.concat(parsedTags);
+                };
+            };
+
+            return { qids: 'all', Tags: Tags };
+
+        }
+
+    } else {
+
+        let stringDigits: string[] = [];
+
+        for (let i = 1; i < path.length; i++) {
+            const parsedTags = parseTags(path[i].word);
+            if (parsedTags && parsedTags.length) {
+                Tags = Tags.concat(parsedTags);
+            } else {
+                const parsedDigits = path[i].word.match(digit);
+                // console.log('parsedDigits[' + i + ']: ', parsedDigits);
+                if (parsedDigits) {
+                    stringDigits = stringDigits.concat(parsedDigits);
+                };
+            };
+        };
+
+        // console.log('stringDigits', stringDigits);
+
+        let qids: number[] = [];
+        stringDigits.forEach(sD => {
+            const int = parseInt(sD);
+            int ? qids.push(int) : '';
+        });
+
+
+        return theShoot.Tags === 'all' ? { qids: qids, Tags: 'all' } : { qids: qids, Tags: Tags };
+
+    };
     
 
 }

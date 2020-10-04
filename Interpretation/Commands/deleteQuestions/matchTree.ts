@@ -1,5 +1,5 @@
 import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
-import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
+import { questionsQueryShoot } from "../../matchTree/extras/questionsQueryShoot.type";
 
 
 // any punctuation mark at the end: 
@@ -31,22 +31,20 @@ const disable = /^disabl(e|ing|ed)[\?\!\.,;:]*$/i;
 //const add = /^(add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed))[\?\!\.,;:]*$/i;
 
 
-const frb = /^(search|turn(in('|g)?)?|withdraw(in('|g)?)?|enabl(e|in('|g)?)|disabl(e|in('|g)?)|dismiss(in('|g)?)?|add(in('|g)?)?|new|creat(e|in('|g)?)|insert(in('|g)?)?|submit(in('|g)?)?|includ(e|in('|g)?)|ask(ed|in('|g)?)?)[\?\!\.,;:]*$/i;
+const frb = /^(from|search|turn(in('|g)?)?|withdraw(in('|g)?)?|enabl(e|in('|g)?)|disabl(e|in('|g)?)|dismiss(in('|g)?)?|add(in('|g)?)?|new|creat(e|in('|g)?)|insert(in('|g)?)?|submit(in('|g)?)?|includ(e|in('|g)?)|ask(ed|in('|g)?)?)[\?\!\.,;:]*$/i;
 
 const neg  = /^(not?|without|don'?t|haven'?t|hadn'?t|weren'?t|aren'?t|ain'?t)[\?\!\.,;:]*$/i;
 const dont = /^(don't|never)[\?\!\.,;:]*$/i;
 
+const from = /^from[\?\!\.,;:]*$/i;
 
-export type shoot = {
-    qids?: 'some',
-    enabled?: boolean,
-    Tags?: 'some' | 'no' | 'any',
-} | 'all';
+
+export type shoot = questionsQueryShoot;
 
 const allShoot:         shoot = 'all';
-const taggedWithShoot:  shoot = { Tags: 'some' }
+const taggedWithShoot:  shoot = { Tags: 'some' };
 const untaggedShoot:    shoot = { Tags: 'no' };
-const taggedShoot:   shoot = { Tags: 'any' };
+const taggedShoot:      shoot = { Tags: 'any' };
 const enabledShoot:     shoot = { enabled: true };
 const disabledShoot:    shoot = { enabled: false };
 const qidsShoot:        shoot = { qids: 'some' };
@@ -132,7 +130,6 @@ node(root, [
                     node(frb, [])
                 ]),
 
-
                 // delete -> all -> questions -> ...
                 node(enable, [
                     node(frb, [])
@@ -141,6 +138,26 @@ node(root, [
                     node(frb, [])
                 ], disabledShoot as shoot),
 
+                node(from, [
+                    node(tag, [
+                        node(frb, [])
+                    ], taggedWithShoot as shoot),
+
+                    node(tagWord, [
+                        node(tag, [
+                            node(frb, [])
+                        ], taggedWithShoot as shoot),
+                        node(frb, [])
+                    ], taggedShoot as shoot),
+
+                    node(untagWord, [
+                        node(frb, [])
+                    ], untaggedShoot as shoot),
+
+                    SELF,
+
+                    node(frb, [])
+                ]),
 
                 node(frb, [])
             ], allShoot as shoot), // delete -> all -> questions
@@ -149,6 +166,7 @@ node(root, [
             // delete -> all -> ...
             node(tag, [
                 node(questions, [
+                    node(digit, []),
                     node(frb, [])
                 ], taggedWithShoot as shoot),
                 node(frb, [])
@@ -159,11 +177,13 @@ node(root, [
                 node(tag, [
                     SELF,
                     node(questions, [
-                        node(frb, [])
+                        node(digit, []),
+                        node(frb, []),
                     ], taggedWithShoot as shoot),
                     node(frb, [])
                 ]),
                 node(questions, [
+                    node(digit, []),
                     node(frb, [])
                 ], taggedShoot as shoot),
                 node(frb, [])
@@ -306,9 +326,3 @@ node(root, [
 ]);
 
 
-// node(RE, [
-
-//     node(frb, [])
-// ]),
-
-    

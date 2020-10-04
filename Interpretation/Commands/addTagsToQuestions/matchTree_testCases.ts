@@ -59,7 +59,7 @@ export const addTagsToQuestions_testCases: addTagsToQuestions_testCase[] = [
      } },
 
     // get -> questions -> dig -> tag -> #
-    { m: "how about getting questions 3, 4 & 5 tagged with #tag1 #tag2 ",                  res: { 
+    { m: "how about letting questions 3, 4 & 5 tagged with #tag1 #tag2 ",                  res: { 
         qids: [3,4,5],
         Tags: ['tag1','tag2']
      } },

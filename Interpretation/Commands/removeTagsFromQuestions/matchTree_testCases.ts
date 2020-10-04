@@ -10,7 +10,7 @@ export const removeTagsFromQuestions_testCases: removeTagsFromQuestions_testCase
         Tags: ['tag1']
      } },
     { m: "erase #tag1 from questions 4, 5, 6 ",                                            res: { 
-        qids: [3,4,5],
+        qids: [4,5,6],
         Tags: ['tag1']
      } },
 

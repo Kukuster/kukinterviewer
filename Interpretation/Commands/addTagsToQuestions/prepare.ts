@@ -9,12 +9,10 @@ export default async function addTagsToQuestions_prepare (msg: IIMessage, path: 
     : Promise<{ qids: number[] | 'all', Tags: string[] }>
 {
 
-    const message = msg.text!;
+    // const message = msg.text!;
+    // let cutmsg = cutOffUpToWithFirstOccurance(message, path[0].word);
 
     const theShoot: shoot = path[path.length - 1].shoot;
-
-    let cutmsg = cutOffUpToWithFirstOccurance(message, path[0].word);
-
 
     const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
     

@@ -74,6 +74,15 @@ export const deleteQuestions_testCases: deleteQuestions_testCase[] = [
     { m: "delete all questions that are #web ",                        res: { 
         Tags: ['web']
      } },
+    { m: "delete all questions from the #web ",                        res: { 
+        Tags: ['web']
+     } },
+    { m: "delete those questions which are from the tag #web",         res: { 
+        Tags: ['web']
+     } },
+    { m: "delete those questions which are from the #web tag",         res: { 
+        Tags: ['web']
+     } },
 
     // delete -> questions
     { m: "delete question #3  ",                                       res: { 

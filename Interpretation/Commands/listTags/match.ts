@@ -1,5 +1,5 @@
 import { IIMessage } from "../../../core/Command/Command";
-import { splitToWords } from "../../matchTree/splitToWords";
+import { splitToWords } from "../../matchTree/extras/splitToWords";
 import { traverse, treeStep } from "../../matchTree/walk";
 import { listTags_tree } from "./matchTree";
 

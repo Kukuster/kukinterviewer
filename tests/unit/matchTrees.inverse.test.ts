@@ -1,7 +1,7 @@
 import { nodeC } from "../../Interpretation/matchTree/node";
 import { Command_match, Command_prepare, IIMessage } from "../../core/Command/Command";
 
-import { matchTree_testCase } from "../../Interpretation/matchTree/matchTree_testCase.type";
+import { matchTree_testCase } from "../../Interpretation/matchTree/extras/matchTree_testCase.type";
 
 import { turnQuestionsOnOff_testCases } from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
 import { turnQuestionsOnOff_tree }      from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
@@ -33,6 +33,15 @@ import { deleteQuestions_tree } from "../../Interpretation/Commands/deleteQuesti
 import deleteQuestions_match from "../../Interpretation/Commands/deleteQuestions/match";
 import deleteQuestions_prepare from "../../Interpretation/Commands/deleteQuestions/prepare";
 
+import { listQuestions_testCases } from "../../Interpretation/Commands/listQuestions/matchTree_testCases";
+import { listQuestions_tree } from "../../Interpretation/Commands/listQuestions/matchTree";
+import listQuestions_match from "../../Interpretation/Commands/listQuestions/match";
+import listQuestions_prepare from "../../Interpretation/Commands/listQuestions/prepare";
+
+import { removeTagsFromQuestions_testCases } from "../../Interpretation/Commands/removeTagsFromQuestions/matchTree_testCases";
+import { removeTagsFromQuestions_tree } from "../../Interpretation/Commands/removeTagsFromQuestions/matchTree";
+import removeTagsFromQuestions_match from "../../Interpretation/Commands/removeTagsFromQuestions/match";
+import removeTagsFromQuestions_prepare from "../../Interpretation/Commands/removeTagsFromQuestions/prepare";
 
 
 
@@ -87,6 +96,20 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
         tree: deleteQuestions_tree,
         matchfunc: deleteQuestions_match,
         prepfunc: deleteQuestions_prepare
+    },
+
+    listQuestions: {
+        testCases: listQuestions_testCases.filter(tc => tc.res !== null),
+        tree: listQuestions_tree,
+        matchfunc: listQuestions_match,
+        prepfunc: listQuestions_prepare
+    },
+
+    removeTagsFromQuestions: {
+        testCases: removeTagsFromQuestions_testCases.filter(tc => tc.res !== null),
+        tree: removeTagsFromQuestions_tree,
+        matchfunc: removeTagsFromQuestions_match,
+        prepfunc: removeTagsFromQuestions_prepare
     },
 
 };

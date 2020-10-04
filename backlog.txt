@@ -19,4 +19,19 @@ E.g.:
 - «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
 - «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
 For inspiration see mongoDB aggregation: $match, $and, $or operators.
+or just add an option to specify several tags with logical AND («list questions that tagged both #tag1 and #tag2»)
 
+• add an option to specify tags for adding new question outside question text
+«add question with tag #web "what do you know about web?"»
+
+• Add support for adding a question with message prompt
+«add new question»
+ - «ok, write me a new question text now»
+«what do you know about web?»
+
+• Add support for adding other objects to question (photos, images, voice)
+
+• Extend functionality of turnQuestionsOnOff tree, allowing more complex request
+E.g.: 
+- «turn all #web questions off»
+- «enable all questions from tag #web»

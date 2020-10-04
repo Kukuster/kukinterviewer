@@ -98,7 +98,7 @@ export const listQuestions_testCases: listQuestions_testCase[] = [
         
     { m: "list all the questions with #tag1 tag",
       res: {
-          Tags: ['tag']
+          Tags: ['tag1']
         } },
 
     { m: "list all questions that are #web",

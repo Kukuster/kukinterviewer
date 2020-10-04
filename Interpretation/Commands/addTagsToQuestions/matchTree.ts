@@ -14,7 +14,7 @@ const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
 const all = /^(all|each|every)[\?\!\.,;:]*$/i;
 const tagWord = /^(hash)?tag(ged|ging)?[\?\!\.,;:]*$/i;
 
-const get = /^(get(ting)?|mak(e|ing)|let(ting)?|got|made)[\?\!\.,;:]*$/i;
+const set = /^(set(ting)?|mak(e|ing)|let(ting)?|got|made)[\?\!\.,;:]*$/i;
 
 
 const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing)|eliminat(e|ing)|destro(y|ing)|drop(ping)?|wip(e|ing)|withdraw(ing)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing)?)[\?\!\.,;:]*$/i;
@@ -112,7 +112,7 @@ node(root, [
     ]), // tagWord
 
 
-    node(get, [
+    node(set, [
         node(question, [
             node(digit, [
                 SELF,

@@ -52,7 +52,7 @@ export const listTags_testCases: listTags_testCase[] = [
       res: 'all' },
 
 
-  // list -> tag -> [#, untagged, turn, (en | dis)able, no, without, don't, N, dig]
+    // list -> tag -> [#, untagged, turn, (en | dis)able, no, without, don't, N, dig]
 
     { m: "list tags which are enabled",
       res: {
@@ -75,7 +75,7 @@ export const listTags_testCases: listTags_testCase[] = [
         } },
 
 
-   // list -> [(en|dis)able, turn, #, tag, untagged, no, N, dig]
+    // list -> [(en|dis)able, turn, #, tag, untagged, no, N, dig]
 
     { m: "list disabled tags",
       res: {

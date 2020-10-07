@@ -43,6 +43,16 @@ import { removeTagsFromQuestions_tree } from "../../Interpretation/Commands/remo
 import removeTagsFromQuestions_match from "../../Interpretation/Commands/removeTagsFromQuestions/match";
 import removeTagsFromQuestions_prepare from "../../Interpretation/Commands/removeTagsFromQuestions/prepare";
 
+import { listTags_testCases } from "../../Interpretation/Commands/listTags/matchTree_testCases";
+import { listTags_tree } from "../../Interpretation/Commands/listTags/matchTree";
+import listTags_match from "../../Interpretation/Commands/listTags/match";
+import listTags_prepare from "../../Interpretation/Commands/listTags/prepare";
+
+import { turnTagsOnOff_testCases } from "../../Interpretation/Commands/turnTagsOnOff/matchTree_testCases";
+import { turnTagsOnOff_tree } from "../../Interpretation/Commands/turnTagsOnOff/matchTree";
+import turnTagsOnOff_match from "../../Interpretation/Commands/turnTagsOnOff/match";
+import turnTagsOnOff_prepare from "../../Interpretation/Commands/turnTagsOnOff/prepare";
+
 
 
 ////////////////////////////////////////////////////////
@@ -110,6 +120,20 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
         tree: removeTagsFromQuestions_tree,
         matchfunc: removeTagsFromQuestions_match,
         prepfunc: removeTagsFromQuestions_prepare
+    },
+
+    listTags: {
+        testCases: listTags_testCases.filter(tc => tc.res !== null),
+        tree: listTags_tree,
+        matchfunc: listTags_match,
+        prepfunc: listTags_prepare
+    },
+
+    turnTagsOnOff: {
+        testCases: turnTagsOnOff_testCases.filter(tc => tc.res !== null),
+        tree: turnTagsOnOff_tree,
+        matchfunc: turnTagsOnOff_match,
+        prepfunc: turnTagsOnOff_prepare
     },
 
 };

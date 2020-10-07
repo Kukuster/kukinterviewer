@@ -35,3 +35,5 @@ or just add an option to specify several tags with logical AND («list questions
 E.g.: 
 - «turn all #web questions off»
 - «enable all questions from tag #web»
+
+• Extend listTags Command functionality to read qids and tag string parts (tagsQuery)

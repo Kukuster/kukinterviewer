@@ -4,113 +4,121 @@ import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
 // any punctuation mark at the end: 
 // [\?\!\.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
-const rootRE = /[\s\S]+/g;
-const anyText = /^[\S]+$/g;
+       const root = /[\s\S]+/g;
+       const anyText = /^[\S]+$/g;
 
-const add = /^(add|new|create|insert|submit)[\?\!\.,;:]*$/i;
-const question = /^question[\?\!\.,;:]*$/i;
-const newline = /[\r\n]+/i;
+       const add = /^(add|new|create|insert|submit)[\?\!\.,;:]*$/i;
+       const question = /^question[\?\!\.,;:]*$/i;
+export const newlineRE = /[\r\n]+/i;
+       const tagWord = /^(hash)?tag(s|g?ing|g?ed)?[\?\!\.,;:]*$/i;
+       const tag = /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;
+
 
 //double quote
-const dquoteOpen  = /^[\?\!\.,;:]*"(\S)*$/i;
-const dquoteClose = /^(\S)*"[\?\!\.,;:]*$/i;
+export const dquoteOpenRE  = /^[\?\!\.,;:]*"(\S)*$/i;
+export const dquoteCloseRE = /^(\S)*"[\?\!\.,;:]*$/i;
 
 //single quote
-const squoteOpen  = /^[\?\!\.,;:]*'(\S)*$/i;
-const squoteClose = /^(\S)*'[\?\!\.,;:]*$/i;
+export const squoteOpenRE  = /^[\?\!\.,;:]*'(\S)*$/i;
+export const squoteCloseRE = /^(\S)*'[\?\!\.,;:]*$/i;
 
 //telegram quote
-const tquoteOpen  = /^[\?\!\.,;:]*«(\S)*$/i;
-const tquoteClose = /^(\S)*»[\?\!\.,;:]*$/i;
+export const tquoteOpenRE  = /^[\?\!\.,;:]*«(\S)*$/i;
+export const tquoteCloseRE = /^(\S)*»[\?\!\.,;:]*$/i;
 
 //angle brackets quote
-const aquoteOpen  = /^[\?\!\.,;:]*<<(\S)*$/i;
-const aquoteClose = /^(\S)*>>[\?\!\.,;:]*$/i;
+export const aquoteOpenRE  = /^[\?\!\.,;:]*<<(\S)*$/i;
+export const aquoteCloseRE = /^(\S)*>>[\?\!\.,;:]*$/i;
 
 
 
 //forbidden words
-const frb = /^(erase|remove|turn|delete|eliminate|destroy|drop|wipe|withdraw|enable|disable|dismiss)[\?\!\.,;:]*$/i;
+const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing))[\?\!\.,;:]*$/i;
 
 // negation
 const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
 
 
 /**
- * @property cutMatches - number of nodes in path to cut the text to (cuts up to the question text or an opening quote)
- * @property quotes - which characters are used as quotes
+ * @property quotes - the characters used to separate the actual question text
  */
-export type shoot = { cutMatches: number, quotes?: 'double'|'single'|'tg'|'angle' };
+export type shoot = { quotes: 'double'|'single'|'tg'|'angle'|'noQuotes_butAnEndline' };
 
 
 let addQuestionChildren: nodeLike[];
 
 
 export const addQuestion_tree =
-node(rootRE, [
+node(root, [
 
     node(add, [
+
+        node(tag, [PARENTs_CHILDREN]),
+
         node(question, addQuestionChildren = [
 
-            node(newline, [
-                node(dquoteOpen, [
+            // add -> question -> ...
+            node(newlineRE, [
+                node(dquoteOpenRE, [
                     node(anyText, [
-                        node(dquoteClose, [], {cutMatches:3,quotes:'double'} as shoot),
+                        node(dquoteCloseRE, [], {quotes:'double'} as shoot),
                         SELF,
                     ]),
                 ]),
-                node(squoteOpen, [
+                node(squoteOpenRE, [
                     node(anyText, [
-                        node(squoteClose, [], {cutMatches:3,quotes:'single'} as shoot),
+                        node(squoteCloseRE, [], {quotes:'single'} as shoot),
                         SELF,
                     ]),
                 ]),
-                node(tquoteOpen, [
+                node(tquoteOpenRE, [
                     node(anyText, [
-                        node(tquoteClose, [], {cutMatches:3,quotes:'tg'} as shoot),
+                        node(tquoteCloseRE, [], {quotes:'tg'} as shoot),
                         SELF,
                     ]),
                 ]),
-                node(aquoteOpen, [
+                node(aquoteOpenRE, [
                     node(anyText, [
-                        node(aquoteClose, [], {cutMatches:3,quotes:'angle'} as shoot),
+                        node(aquoteCloseRE, [], {quotes:'angle'} as shoot),
                         SELF,
                     ]),
                 ]),
 
-                node(anyText, [], {cutMatches:3} as shoot),
+                node(anyText, [], {quotes:'noQuotes_butAnEndline'} as shoot),
             ]),
 
-            // add -> question ->
-            node(dquoteOpen, [
+            // add -> question -> ...
+            node(dquoteOpenRE, [
                 node(anyText, [
-                    node(dquoteClose, [], {cutMatches:2,quotes:'double'} as shoot),
+                    node(dquoteCloseRE, [], {quotes:'double'} as shoot),
                     SELF,
                 ]),
             ]),
-            node(squoteOpen, [
+            node(squoteOpenRE, [
                 node(anyText, [
-                    node(squoteClose, [], {cutMatches:2,quotes:'single'} as shoot),
+                    node(squoteCloseRE, [], {quotes:'single'} as shoot),
                     SELF,
                 ]),
             ]),
-            node(tquoteOpen, [
+            node(tquoteOpenRE, [
                 node(anyText, [
-                    node(tquoteClose, [], {cutMatches:2,quotes:'tg'} as shoot),
+                    node(tquoteCloseRE, [], {quotes:'tg'} as shoot),
                     SELF,
                 ]),
             ]),
-            node(aquoteOpen, [
+            node(aquoteOpenRE, [
                 node(anyText, [
-                    node(aquoteClose, [], {cutMatches:2,quotes:'angle'} as shoot),
+                    node(aquoteCloseRE, [], {quotes:'angle'} as shoot),
                     SELF,
                 ]),
             ]),
 
+            // add -> question -> ...
+            node(tag, [PARENTs_CHILDREN]),
             
-            // add -> question
+            // add -> question -> ...
             node(frb, []),
-            node(neg, [])
+            node(neg, []),
 
         ]), // add -> question
         
@@ -122,6 +130,7 @@ node(rootRE, [
 
     node(question, [
         node(add, addQuestionChildren),
+        node(tag, [PARENTs_CHILDREN]),
         node(frb, []),
         node(neg, [])
     ]),

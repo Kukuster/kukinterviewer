@@ -66,13 +66,24 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
     { m: "add new question\n<<#php #python\n #htmlcss       \n\n \n>>   ",                 res: {
         questionText: "#php #python\n #htmlcss",
         Tags: ['php', 'python', 'htmlcss']
-    } },
+     } },
 
      // question -> add -> \n -> «* -> *text* -> *»
     { m: "Here's question I want you to add:\n«do you know data structures?» ",            res: { 
         questionText: "do you know data structures?"
      } },
     
+
+    // add -> question -> tag -> # -> "* -> *text* -> *"
+    { m: "add question with tag #web \"what do you know about web?\"",                     res: { 
+        questionText: "what do you know about web?",
+        Tags: ['web'],
+     } },
+
+    { m: "add a question tagged #web #frontend \"what #css frameworks do you know?\"",     res: { 
+        questionText: "what #css frameworks do you know?",
+        Tags: ['web', 'frontend', 'css'],
+     } },
 
      
      // [ wrong_path ]

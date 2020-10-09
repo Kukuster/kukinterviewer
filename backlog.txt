@@ -21,9 +21,6 @@ E.g.:
 For inspiration see mongoDB aggregation: $match, $and, $or operators.
 or just add an option to specify several tags with logical AND («list questions that tagged both #tag1 and #tag2»)
 
-• add an option to specify tags for adding new question outside question text
-«add question with tag #web "what do you know about web?"»
-
 • Add support for adding a question with message prompt
 «add new question»
  - «ok, write me a new question text now»

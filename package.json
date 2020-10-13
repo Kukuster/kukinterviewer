@@ -18,7 +18,7 @@
     "ts": "ts-node"
   },
   "engines": {
-    "node": "13.13"
+    "node": "14.10"
   },
   "author": "Kukuster <KukusterMOP@gmail.com>",
   "license": "ISC",
@@ -31,6 +31,7 @@
     "node-telegram-bot-api": "^0.40.0"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.32",
     "@types/dotenv": "^8.2.0",
     "@types/jest": "^26.0.3",
     "@types/mongoose": "^5.7.29",

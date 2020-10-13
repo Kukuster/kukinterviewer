@@ -24,7 +24,7 @@ export default async function queryChat<T>(chatId: number, select: any, perform:
             .then(chat => {
 
                 if (!chat) {
-                    const error = new Error('tried to query Questions from the chat with chatId=' + chatId + ', which doesn\'t exist');
+                    const error = new Error('tried to query the chat with chatId=' + chatId + ', which doesn\'t exist');
                     console.error(error);
                     reject(error);
                     return;

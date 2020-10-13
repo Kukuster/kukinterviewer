@@ -1,4 +1,5 @@
 'use strict';
+import bot, { monospace } from "../../../bot";
 import Command, { IIMessage } from "../Command";
 
 /**
@@ -15,8 +16,10 @@ export default async function default_display(this: Command<any,any,any>, msg: I
     const chatId = msg.chat.id;
     console.log(JSON.stringify(response, null, 2));
 
-    // console.log('this.bot:');
-    //console.log(this.bot);
+    // console.log('bot:');
+    // console.log(bot);
 
-    //return this.bot.sendMessage(chatId, this.monospace(response), this.botSendMessageOptions);
-}
+    return bot.sendMessage(chatId, monospace(JSON.stringify(response, null, 2)), {
+        parse_mode: 'Markdown'
+    });
+};

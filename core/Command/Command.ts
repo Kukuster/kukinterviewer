@@ -6,7 +6,6 @@ import default_execute from "./default_methods/execute";
 import default_display from "./default_methods/display";
 import { EventEmitter } from "events";
 import { Model, Document } from "mongoose";
-import monospace from "./prototype/monospace";
 import ChatModel from "../sheet/models/ChatModel";
 import QuestionModel from "../sheet/models/QuestionModel";
 
@@ -65,14 +64,6 @@ export interface ICommand {
     ChatModel?: Model<Document>;
 
     QuestionModel?: Model<Document>;
-    
-    botSendMessageOptions?: any; // TODO: figure out the type
-
-    /**
-     * Telegram formating: monospace text
-     * Requires `parse_mode: 'Markdown'` option to be added to options object (3rd argument for bot.sendMessage method)
-     */
-    monospace: (str: string) => string;
 
     bot?: EventEmitter;
 
@@ -121,20 +112,7 @@ export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand{
      * a model for Question subdocuments created from a mongoose schema
      */
     public static QuestionModel: Model<Document> = QuestionModel;
-
-    /**
-     * an options object for bot.sentMessage function. usage:
-     * this.bot.sendMessage(msg.from.id, "Hello, marked up world!", this.botSendMessageOptions);
-     */
-    public static botSendMessageOptions: any; // TODO: figure out the type
-
-    /**
-     * Telegram formating: monospace text
-     * Requires `parse_mode: 'Markdown'` option to be added to options object (3rd argument for bot.sendMessage method)
-     */
-    public monospace: (str: string) => string = monospace;
-
-
+    
     public static bot: EventEmitter;
 
 

@@ -13,6 +13,12 @@ export type questionsQuery = {
     random?:           true
 };
 
+export type complexQuestionsQuery = {
+    $or:  (complexQuestionsQuery | questionsQuery)[],
+} | {
+    $and: (complexQuestionsQuery | questionsQuery)[],
+};
+
 /**
  * 
  * @param query an argument to `getQuestions` function
@@ -87,8 +93,10 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
                     );
                 } else
                 if (query.Tags === 'any'){
-
-                }
+                    filteringQuestions = filteringQuestions.filter(q =>
+                        q.Tags.length > 0
+                    );
+                };
             };
 
             // leave only those that contain any of provided strings (if provided)

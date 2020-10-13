@@ -3,7 +3,6 @@ import default_match   from "../../core/Command/default_methods/match";
 import default_prepare from "../../core/Command/default_methods/prepare";
 import default_execute from "../../core/Command/default_methods/execute";
 import default_display from "../../core/Command/default_methods/display";
-import monospace from "../../core/Command/prototype/monospace";
 import { Message } from "node-telegram-bot-api";
 
 
@@ -16,7 +15,7 @@ const dummyMatch = async function (this: Command<any,any,any>, msg: IIMessage) {
         resolve(match);
 
     });
-}
+};
 
 const dummyPrepare = async function (this: Command<any,any,any>, msg: IIMessage, match: RegExpMatchArray) {
     //msg.text;
@@ -24,27 +23,36 @@ const dummyPrepare = async function (this: Command<any,any,any>, msg: IIMessage,
     return new Promise<object>((resolve, reject) => {
         resolve({kek: 'lel'});
     });
-}
+};
 
 const dummyExecute = async function (this: Command<any,any,any>, msg: IIMessage, args: object) {
     //msg.text;
 
     return new Promise<string>((resolve, _) => {
         resolve(<string>JSON.stringify({}));
-    })
-}
+    });
+};
+
+const dummyDisplay = async function (this: Command<any,any,any>, msg: IIMessage, response: string) {
+    //msg.text;
+
+    const chatId = msg.chat.id;
+    console.log(JSON.stringify(response, null, 2));
+
+    return new Promise<string>((resolve, _) => {
+        resolve(response);
+    });
+};
 
 
-const dummyCommand2 = new Command(dummyMatch, dummyPrepare, dummyExecute);
+const dummyCommand2 = new Command(dummyMatch, dummyPrepare, dummyExecute, dummyDisplay);
 
-test('Command, custom_methods_except_display -> ', () => {
+test('Command, custom_methods -> ', () => {
     expect(dummyCommand2.match)  .toBe(dummyMatch);
     expect(dummyCommand2.prepare).toBe(dummyPrepare);
     expect(dummyCommand2.execute).toBe(dummyExecute);
-    expect(dummyCommand2.display).toBe(default_display);
-    expect(dummyCommand2.monospace).toBe(monospace);
-
-})
+    expect(dummyCommand2.display).toBe(dummyDisplay);
+});
 
 
 
@@ -57,7 +65,7 @@ const telegram_msg_mock: Message = {
         type: 'private'
     }
 
-}
+};
 
 
 test('Command, custom command run', async (done) => {
@@ -68,5 +76,5 @@ test('Command, custom command run', async (done) => {
     const _     = await dummyCommand2.display(telegram_msg_mock, resp);
     done();
     return;
-})
+});
 

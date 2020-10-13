@@ -14,12 +14,17 @@
 
 • Add support for attached stuff to be saved with Questions, if user wants a picture, a file or whatever to be attached with a question.
 
-• Add support for complex query logic.
-E.g.:
-- «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
-- «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
-For inspiration see mongoDB aggregation: $match, $and, $or operators.
-or just add an option to specify several tags with logical AND («list questions that tagged both #tag1 and #tag2»)
+• questionsQuery:
+    1) Add support for complex query logic.
+        E.g.:
+        - «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
+        - «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
+        For inspiration see mongoDB aggregation: $match, $and, $or operators.
+        or just add an option to specify several tags with logical AND («list questions that tagged both #tag1 and #tag2»)
+    2) add support for specifying qid range
+        E.g.:
+        - «list questions 3-6»
+        - «show me questions from 3 to 6»
 
 • Add support for adding a question with message prompt
 «add new question»
@@ -34,3 +39,5 @@ E.g.:
 - «enable all questions from tag #web»
 
 • Extend listTags Command functionality to read qids and tag string parts (tagsQuery)
+
+• Make questions text support markdown

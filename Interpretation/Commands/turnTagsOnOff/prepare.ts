@@ -5,7 +5,7 @@ import { uniquifyArray } from "../../../core/misc";
 import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
 
 
-export default async function turnTagsOnOff_prepare (msg: IIMessage, path: treeStep[]): Promise<{  }> {
+export default async function turnTagsOnOff_prepare (msg: IIMessage, path: treeStep[]): Promise<{ Tags: string[] | "all", turn: "on" | "off" }>  {
 
 
     const theShoot: shoot = path[path.length - 1].shoot;

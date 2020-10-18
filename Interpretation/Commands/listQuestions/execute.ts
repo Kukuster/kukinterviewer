@@ -3,6 +3,9 @@ import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questi
 
 export default async function listQuestions_execute (msg: IIMessage, query: questionsQuery|'all') {
 
-    return getQuestions(msg.chat.id, query);
+    return {
+        request: query,
+        response: await getQuestions(msg.chat.id, query)
+    };
 
 };

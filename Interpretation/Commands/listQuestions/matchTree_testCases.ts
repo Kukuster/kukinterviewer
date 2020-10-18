@@ -243,6 +243,8 @@ export const listQuestions_testCases: listQuestions_testCase[] = [
           Tags: ['web']
         } },
 
+    { m: "list questions",
+      res: 'all' },
 
      // [ forbidden ]
         

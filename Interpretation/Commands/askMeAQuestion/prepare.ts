@@ -1,7 +1,6 @@
 import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
-import { uniquifyArray } from "../../../core/misc";
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
 
@@ -14,7 +13,7 @@ export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeS
     const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
     
     if (theShoot.random){
-        return { random: true }
+        return { enabled: true, havingTagsEnabled: true, random: true };
     } else 
     if (theShoot.qid){
 
@@ -34,10 +33,10 @@ export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeS
         });
 
         if (qids.length > 0){
-            return { qids: qids as [number, ...number[]], random: true }
+            return { qids: qids as [number, ...number[]], random: true };
         } else {
-            return { random: true }
-        }
+            return { enabled: true, havingTagsEnabled: true, random: true };
+        };
 
     } else
     if (theShoot.Tags) {
@@ -52,15 +51,15 @@ export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeS
         };
 
         if (Tags.length > 0){
-            return { Tags: Tags as [string, ...string[]], random: true }
+            return { enabled: true, havingTagsEnabled: true, Tags: Tags as [string, ...string[]], random: true };
         } else {
-            return { random: true }
-        }
+            return { enabled: true, havingTagsEnabled: true, random: true };
+        };
 
     } else // never happens
     {
-        return { random: true }
+        return { enabled: true, havingTagsEnabled: true, random: true };
     };
     
 
-}
+};

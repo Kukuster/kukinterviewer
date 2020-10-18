@@ -13,6 +13,24 @@ import addQuestion_execute from "./Commands/addQuestion/execute";
 import deleteQuestions_match from "./Commands/deleteQuestions/match";
 import deleteQuestions_prepare from "./Commands/deleteQuestions/prepare";
 import deleteQuestions_execute from "./Commands/deleteQuestions/execute";
+import askMeAQuestion_match from "./Commands/askMeAQuestion/match";
+import askMeAQuestion_prepare from "./Commands/askMeAQuestion/prepare";
+import askMeAQuestion_execute from "./Commands/askMeAQuestion/execute";
+import turnQuestionsOnOff_match from "./Commands/turnQuestionsOnOff/match";
+import turnQuestionsOnOff_prepare from "./Commands/turnQuestionsOnOff/prepare";
+import turnQuestionsOnOff_execute from "./Commands/turnQuestionsOnOff/execute";
+import listTags_match from "./Commands/listTags/match";
+import listTags_prepare from "./Commands/listTags/prepare";
+import listTags_execute from "./Commands/listTags/execute";
+import turnTagsOnOff_match from "./Commands/turnTagsOnOff/match";
+import turnTagsOnOff_prepare from "./Commands/turnTagsOnOff/prepare";
+import turnTagsOnOff_execute from "./Commands/turnTagsOnOff/execute";
+import addTagsToQuestions_match from "./Commands/addTagsToQuestions/match";
+import addTagsToQuestions_prepare from "./Commands/addTagsToQuestions/prepare";
+import addTagsToQuestions_execute from "./Commands/addTagsToQuestions/execute";
+import removeTagsFromQuestions_match from "./Commands/removeTagsFromQuestions/match";
+import removeTagsFromQuestions_prepare from "./Commands/removeTagsFromQuestions/prepare";
+import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/execute";
 
 
 // GREET State //
@@ -23,8 +41,12 @@ export const start_command = new Command(start_match, start_prepare, start_execu
 
 // READY State //
 
-export const   listQuestions_command = new Command(listQuestions_match,   listQuestions_prepare,   listQuestions_execute);
-
-export const     addQuestion_command = new Command(addQuestion_match,     addQuestion_prepare,     addQuestion_execute);
-
-export const deleteQuestions_command = new Command(deleteQuestions_match, deleteQuestions_prepare, deleteQuestions_execute);
+export const           listQuestions_command = new Command(           listQuestions_match,           listQuestions_prepare,           listQuestions_execute);
+export const             addQuestion_command = new Command(             addQuestion_match,             addQuestion_prepare,             addQuestion_execute);
+export const         deleteQuestions_command = new Command(         deleteQuestions_match,         deleteQuestions_prepare,         deleteQuestions_execute);
+export const          askMeAQuestion_command = new Command(          askMeAQuestion_match,          askMeAQuestion_prepare,          askMeAQuestion_execute);
+export const      turnQuestionsOnOff_command = new Command(      turnQuestionsOnOff_match,      turnQuestionsOnOff_prepare,      turnQuestionsOnOff_execute);
+export const                listTags_command = new Command(                listTags_match,                listTags_prepare,                listTags_execute);
+export const           turnTagsOnOff_command = new Command(           turnTagsOnOff_match,           turnTagsOnOff_prepare,           turnTagsOnOff_execute);
+export const      addTagsToQuestions_command = new Command(      addTagsToQuestions_match,      addTagsToQuestions_prepare,      addTagsToQuestions_execute);
+export const removeTagsFromQuestions_command = new Command( removeTagsFromQuestions_match, removeTagsFromQuestions_prepare, removeTagsFromQuestions_execute);

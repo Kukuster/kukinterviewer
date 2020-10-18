@@ -16,7 +16,8 @@ const off = /^off[\?\!\.,;:]*$/i;
 
 
 
-const question = /^questions?[\?\!\.,;:]*$/i;
+const question_s = /^questions?[\?\!\.,;:]*$/i;
+const question = /^question[\?\!\.,;:]*$/i;
 const questions = /^questions[\?\!\.,;:]*$/i;
 const questionDigit = /^questions?[\?\!\.,;:]*(#|№|N|n|@)(\d+)[\?\!\.,;:]*/i;
 const tag = /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;
@@ -27,7 +28,7 @@ const taggedWord = /^(hash)?tagg?e?d[\?\!\.,;:]*$/i;
 const untagWord = /^un(hash)?tag(ged|ging)?[\?\!\.,;:]*$/i;
 
 //forbidden words
-const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing)|eliminat(e|ing)|destro(y|ing)|drop(ping)?|wip(e|ing)|withdraw(ing)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing)|add(ing)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)?)[\?\!\.,;:]*$/i;
+const frb = /^(eras(e|ing|ed)|remov(e|ing|ed)|turn(ing)?|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing|ed)|add(ing)?|new|creat(e|ing)|insert(ing)?|submit(ing)?|includ(e|ing)?)[\?\!\.,;:]*$/i;
 
 // negation
 //const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
@@ -38,13 +39,14 @@ const add = /^(add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|
 const newline = /[\r\n]+/i;
 
 
-let listAll_someChildren,
-    listAllQuestionsNot_children,
-    listQuestionsNot_children,
-    listEnabledQuestions_children,
-    listDisabledQuestions_children,
-    listNotEnabledQuestions_children,
-    listNotDisabledQuestions_children;
+let listQuestions_Children:             nodeLike[],
+    listAll_someChildren:               nodeLike[],
+    listAllQuestionsNot_children:       nodeLike[],
+    listQuestionsNot_children:          nodeLike[],
+    listEnabledQuestions_children:      nodeLike[],
+    listDisabledQuestions_children:     nodeLike[],
+    listNotEnabledQuestions_children:   nodeLike[],
+    listNotDisabledQuestions_children:  nodeLike[];
 
 
 export type shoot = questionsQueryShoot;
@@ -61,7 +63,7 @@ export const listQuestions_tree =
 node(root, [
 
     node(list, [
-        node(question, [
+        node(questions, listQuestions_Children = [
             
             // list -> questions -> ...
             node(tag, [
@@ -127,13 +129,15 @@ node(root, [
                 node(frb, []),
             ], qidsShoot as shoot),
 
-        ]), // list -> questions
+        ], allShoot as shoot), // list -> questions
 
+        // list -> ...
+        node(question, listQuestions_Children),
 
         // list -> ...
         node(all, [
 
-            node(question, [
+            node(question_s, [
                 node(dont, listAllQuestionsNot_children = [
                     node(tagWord, [
                         node(digit, []),
@@ -219,25 +223,25 @@ node(root, [
             ...(listAll_someChildren = [
             node(tag, [
                 SELF,
-                node(question, [], taggedWithShoot as shoot),
+                node(question_s, [], taggedWithShoot as shoot),
                 node(digit, []),
                 node(frb, []),
             ]),
             node(taggedWord, [
                 node(tag, [
                     SELF,
-                    node(question, [], taggedWithShoot as shoot),
+                    node(question_s, [], taggedWithShoot as shoot),
                     node(digit, []),
                     node(frb, []),
                 ]),
-                node(question, [], taggedShoot as shoot),
+                node(question_s, [], taggedShoot as shoot),
                 node(digit, []),
                 node(frb, []),
             ]),
             node(tagWord, [
                 node(tag, [
                     SELF,
-                    node(question, [], taggedWithShoot as shoot),
+                    node(question_s, [], taggedWithShoot as shoot),
                     node(digit, []),
                     node(frb, []),
                 ]),
@@ -245,7 +249,7 @@ node(root, [
                 node(frb, []),
             ]),
             node(untagWord, [
-                node(question, [], untaggedShoot as shoot),
+                node(question_s, [], untaggedShoot as shoot),
                 node(digit, []),
                 node(frb, []),
             ]),
@@ -253,13 +257,13 @@ node(root, [
             // list -> all -> ...
             node(digit, [
                 SELF,
-                node(question, [], qidsShoot as shoot),
+                node(question_s, [], qidsShoot as shoot),
                 node(frb, []),
             ], qidsShoot as shoot),
 
             // list -> all -> ...
             node(enable, listEnabledQuestions_children = [
-                node(question, [
+                node(question_s, [
                     node(frb, []),
                 ], enabledShoot as shoot),
                 node(digit, []),
@@ -269,7 +273,7 @@ node(root, [
                 node(frb, []),
             ]),
             node(disable, listDisabledQuestions_children = [
-                node(question, [
+                node(question_s, [
                     node(frb, []),
                 ], disabledShoot as shoot),
                 node(digit, []),
@@ -291,7 +295,7 @@ node(root, [
             // list -> all -> ...
             node(neg, [
                 node(enable, listNotEnabledQuestions_children = [
-                    node(question, [
+                    node(question_s, [
                         node(frb, []),
                     ], disabledShoot as shoot),
                     node(digit, []),
@@ -301,7 +305,7 @@ node(root, [
                     node(frb, []),
                 ]),
                 node(disable, listNotDisabledQuestions_children = [
-                    node(question, [
+                    node(question_s, [
                         node(frb, []),
                     ], enabledShoot as shoot),
                     node(digit, []),
@@ -320,7 +324,7 @@ node(root, [
                     node(frb, []),
                 ]),
                 node(tagWord, [
-                    node(question, [], untaggedShoot as shoot),
+                    node(question_s, [], untaggedShoot as shoot),
                     node(digit, []),
                     node(tagWord, []),
                     node(untagWord, []),
@@ -328,7 +332,7 @@ node(root, [
                     node(frb, []),
                 ]),
                 node(untagWord, [
-                    node(question, [], taggedShoot as shoot),
+                    node(question_s, [], taggedShoot as shoot),
                     node(digit, []),
                     node(tagWord, []),
                     node(untagWord, []),

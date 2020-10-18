@@ -7,6 +7,9 @@ export default async function addQuestion_execute(msg: IIMessage, args: { questi
     const questionText = args.questionText;
     const Tags = args.Tags;
 
-    return addQuestion(chatId, { questionText, Tags, enabled: true });
+    return {
+        request: args,
+        response: await addQuestion(chatId, { questionText, Tags, enabled: true })
+    };
 
 };

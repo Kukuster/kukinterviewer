@@ -5,6 +5,9 @@ export default async function start_execute(msg: IIMessage, arg: boolean) {
 
     // TODO: creates chat here, because when starting it shouldn't exist yet
 
-    return getChat(msg.chat.id);
+    return {
+        request: arg,
+        response: await getChat(msg.chat.id)
+    };
 
 };

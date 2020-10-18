@@ -8,6 +8,9 @@ export default async function deleteQuestions_execute(msg: IIMessage, query: que
 
     const questions = await getQuestions(chatId, query);
 
-    return deleteQuestions(chatId, questions.map(q => q.qid));
+    return {
+        request: query,
+        response: await deleteQuestions(chatId, questions.map(q => q.qid))
+    };
 
 };

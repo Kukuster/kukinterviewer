@@ -10,7 +10,8 @@ export type questionsQuery = {
     questionTextParts?:[string, ...string[]],
     enabled?:          boolean,
     Tags?:             [string, ...string[]] | 'no' | 'any',
-    random?:           true
+    random?:           true,
+    havingTagsEnabled?:true,
 };
 
 export type complexQuestionsQuery = {
@@ -34,7 +35,7 @@ function isProperQuestionsQuery(query: number[] | 'all' | questionsQuery): query
 
 function isNotEmptyArray<T>(arr: T[] | string | undefined): arr is [T, ...T[]]{
     return Array.isArray(arr) && arr.length > 0;
-}
+};
 
 
 /**
@@ -49,7 +50,7 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
     : Promise<Iquestion[]>
 {
 
-    return queryChat(chatId, { "_id": false, "Questions": true }, (chat)=>{
+    return queryChat(chatId, { "_id": false, "Questions": true, "Tags": true }, (chat)=>{
 
         const chatQuestions = Array.isArray(chat.Questions) ? chat.Questions : [];
 
@@ -115,10 +116,19 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
                 };
             };
 
+            // leave only those which every Tag is enabled (omit those which have at least 1 disabled Tag)
+            if (query.havingTagsEnabled === true) {
+                filteringQuestions = filteringQuestions.filter(q => 
+                    q.Tags.every((tag) => 
+                        chat.Tags?.find(({str, enabled}) => (str === tag) && enabled === true)
+                    ),
+                );
+            };
 
+            // leave only one random element from filteringQuestions, if "random" flag specified
             if (query.random === true) {
                 filteringQuestions = [ filteringQuestions[Math.floor(Math.random() * filteringQuestions.length)] ];
-            }
+            };
 
 
             return filteringQuestions;
@@ -138,4 +148,4 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
     }); // return queryChat
 
 
-}
+};

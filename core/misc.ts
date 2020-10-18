@@ -3,6 +3,7 @@
 /**
  * returns new array with all unique values from the given array
  */
+export function uniquifyArray<T>(ar: T[]): T[];
 export function uniquifyArray(ar: any[]) {
     var j: {[key:string]: any} = {};
 
@@ -13,7 +14,8 @@ export function uniquifyArray(ar: any[]) {
     return Object.keys(j).map(function (v) {
         return j[v];
     });
-} 
+};
+
 
 /**
  * Cuts the given _string_ from the beginning up to the first occurance of a given _substring_ inclusively, ignoring case of the _substring_

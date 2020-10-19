@@ -6,10 +6,6 @@ import { questionsQueryShoot } from "../../matchTree/extras/questionsQueryShoot.
 // [\?\!\.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 const root = /[\s\S]+/g;
-const questionRE = /^questions?(\S*)*/i;
-const allRE = /^(all|each|every)[\?\!\.,;:]*$/i;
-const digitRE = /(\d+)/g;
-
 
 const del = /^(delet(e|in(g|')?)?|eras(e|in(g|')?)?|remov(e|in(g|')?)?|eliminat(e|in(g|')?)?|drop(pin('|g)?)?|wip(e|in(g|')?)?)*[\?\!\.,;:]*$/i;
 const question = /^questions?[\?\!\.,;:]*$/i;
@@ -21,12 +17,12 @@ const all = /^(all|each|every)[\?\!\.,;:]*$/i;
 const tagWord = /^(hash)?tag(ged|ging|s)?[\?\!\.,;:]*$/i;
 const untagWord = /^un(hash)?tag(ged|ging)?[\?\!\.,;:]*$/i;
 
-const turn = /^turn(ing|ed)?[\?\!\.,;:]*$/i
+const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[\?\!\.,;:]*$/i
 const on  =  /^on[\?\!\.,;:]*$/i;
 const off = /^off[\?\!\.,;:]*$/i;
 
-const enable  =  /^enabl(e|ing|ed)[\?\!\.,;:]*$/i;
-const disable = /^disabl(e|ing|ed)[\?\!\.,;:]*$/i;
+const enable =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[\?\!\.,;:]*$/i;
+const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[\?\!\.,;:]*$/i;
 
 //const add = /^(add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed))[\?\!\.,;:]*$/i;
 

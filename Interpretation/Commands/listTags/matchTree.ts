@@ -8,10 +8,10 @@ import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
 const root = /[\s\S]+/g;
 //const list = /^(list|show|get|output|detail|display|reveal|expose|pull|bring|search|find)|$/i;
 const list = /^((list|show|detail|reveal|pull|bring|search|find)(ing)?|(get|output)(t?ing)?|(displa(y|ing))|explos(e|ing))$/i;
-const turn = /^turn(ing|ed)?[\?\!\.,;:]*$/i
-const enable = /^enabl(e|ing|ed)[\?\!\.,;:]*$/i;
-const disable = /^disabl(e|ing|ed)[\?\!\.,;:]*$/i;
-const on = /^on[\?\!\.,;:]*$/i;
+const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[\?\!\.,;:]*$/i
+const enable  =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[\?\!\.,;:]*$/i;
+const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[\?\!\.,;:]*$/i;
+const on  =  /^on[\?\!\.,;:]*$/i;
 const off = /^off[\?\!\.,;:]*$/i;
 
 const question = /^questions?[\?\!\.,;:]*$/i;

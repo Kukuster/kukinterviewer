@@ -4,15 +4,17 @@ import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
 // any punctuation mark at the end: 
 // [\?\!\.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
-const rootRE = /[\s\S]+/g;
-const turnRE = /^turn(ing|ed)?[\?\!\.,;:]*$/i
-const enableRE  =  /^enabl(e|ing|ed)[\?\!\.,;:]*$/i;
-const disableRE = /^disabl(e|ing|ed)[\?\!\.,;:]*$/i;
-const onRE  =  /^on[\?\!\.,;:]*$/i;
-const offRE = /^off[\?\!\.,;:]*$/i;
-const questionRE = /^questions?(\S*)*/i;
-const allRE = /^(all|each|every)[\?\!\.,;:]*$/i;
-const digitRE = /(\d+)/g;
+const root = /[\s\S]+/g;
+const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[\?\!\.,;:]*$/i
+const enable  =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[\?\!\.,;:]*$/i;
+const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[\?\!\.,;:]*$/i;
+const on  =  /^on[\?\!\.,;:]*$/i;
+const off = /^off[\?\!\.,;:]*$/i;
+
+
+const question = /^questions?(\S*)*/i;
+const all = /^(all|each|every)[\?\!\.,;:]*$/i;
+const digit = /(\d+)/g;
 
 
 let OnDigitRecursiveShoot: nodeLike,
@@ -30,86 +32,86 @@ const allOn  :shoot = { turn: 'on',  questions: 'all' },
 
 
 export const turnQuestionsOnOff_tree =
-    node(rootRE, [
-        node(turnRE, [
+    node(root, [
+        node(turn, [
 
             //turn
-            node(onRE, turnOnBranch = [
-                node(allRE, [
-                    node(questionRE, [], allOn as shoot),
+            node(on, turnOnBranch = [
+                node(all, [
+                    node(question, [], allOn as shoot),
                 ]),
-                node(questionRE, [
-                    node(digitRE, [SELF], someOn as shoot)
+                node(question, [
+                    node(digit, [SELF], someOn as shoot)
                 ]),
-                node(digitRE, [
-                    node(questionRE, [
-                        node(digitRE, [SELF], someOn as shoot)
+                node(digit, [
+                    node(question, [
+                        node(digit, [SELF], someOn as shoot)
                     ], someOn as shoot),
                     SELF
                 ])
             ]),
 
             //turn
-            node(offRE, turnOffBranch = [
-                node(allRE, [
-                    node(questionRE, [], allOff as shoot),
+            node(off, turnOffBranch = [
+                node(all, [
+                    node(question, [], allOff as shoot),
                 ]),
-                node(questionRE, [
-                    node(digitRE, [SELF], someOff as shoot)
+                node(question, [
+                    node(digit, [SELF], someOff as shoot)
                 ]),
-                node(digitRE, [
-                    node(questionRE, [
-                        node(digitRE, [SELF], someOff as shoot)
+                node(digit, [
+                    node(question, [
+                        node(digit, [SELF], someOff as shoot)
                     ], someOff as shoot),
                     SELF
                 ])
             ]),
 
             //turn
-            node(allRE, [
-                node(questionRE, [
-                    node(onRE,  [], allOn as shoot),
-                    node(offRE, [], allOff as shoot),
+            node(all, [
+                node(question, [
+                    node(on,  [], allOn as shoot),
+                    node(off, [], allOff as shoot),
                 ]),
             ]),
 
             //turn
-            node(questionRE, [
-                node(onRE,  [
-                    node(digitRE, [SELF], someOn as shoot)
+            node(question, [
+                node(on,  [
+                    node(digit, [SELF], someOn as shoot)
                 ]),
-                node(offRE, [
-                    node(digitRE, [SELF],someOff as shoot)
+                node(off, [
+                    node(digit, [SELF],someOff as shoot)
                 ]),
-                node(digitRE, [
-                    node(onRE,  [], someOn as shoot),
-                    node(offRE, [],someOff as shoot),
+                node(digit, [
+                    node(on,  [], someOn as shoot),
+                    node(off, [],someOff as shoot),
                     SELF
                 ])
             ]),
 
             //turn
-            node(digitRE, [
-                node(onRE, [
-                    node(questionRE, [
-                        node(digitRE, [SELF], someOn as shoot)
+            node(digit, [
+                node(on, [
+                    node(question, [
+                        node(digit, [SELF], someOn as shoot)
                     ], someOn as shoot),
-                    node(digitRE, [PARENTs_CHILDREN])
+                    node(digit, [PARENTs_CHILDREN])
                 ]),
-                node(offRE, [
-                    node(questionRE, [
-                        node(digitRE, [SELF],someOff as shoot)
+                node(off, [
+                    node(question, [
+                        node(digit, [SELF],someOff as shoot)
                     ],someOff as shoot),
-                    node(digitRE, [PARENTs_CHILDREN])
+                    node(digit, [PARENTs_CHILDREN])
                 ]),
-                node(questionRE, [
-                    node(onRE,  [
-                        node(digitRE, [SELF], someOn as shoot)
+                node(question, [
+                    node(on,  [
+                        node(digit, [SELF], someOn as shoot)
                     ], someOn as shoot),
-                    node(offRE,  [
-                        node(digitRE, [SELF],someOff as shoot)
+                    node(off,  [
+                        node(digit, [SELF],someOff as shoot)
                     ],someOff as shoot),
-                    node(digitRE, [PARENTs_CHILDREN])
+                    node(digit, [PARENTs_CHILDREN])
                 ]),
                 SELF
             ])
@@ -117,7 +119,7 @@ export const turnQuestionsOnOff_tree =
         ]),
 
         // "enable" and "disable" are treated as "turn on" and "turn off" respectively
-        node(enableRE,  turnOnBranch),
-        node(disableRE, turnOffBranch),
+        node(enable,  turnOnBranch),
+        node(disable, turnOffBranch),
 
     ]);

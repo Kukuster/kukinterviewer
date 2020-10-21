@@ -1,3 +1,71 @@
+<Planned>
+
+• Questions tags handling update:
+When executing addQuestion
+Remove all lines of tags from the question text before trimming.
+When executing removeTagsFromQuestions
+Remove from Tags array and remove a hashtag sign from existing tags in a question text
+
+• Change the setup and the file structure so that the typescript transpiles properly and the transpiled javascript is executed. Make sure I can do a web frontend with React (in TypeScript).
+
+• change matchTrees.inverse test to works not for all the Commands, but only within States.
+
+• change Tags to appear as Tags document ids in a question doc, and all the methods accordingly. Maybe add a method: getTagDocById
+
+• delete the chat document for Kukuster, and make sure the Greet State and the Start Command work properly.
+
+• make addQuestion work as a two-step Command as well (as message prompt).
+«add new question»
+ - «ok, write me a new question text now»
+«what do you know about web?»
+
+• make addQuestion support telegram markdown
+
+• make stuff like, when:
+ - deleting a lot of tags,
+ - deleting a lot of questions,
+ - adding/deleting a lot of tags to/from questions,
+ - enabling/disabling all the questions/tags
+user be asked by a bot "are you sure you want to ...?" before actually executing
+
+• Add support for complex query logic for questionsQuery (and tagsQuery) 
+
+• Implement automatic questions asking with node-cron functionality
+
+• implement searchQuestions and searchTags (maybe just use .execute methods of listQuestions and listTags for them)
+
+• With the new questionsQuery flag ('havingTagsEnabled'), add the following possibilities for the listQuestions matchTree:
+    - lists all questions that are both enabled by question and by all of its tags:
+        - «list questions that are fully enabled»
+    - lists all questions that are disabled only by tags:
+        - «list questions that are disabled by tags»
+        - «list questions some of which tags are disabled»
+        - «list questions that are enabled but disabled by tags»
+        - «list enabled questions that are disabled by tags»
+    - lists all questions that are disabled in any way (either by question or by its tags):
+        - «list questions that won't be asked»
+        - «list questions that I won't be asked»
+        - «list questions that you are not going to ask me»
+        - «list questions that are disabled either by tags or by question»
+
+• When querying questions, make an option to specify several tags with logical "AND"
+ E.g. 
+ - «list questions that tagged both #tag1 and #tag2»
+For this, I want to make questionsQuery support complex query logic
+in a way that mongoDB aggregation works: $match, $and, $or operators.
+So that it can be further extended to support such queries:
+ - «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
+ - «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
+
+
+• Add data encryption for user data
+
+• implement display methods for all Commands
+
+
+
+<Optional>
+
 • Tests
     - sheet methods
         - addTagsToQuestions
@@ -5,39 +73,24 @@
         - turnQuestionsOnOff
         - getTags
         - turnTagsOnOff
-        - getQuestions (only additional questionsQuery Tags flags: 'any' and 'no')
+        - getQuestions (only additional questionsQuery Tags flags)
 
 
-• Add data encryption for user data, specifically Questions text and tags
+• Extend listTags Command functionality to support querying by qids
 
-• Add a "revert last action" command. For this, i'll have to save data about last executed command in the database, including contents of Questions and etc. to be able to restore it after edition or deletion.
+• Extend functionality of turnQuestionsOnOff tree, allowing more complex requests
+E.g.:
+ - «turn all #web questions off»
+ - «enable all questions from tag #web»
 
-• Add support for attached stuff to be saved with Questions, if user wants a picture, a file or whatever to be attached with a question.
+• Add support for adding other (attached) objects to Question (images, voice, files)
+This may require storing this data in the database and reuploading it to Telegram when asking a question
 
-• questionsQuery:
-    1) Add support for complex query logic.
-        E.g.:
-        - «list questions that are turned on and have either #tag1 and #tag2 or #tag4»
-        - «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
-        For inspiration see mongoDB aggregation: $match, $and, $or operators.
-        or just add an option to specify several tags with logical AND («list questions that tagged both #tag1 and #tag2»)
-    2) add support for specifying qid range
-        E.g.:
-        - «list questions 3-6»
-        - «show me questions from 3 to 6»
+• questionsQuery: add support for specifying qid range
+    E.g.:
+    - «list questions 3-6»
+    - «show me questions from 3 to 6»
 
-• Add support for adding a question with message prompt
-«add new question»
- - «ok, write me a new question text now»
-«what do you know about web?»
+• Add a "revert last action" command.
+For this, i'll have to save data about last executed command in the database, including contents of Questions and etc. to be able to restore it after edition or deletion.
 
-• Add support for adding other objects to question (photos, images, voice)
-
-• Extend functionality of turnQuestionsOnOff tree, allowing more complex request
-E.g.: 
-- «turn all #web questions off»
-- «enable all questions from tag #web»
-
-• Extend listTags Command functionality to read qids and tag string parts (tagsQuery)
-
-• Make questions text support markdown

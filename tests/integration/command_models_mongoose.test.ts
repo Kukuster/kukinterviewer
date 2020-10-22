@@ -1,6 +1,6 @@
-import Command, { IIMessage, Command_prepare, Command_match, Command_execute, Command_display } from "../../core/Command/Command"
+import Command, { IIMessage, Command_prepare, Command_match, Command_execute, Command_display } from "../../src/core/Command/Command"
 import { Message } from "node-telegram-bot-api";
-import mongoose from "../../core/sheet/mongoose";
+import mongoose from "../../src/core/sheet/mongoose";
 import { Document } from "mongoose";
 
 beforeAll(async () => {

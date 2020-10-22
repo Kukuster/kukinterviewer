@@ -1,6 +1,6 @@
-import mongoose, { Mongoose } from "../../core/sheet/mongoose";
-import models from "../../core/sheet/models";
-import { Ichat } from "../../core/sheet/models/ChatModel";
+import mongoose, { Mongoose } from "../../src/core/sheet/mongoose";
+import models from "../../src/core/sheet/models";
+import { Ichat } from "../../src/core/sheet/models/ChatModel";
 
 const ij = process.env.NODE_ENV === 'test'
 

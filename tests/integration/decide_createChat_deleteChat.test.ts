@@ -1,10 +1,10 @@
 import { Message, ChatType } from "node-telegram-bot-api";
-import { decide } from "../../Interpretation/decide";
-import mongoose from "../../core/sheet/mongoose";
-import State from "../../core/State/State";
-import Command, { Command_match, IIMessage, Command_prepare, Command_execute, Command_display } from "../../core/Command/Command";
-import { Ichat } from "../../core/sheet/models/ChatModel";
-import sheet from "../../core/sheet/sheet";
+import { decide } from "../../src/Interpretation/decide";
+import mongoose from "../../src/core/sheet/mongoose";
+import State from "../../src/core/State/State";
+import Command, { Command_match, IIMessage, Command_prepare, Command_execute, Command_display } from "../../src/core/Command/Command";
+import { Ichat } from "../../src/core/sheet/models/ChatModel";
+import sheet from "../../src/core/sheet/sheet";
 
 
 

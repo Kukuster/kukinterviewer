@@ -1,4 +1,4 @@
-import mongoose from "../../core/sheet/mongoose";
+import mongoose from "../../src/core/sheet/mongoose";
 // const mong = mongoose.default;
 
 const ij = process.env.NODE_ENV === 'test'

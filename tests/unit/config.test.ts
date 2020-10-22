@@ -1,5 +1,5 @@
-import * as config      from "../../conf"
-import * as config_json from "../../config.json"
+import * as config      from "../../src/conf"
+import * as config_json from "../../src/config.json"
 
 const ij = process.env.NODE_ENV === 'test';
 

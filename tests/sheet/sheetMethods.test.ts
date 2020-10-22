@@ -1,8 +1,8 @@
-import ChatModel, { Ichat, settingsSet, settingsKey } from "../../core/sheet/models/ChatModel";
-import mongoose from "../../core/sheet/mongoose";
-import sheet from "../../core/sheet/sheet";
-import { Iquestion } from "../../core/sheet/models/QuestionModel";
-import { questionsQuery } from "../../core/sheet/methods/questions/getQuestions";
+import ChatModel, { Ichat, settingsSet, settingsKey } from "../../src/core/sheet/models/ChatModel";
+import mongoose from "../../src/core/sheet/mongoose";
+import sheet from "../../src/core/sheet/sheet";
+import { Iquestion } from "../../src/core/sheet/models/QuestionModel";
+import { questionsQuery } from "../../src/core/sheet/methods/questions/getQuestions";
 
 
 

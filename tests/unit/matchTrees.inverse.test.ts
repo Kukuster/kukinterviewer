@@ -1,57 +1,57 @@
-import { nodeC } from "../../Interpretation/matchTree/node";
-import { Command_match, Command_prepare, IIMessage } from "../../core/Command/Command";
+import { nodeC } from "../../src/Interpretation/matchTree/node";
+import { Command_match, Command_prepare, IIMessage } from "../../src/core/Command/Command";
 
-import { matchTree_testCase } from "../../Interpretation/matchTree/extras/matchTree_testCase.type";
+import { matchTree_testCase } from "../../src/Interpretation/matchTree/extras/matchTree_testCase.type";
 
-import { turnQuestionsOnOff_testCases } from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
-import { turnQuestionsOnOff_tree }      from "../../Interpretation/Commands/turnQuestionsOnOff/matchTree";
-import turnQuestionsOnOff_match         from "../../Interpretation/Commands/turnQuestionsOnOff/match";
-import turnQuestionsOnOff_prepare       from "../../Interpretation/Commands/turnQuestionsOnOff/prepare";
+import { turnQuestionsOnOff_testCases } from "../../src/Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
+import { turnQuestionsOnOff_tree }      from "../../src/Interpretation/Commands/turnQuestionsOnOff/matchTree";
+import turnQuestionsOnOff_match         from "../../src/Interpretation/Commands/turnQuestionsOnOff/match";
+import turnQuestionsOnOff_prepare       from "../../src/Interpretation/Commands/turnQuestionsOnOff/prepare";
 
-import { start_testCases } from "../../Interpretation/Commands/start/matchTree_testCases";
-import { start_tree } from "../../Interpretation/Commands/start/matchTree";
-import start_match from "../../Interpretation/Commands/start/match";
-import start_prepare from "../../Interpretation/Commands/start/prepare";
+import { start_testCases } from "../../src/Interpretation/Commands/start/matchTree_testCases";
+import { start_tree } from "../../src/Interpretation/Commands/start/matchTree";
+import start_match from "../../src/Interpretation/Commands/start/match";
+import start_prepare from "../../src/Interpretation/Commands/start/prepare";
 
-import { addQuestion_testCases } from "../../Interpretation/Commands/addQuestion/matchTree_testCases";
-import { addQuestion_tree } from "../../Interpretation/Commands/addQuestion/matchTree";
-import addQuestion_match from "../../Interpretation/Commands/addQuestion/match";
-import addQuestion_prepare from "../../Interpretation/Commands/addQuestion/prepare";
+import { addQuestion_testCases } from "../../src/Interpretation/Commands/addQuestion/matchTree_testCases";
+import { addQuestion_tree } from "../../src/Interpretation/Commands/addQuestion/matchTree";
+import addQuestion_match from "../../src/Interpretation/Commands/addQuestion/match";
+import addQuestion_prepare from "../../src/Interpretation/Commands/addQuestion/prepare";
 
-import { addTagsToQuestions_testCases } from "../../Interpretation/Commands/addTagsToQuestions/matchTree_testCases";
-import { addTagsToQuestions_tree } from "../../Interpretation/Commands/addTagsToQuestions/matchTree";
-import addTagsToQuestions_match from "../../Interpretation/Commands/addTagsToQuestions/match";
-import addTagsToQuestions_prepare from "../../Interpretation/Commands/addTagsToQuestions/prepare";
+import { addTagsToQuestions_testCases } from "../../src/Interpretation/Commands/addTagsToQuestions/matchTree_testCases";
+import { addTagsToQuestions_tree } from "../../src/Interpretation/Commands/addTagsToQuestions/matchTree";
+import addTagsToQuestions_match from "../../src/Interpretation/Commands/addTagsToQuestions/match";
+import addTagsToQuestions_prepare from "../../src/Interpretation/Commands/addTagsToQuestions/prepare";
 
-import { askMeAQuestion_testCases } from "../../Interpretation/Commands/askMeAQuestion/matchTree_testCases";
-import { askMeAQuestion_tree } from "../../Interpretation/Commands/askMeAQuestion/matchTree";
-import askMeAQuestion_match from "../../Interpretation/Commands/askMeAQuestion/match";
-import askMeAQuestion_prepare from "../../Interpretation/Commands/askMeAQuestion/prepare";
+import { askMeAQuestion_testCases } from "../../src/Interpretation/Commands/askMeAQuestion/matchTree_testCases";
+import { askMeAQuestion_tree } from "../../src/Interpretation/Commands/askMeAQuestion/matchTree";
+import askMeAQuestion_match from "../../src/Interpretation/Commands/askMeAQuestion/match";
+import askMeAQuestion_prepare from "../../src/Interpretation/Commands/askMeAQuestion/prepare";
 
-import { deleteQuestions_testCases } from "../../Interpretation/Commands/deleteQuestions/matchTree_testCases";
-import { deleteQuestions_tree } from "../../Interpretation/Commands/deleteQuestions/matchTree";
-import deleteQuestions_match from "../../Interpretation/Commands/deleteQuestions/match";
-import deleteQuestions_prepare from "../../Interpretation/Commands/deleteQuestions/prepare";
+import { deleteQuestions_testCases } from "../../src/Interpretation/Commands/deleteQuestions/matchTree_testCases";
+import { deleteQuestions_tree } from "../../src/Interpretation/Commands/deleteQuestions/matchTree";
+import deleteQuestions_match from "../../src/Interpretation/Commands/deleteQuestions/match";
+import deleteQuestions_prepare from "../../src/Interpretation/Commands/deleteQuestions/prepare";
 
-import { listQuestions_testCases } from "../../Interpretation/Commands/listQuestions/matchTree_testCases";
-import { listQuestions_tree } from "../../Interpretation/Commands/listQuestions/matchTree";
-import listQuestions_match from "../../Interpretation/Commands/listQuestions/match";
-import listQuestions_prepare from "../../Interpretation/Commands/listQuestions/prepare";
+import { listQuestions_testCases } from "../../src/Interpretation/Commands/listQuestions/matchTree_testCases";
+import { listQuestions_tree } from "../../src/Interpretation/Commands/listQuestions/matchTree";
+import listQuestions_match from "../../src/Interpretation/Commands/listQuestions/match";
+import listQuestions_prepare from "../../src/Interpretation/Commands/listQuestions/prepare";
 
-import { removeTagsFromQuestions_testCases } from "../../Interpretation/Commands/removeTagsFromQuestions/matchTree_testCases";
-import { removeTagsFromQuestions_tree } from "../../Interpretation/Commands/removeTagsFromQuestions/matchTree";
-import removeTagsFromQuestions_match from "../../Interpretation/Commands/removeTagsFromQuestions/match";
-import removeTagsFromQuestions_prepare from "../../Interpretation/Commands/removeTagsFromQuestions/prepare";
+import { removeTagsFromQuestions_testCases } from "../../src/Interpretation/Commands/removeTagsFromQuestions/matchTree_testCases";
+import { removeTagsFromQuestions_tree } from "../../src/Interpretation/Commands/removeTagsFromQuestions/matchTree";
+import removeTagsFromQuestions_match from "../../src/Interpretation/Commands/removeTagsFromQuestions/match";
+import removeTagsFromQuestions_prepare from "../../src/Interpretation/Commands/removeTagsFromQuestions/prepare";
 
-import { listTags_testCases } from "../../Interpretation/Commands/listTags/matchTree_testCases";
-import { listTags_tree } from "../../Interpretation/Commands/listTags/matchTree";
-import listTags_match from "../../Interpretation/Commands/listTags/match";
-import listTags_prepare from "../../Interpretation/Commands/listTags/prepare";
+import { listTags_testCases } from "../../src/Interpretation/Commands/listTags/matchTree_testCases";
+import { listTags_tree } from "../../src/Interpretation/Commands/listTags/matchTree";
+import listTags_match from "../../src/Interpretation/Commands/listTags/match";
+import listTags_prepare from "../../src/Interpretation/Commands/listTags/prepare";
 
-import { turnTagsOnOff_testCases } from "../../Interpretation/Commands/turnTagsOnOff/matchTree_testCases";
-import { turnTagsOnOff_tree } from "../../Interpretation/Commands/turnTagsOnOff/matchTree";
-import turnTagsOnOff_match from "../../Interpretation/Commands/turnTagsOnOff/match";
-import turnTagsOnOff_prepare from "../../Interpretation/Commands/turnTagsOnOff/prepare";
+import { turnTagsOnOff_testCases } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree_testCases";
+import { turnTagsOnOff_tree } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree";
+import turnTagsOnOff_match from "../../src/Interpretation/Commands/turnTagsOnOff/match";
+import turnTagsOnOff_prepare from "../../src/Interpretation/Commands/turnTagsOnOff/prepare";
 
 
 

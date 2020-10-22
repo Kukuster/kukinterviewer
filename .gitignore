@@ -9,8 +9,6 @@
 /*.env
 
 **/*.log
-./package.json
-./docker-compose.yml
 ./kukinterviewer_docker
 
 .now
@@ -19,3 +17,5 @@
 
 **/*.tmp
 **/*.tmp.*
+
+dist/

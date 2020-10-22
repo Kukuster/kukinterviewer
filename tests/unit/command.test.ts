@@ -1,8 +1,8 @@
-import Command, { IIMessage } from "../../core/Command/Command";
-import default_match   from "../../core/Command/default_methods/match";
-import default_prepare from "../../core/Command/default_methods/prepare";
-import default_execute from "../../core/Command/default_methods/execute";
-import default_display from "../../core/Command/default_methods/display";
+import Command, { IIMessage } from "../../src/core/Command/Command";
+import default_match   from "../../src/core/Command/default_methods/match";
+import default_prepare from "../../src/core/Command/default_methods/prepare";
+import default_execute from "../../src/core/Command/default_methods/execute";
+import default_display from "../../src/core/Command/default_methods/display";
 import { Message } from "node-telegram-bot-api";
 
 

@@ -2,6 +2,7 @@ import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestio
 import { questionsQueryShoot } from "./questionsQueryShoot.type";
 import { treeStep } from "../walk";
 import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
+import parseQids from "./parseQids";
 
 /**
  * 
@@ -72,23 +73,10 @@ export function passedTree_to_QuestionsQuery(path: treeStep[]): questionsQuery |
             qids = [];
 
             stringDigits.forEach(sD => {
-                let int = parseInt(sD);
+                const int = parseQids(sD);
 
-                if (!int) {
-                    //if parseInt fails us, we can do better
-                    sD = sD.replace(/\D/g, ' ');
-                    const parsedDigits = sD.match(digit);
-                    if (parsedDigits) {
-                        parsedDigits.forEach(pD => {
-                            int = parseInt(pD);
-                            int ? qids.push(int) : null;
-                        })
-                    }
-
-                } else {
-                    qids.push(int)
-                }
-
+                int &&
+                    qids.push.apply(qids, int);
             });
 
             if (qids.length) {

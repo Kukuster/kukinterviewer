@@ -3,6 +3,7 @@ import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
+import parseQids from "../../matchTree/extras/parseQids";
 
 
 export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeStep[]): Promise<questionsQuery> {
@@ -28,8 +29,8 @@ export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeS
 
         let qids: number[] = [];
         stringDigits.forEach(sD => {
-            const int = parseInt(sD);
-            int ? qids.push(int) : '';
+            const int = parseQids(sD);
+            int ? qids.push.apply(qids,int) : '';
         });
 
         if (qids.length > 0){

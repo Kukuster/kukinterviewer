@@ -25,6 +25,12 @@ export const addTagsToQuestions_testCases: addTagsToQuestions_testCase[] = [
         qids: [3],
         Tags: ['tag1','tag2']
      } },
+    { m: "add tag #smalltalk to question #30",                                             res: { 
+        qids: [30],
+        Tags: ['smalltalk']
+     } },
+
+    // ""
 
     // add -> # -> all -> questions
     { m: "add #tag1 to all questions ",                                                    res: { 

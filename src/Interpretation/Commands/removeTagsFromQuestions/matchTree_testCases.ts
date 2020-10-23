@@ -31,6 +31,10 @@ export const removeTagsFromQuestions_testCases: removeTagsFromQuestions_testCase
         qids: [3, 4, 5],
         Tags: 'all'
      } },
+    { m: "remove all tags from questions #3, 4, 5 ",                                       res: { 
+        qids: [3, 4, 5],
+        Tags: 'all'
+     } },
 
     // untag -> all -> questions
     { m: "untag all questions",                                                            res: { 

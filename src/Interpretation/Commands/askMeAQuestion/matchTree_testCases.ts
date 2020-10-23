@@ -188,6 +188,10 @@ export const askMeAQuestion_testCases: askMeAQuestion_testCase[] = [
         qids: [3],
         random: true
      } },
+    { m: "question #3",                                                                    res: { 
+        qids: [3],
+        random: true
+     } },
 
     // dig -> question
     { m: "3rd question ",                                                                  res: { 

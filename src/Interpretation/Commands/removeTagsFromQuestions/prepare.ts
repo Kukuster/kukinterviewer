@@ -1,8 +1,8 @@
 import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
-import { uniquifyArray } from "../../../core/misc";
 import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
+import parseQids from "../../matchTree/extras/parseQids";
 
 
 export default async function removeTagsFromQuestions_prepare (msg: IIMessage, path: treeStep[])
@@ -56,8 +56,8 @@ export default async function removeTagsFromQuestions_prepare (msg: IIMessage, p
 
         let qids: number[] = [];
         stringDigits.forEach(sD => {
-            const int = parseInt(sD);
-            int ? qids.push(int) : '';
+            const int = parseQids(sD);
+            int ? qids.push.apply(qids,int) : '';
         });
 
 

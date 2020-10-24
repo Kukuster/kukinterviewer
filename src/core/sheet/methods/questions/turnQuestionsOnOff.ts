@@ -81,8 +81,8 @@ export default async function turnQuestionsOnOff(chatId: number, qids: number[] 
             hasChanges: true,
             qidsAffected: qidsAffected,
             qidsUnaffected: qidsUnaffected
-        }
+        };
 
     });
 
-}
+};

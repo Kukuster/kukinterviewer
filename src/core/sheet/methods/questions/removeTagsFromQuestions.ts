@@ -108,4 +108,4 @@ export default async function removeTagsFromQuestions(chatId: number, Tags: stri
 
     }); // return queryChat
 
-}
+};

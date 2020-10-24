@@ -106,4 +106,4 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
     });
 
 
-}
+};

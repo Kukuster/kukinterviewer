@@ -107,5 +107,5 @@ export default async function turnTagsOnOff(chatId: number, Tags: string[] | 'al
 
     }); //return queryChat
 
-}
+};
 

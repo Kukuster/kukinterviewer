@@ -26,20 +26,20 @@ export default async function deleteQuestions(chatId: number, questions: number[
 
             if (typeof questions === 'number') {
                 questions = [questions];
-            }
+            };
             if (Array.isArray(questions)) {
                 // a way to Array.prototype.filter(), except this rewrites existing array instead of returning new
                 for (var i = last; i >= 0; --i) {
                     if (questions.includes(chat.Questions[i].qid)) {
                         deletedQuestions.push(chat.Questions[i]);
                         chat.Questions.splice(i, 1);
-                    }
-                }
-            }
+                    };
+                };
+            };
             if (questions === 'all') {
                 deletedQuestions = chat.Questions;
                 chat.Questions = [];
-            }
+            };
 
         };
 
@@ -48,4 +48,4 @@ export default async function deleteQuestions(chatId: number, questions: number[
     });
 
 
-}
+};

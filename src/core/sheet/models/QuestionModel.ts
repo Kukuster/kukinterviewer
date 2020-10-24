@@ -9,7 +9,7 @@ export interface Iquestion extends Document {
     questionText: string,
     enabled: boolean,
     Tags: string[]
-}
+};
 
 
 export const questionSchema = new Schema({
@@ -24,7 +24,7 @@ export const questionSchema = new Schema({
     questionText:   { type: String,  required: true},
     enabled:        { type: Boolean, required: true},
     Tags:           { type: [String],required: true}
-})
+});
 
 
 export default model<Iquestion>('Question', questionSchema);

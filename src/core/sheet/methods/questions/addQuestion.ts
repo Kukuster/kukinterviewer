@@ -3,6 +3,7 @@ import QuestionModel from "../../models/QuestionModel";
 import mongoose from "../../mongoose";
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
+import TagModel from "../../models/TagModel";
 
 /**
  * 
@@ -48,10 +49,12 @@ export default async function addQuestion(chatId: number, question: { questionTe
                 if (!chatTags.some(t => t.str === questionTags[i]) ){
                 // if a new question's tag is absent in the Tags list
                     // add a new Tag
-                    chatTags.push({
+                    const newTag = new TagModel({
+                        _id: new DBconnection.Types.ObjectId(),
                         str: questionTags[i],
                         enabled: true
                     });
+                    chatTags.push(newTag);
                 };
             };
         };
@@ -64,6 +67,6 @@ export default async function addQuestion(chatId: number, question: { questionTe
         return chat;
     });
 
-}
+};
 
 

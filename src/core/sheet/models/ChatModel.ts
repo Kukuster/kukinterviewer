@@ -2,6 +2,7 @@
 
 import {Document, Schema, model} from "mongoose";
 import { Iquestion, questionSchema } from "./QuestionModel";
+import { Itag, tagSchema } from "./TagModel";
 
 
 
@@ -24,10 +25,7 @@ export interface Ichat extends Document {
     chatId: number;
     Questions?: Iquestion[];
     lastqid?: number;
-    Tags?: {
-        str: string,
-        enabled: boolean
-    }[];
+    Tags?: Itag[];
     Pending_to_delete?: {
         msg_id: Schema.Types.ObjectId,
         delete_time: Date
@@ -42,7 +40,7 @@ export interface Ichat extends Document {
     running?: boolean;
     state: string;
     Schedule?: { qid: number, datetime: Date }
-}
+};
 
 
 const chatSchema = new Schema({
@@ -55,10 +53,7 @@ const chatSchema = new Schema({
         required: false
     },
     Tags: {
-        type: [{
-            str: String,
-            enabled: Boolean
-        }],
+        type: [tagSchema],
         required: false },
     Pending_to_delete: { 
         type: [{
@@ -92,7 +87,7 @@ const chatSchema = new Schema({
         },
         required: false
     }
-})
+});
 
 
 export default model<Ichat>('Chat', chatSchema);

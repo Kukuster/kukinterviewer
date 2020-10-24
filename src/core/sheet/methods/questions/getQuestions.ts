@@ -106,7 +106,7 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
                 query.questionTextParts.forEach(s => {
                     if (s){
                         questionTextRegexps.push(new RegExp(s, 'i'));
-                    }
+                    };
                 });
 
                 if (questionTextRegexps.length > 0){

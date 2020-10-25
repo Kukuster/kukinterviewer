@@ -1,11 +1,5 @@
 <Planned>
 
-• Questions tags handling update:
-When executing addQuestion
-Remove all lines of tags from the question text before trimming.
-When executing removeTagsFromQuestions
-Remove from Tags array and remove a hashtag sign from existing tags in a question text
-
 • Change the setup and the file structure so that the typescript transpiles properly and the transpiled javascript is executed. Make sure I can do a web frontend with React (in TypeScript).
 
 • change matchTrees.inverse test to works not for all the Commands, but only within States.

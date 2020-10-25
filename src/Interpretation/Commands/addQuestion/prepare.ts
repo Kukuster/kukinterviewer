@@ -90,12 +90,15 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
     };
 
     
-    // trims any trailing and leading whitespace
-    questionText = questionText.trim();
-
     // parse Tags from the question text
     Tags = Tags.concat(parseTags(questionText) || []);
     Tags = uniquifyArray(Tags);
+    
+    // removes lines that contain only tags from the questionText
+    questionText = questionText.replace(/^((\s)*|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))*)*$/gm, '');
+    // trims any trailing and leading whitespace
+    questionText = questionText.trim();
+
 
 
     return { questionText: questionText, Tags: Tags?.length ? Tags : undefined };

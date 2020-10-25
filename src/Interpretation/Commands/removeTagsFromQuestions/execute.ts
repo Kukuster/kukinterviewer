@@ -8,7 +8,7 @@ export default async function removeTagsFromQuestions_execute(msg: IIMessage, ar
 
     return {
         request: args,
-        response: await removeTagsFromQuestions(chatId, args.Tags, args.qids)
+        response: await removeTagsFromQuestions(chatId, args.Tags, args.qids, true)
     };
 
 };

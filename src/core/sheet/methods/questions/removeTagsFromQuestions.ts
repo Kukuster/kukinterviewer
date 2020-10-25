@@ -25,7 +25,7 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function removeTagsFromQuestions(chatId: number, Tags: string[] | 'all', qids: number[] | 'all')
+export default async function removeTagsFromQuestions(chatId: number, Tags: string[] | 'all', qids: number[] | 'all', correctQuestionText: boolean)
 {
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
@@ -79,6 +79,12 @@ export default async function removeTagsFromQuestions(chatId: number, Tags: stri
 
                     // remove a tag from a question
                     q.Tags.splice(tag_i, 1);
+
+                    // if choosen so, remove hashtag sign from tags inside the questionText as well
+                    if (correctQuestionText){
+                        const qInChat = chatQuestions.find(chatQ => q.qid === chatQ.qid)!;
+                        qInChat.questionText = qInChat.questionText.replace('#'+validatedTags[i], validatedTags[i]);
+                    };
 
                 };
             };            

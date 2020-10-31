@@ -9,9 +9,11 @@ import State from "./core/State/State";
 import States from "./Interpretation/States"
 import greetState from "./Interpretation/States/greet";
 import mongoose from "./core/sheet/mongoose";
+import server from "./server";
 
 
 mongoose.dbPromise;
+server;
 
 bot.on("polling_error", (err) => console.log(err));
 

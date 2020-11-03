@@ -9,9 +9,14 @@
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended"
     ],
-    // "rules": {
-    //     "no-undef": 1
-    // },
+    "rules": {
+        "no-undef": 1,
+        "no-extra-semi": 1,
+        "@typescript-eslint/no-extra-semi": 1,
+        "prefer-const": 1,
+        "no-cond-assign": 0,
+        "no-unused-labels": 1
+    },
     "env": {
         "node": true
     }

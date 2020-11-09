@@ -1,10 +1,23 @@
 import Command, { IIMessage } from "../../src/core/Command/Command";
-import default_match   from "../../src/core/Command/default_methods/match";
-import default_prepare from "../../src/core/Command/default_methods/prepare";
-import default_execute from "../../src/core/Command/default_methods/execute";
-import default_display from "../../src/core/Command/default_methods/display";
-import { Message } from "node-telegram-bot-api";
 
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////             Test data            ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+const telegram_msg_mock: IIMessage = {
+    text: '',
+    message_id: 222222222,
+    date: 333333333,
+    chat: {
+        id: 444444444,
+        type: 'private'
+    }
+
+};
 
 const dummyMatch = async function (this: Command<any,any,any>, msg: IIMessage) {
     //msg.text.match('');
@@ -20,12 +33,12 @@ const dummyMatch = async function (this: Command<any,any,any>, msg: IIMessage) {
 const dummyPrepare = async function (this: Command<any,any,any>, msg: IIMessage, match: RegExpMatchArray) {
     //msg.text;
 
-    return new Promise<object>((resolve, reject) => {
+    return new Promise<Record<string, any>>((resolve, reject) => {
         resolve({kek: 'lel'});
     });
 };
 
-const dummyExecute = async function (this: Command<any,any,any>, msg: IIMessage, args: object) {
+const dummyExecute = async function (this: Command<any,any,any>, msg: IIMessage, args: Record<string, any>) {
     //msg.text;
 
     return new Promise<string>((resolve, _) => {
@@ -45,35 +58,33 @@ const dummyDisplay = async function (this: Command<any,any,any>, msg: IIMessage,
 };
 
 
-const dummyCommand2 = new Command(dummyMatch, dummyPrepare, dummyExecute, dummyDisplay);
+const dummyCommand = new Command(dummyMatch, dummyPrepare, dummyExecute, dummyDisplay);
 
-test('Command, custom_methods -> ', () => {
-    expect(dummyCommand2.match)  .toBe(dummyMatch);
-    expect(dummyCommand2.prepare).toBe(dummyPrepare);
-    expect(dummyCommand2.execute).toBe(dummyExecute);
-    expect(dummyCommand2.display).toBe(dummyDisplay);
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////   Tested calculations & results  ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+
+test('Command is constructed properly with its methods', () => {
+    expect(dummyCommand.match)  .toBe(dummyMatch);
+    expect(dummyCommand.prepare).toBe(dummyPrepare);
+    expect(dummyCommand.execute).toBe(dummyExecute);
+    expect(dummyCommand.display).toBe(dummyDisplay);
 });
 
 
-
-const telegram_msg_mock: Message = {
-    text: '',
-    message_id: 222222222,
-    date: 333333333,
-    chat: {
-        id: 444444444,
-        type: 'private'
-    }
-
-};
-
-
-test('Command, custom command run', async (done) => {
-    const match = await dummyCommand2.match(telegram_msg_mock);
+test('Command methods run properly', async (done) => {
+    const match = await dummyCommand.match(telegram_msg_mock);
     if (!match) { return; }
-    const args  = await dummyCommand2.prepare(telegram_msg_mock, match);
-    const resp  = await dummyCommand2.execute(telegram_msg_mock, args);
-    const _     = await dummyCommand2.display(telegram_msg_mock, resp);
+    const args  = await dummyCommand.prepare(telegram_msg_mock, match);
+    const resp  = await dummyCommand.execute(telegram_msg_mock, args);
+    const _     = await dummyCommand.display(telegram_msg_mock, resp);
     done();
     return;
 });

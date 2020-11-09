@@ -1,5 +1,5 @@
-import * as config      from "../../src/conf"
-import * as config_json from "../../src/config.json"
+import * as config      from "../../src/conf";
+import * as config_json from "../../src/config.json";
 
 const ij = process.env.NODE_ENV === 'test';
 
@@ -25,7 +25,7 @@ if (ij){
             + config_json.db_name.default
         );
         //console.log(config.app_url_mongo);
-    })
+    });
 
 } else {
 

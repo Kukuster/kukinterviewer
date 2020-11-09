@@ -1,8 +1,5 @@
 'use strict';
 
-import default_match   from "./default_methods/match";
-import default_prepare from "./default_methods/prepare";
-import default_execute from "./default_methods/execute";
 import default_display from "./default_methods/display";
 import { EventEmitter } from "events";
 import { Model, Document } from "mongoose";
@@ -100,10 +97,10 @@ export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand{
             execute:  Command_execute<ArgsExec,ArgsDisp>,
             display?: Command_display<ArgsDisp>
         ){
-        this.match   = match   //? match   : default_match;
-        this.prepare = prepare //? prepare : default_prepare;
-        this.execute = execute //? execute : default_execute;
-        this.display = display ? display : default_display;
+        this.match   = match;
+        this.prepare = prepare;
+        this.execute = execute;
+        this.display = display ? display : Command.default_display;
     }
 
 
@@ -115,6 +112,6 @@ export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand{
     
     public static bot: EventEmitter;
 
-
+    public static default_display: Command_display<any> = default_display;
 
 }

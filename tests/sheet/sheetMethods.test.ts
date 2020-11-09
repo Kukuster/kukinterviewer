@@ -1,5 +1,5 @@
 import ChatModel, { Ichat, settingsSet, settingsKey } from "../../src/core/sheet/models/ChatModel";
-import mongoose from "../../src/core/sheet/mongoose";
+import mongoose, { DBconnection } from "../../src/core/sheet/mongoose";
 import sheet from "../../src/core/sheet/sheet";
 import { Iquestion } from "../../src/core/sheet/models/QuestionModel";
 import { questionsQuery } from "../../src/core/sheet/methods/questions/getQuestions";
@@ -14,7 +14,7 @@ import { questionsQuery } from "../../src/core/sheet/methods/questions/getQuesti
 
 
 //const chatId = 231079996;
-var chatId = 1729;
+let chatId = 1729;
 
 const args: number[] | 'all' = [2];
 
@@ -118,8 +118,10 @@ const deleteQuestionsArgs: (number | number[] | 'all')[] = [
 
 
 
-var DBconnection: typeof import("mongoose"),
-    chatDocId: any,
+
+///// Variables that hold calculation results /////
+
+let chatDocId: any,
     
     createChatResult: Ichat,
 
@@ -148,14 +150,14 @@ var DBconnection: typeof import("mongoose"),
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-/////////// Perform all queries, gather data ///////////
+///////////      Run tested calculations     ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
 
 beforeAll(async () => {
 
-    DBconnection = await mongoose.dbPromise;
+    await DBconnection;
 
     // find unused chatId
     try{
@@ -272,7 +274,7 @@ beforeAll(async () => {
     deleteChatResult = await sheet.deleteChat(chatId);
 
 
-    return await DBconnection.disconnect();
+    return await (await DBconnection).disconnect();
 
 }); // beforeAll
 
@@ -283,7 +285,7 @@ beforeAll(async () => {
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////        Test gathered data        ///////////
+///////////          Testing results         ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 

@@ -49,7 +49,7 @@ import turnTagsOnOff_prepare from "../../src/Interpretation/Commands/turnTagsOnO
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////          Test Commands           ///////////
+///////////         Tested Commands          ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
@@ -136,7 +136,7 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////             Test Kit             ///////////
+///////////    Test Kit (data & functions)   ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
@@ -149,7 +149,7 @@ const mock_telegram_message = (messageText: string): IIMessage => ({
         id: 444444444,
         type: 'private'
     }
-})
+});
 
 
 async function match_prepare<PrepArgs, ExecArgs>(msg: IIMessage, matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs, ExecArgs>) {
@@ -158,12 +158,12 @@ async function match_prepare<PrepArgs, ExecArgs>(msg: IIMessage, matchfunc: Comm
 }
 
 
-export async function traverseAllTestCases<PrepArgs, ExecArgs>(tree: nodeC, test_cases: matchTree_testCase[], matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs, ExecArgs>) {
+async function traverseAllTestCases<PrepArgs, ExecArgs>(tree: nodeC, test_cases: matchTree_testCase[], matchfunc: Command_match<PrepArgs>, prepfunc: Command_prepare<PrepArgs, ExecArgs>) {
 
     return Promise.all(test_cases.map((testCase) => {
         const m = testCase.m;
         return match_prepare(mock_telegram_message(m), matchfunc, prepfunc);
-    }))
+    }));
 
 }
 
@@ -173,7 +173,7 @@ export async function traverseAllTestCases<PrepArgs, ExecArgs>(tree: nodeC, test
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////                Run               ///////////
+///////////      Run tested calculations     ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
@@ -185,7 +185,7 @@ const Cs_got_res: { [key: string]: any[] } = {
 beforeAll(async () => {
     for (const c in Cs) {
         Cs_got_res[c] = await traverseAllTestCases(Cs[c].tree, Cs[c].testCases, Cs[c].matchfunc, Cs[c].prepfunc);
-    };
+    }
 });
 
 
@@ -193,7 +193,7 @@ beforeAll(async () => {
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////             Run Test             ///////////
+///////////          Testing results         ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
@@ -214,5 +214,5 @@ for (const c in Cs) {
 
     }
 
-};
+}
 

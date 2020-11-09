@@ -1,6 +1,6 @@
 import { Message, ChatType } from "node-telegram-bot-api";
 import { decide } from "../../src/Interpretation/decide";
-import mongoose from "../../src/core/sheet/mongoose";
+import { DBconnection } from "../../src/core/sheet/mongoose";
 import State from "../../src/core/State/State";
 import Command, { Command_match, IIMessage, Command_prepare, Command_execute, Command_display } from "../../src/core/Command/Command";
 import { Ichat } from "../../src/core/sheet/models/ChatModel";
@@ -8,27 +8,15 @@ import sheet from "../../src/core/sheet/sheet";
 
 
 
-beforeAll(async () => {
-    // console.log('executing beforeAll');
-    return await mongoose.dbPromise;
-})
-
-afterAll(async () => {
-    // console.log('executing afterAll');
-    const disconnect = await (await mongoose.dbPromise).disconnect();
-    return disconnect;
-})
-
-
-
-
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////      Telegram message mock       ///////////
+///////////             Test data            ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
+
+///// TELEGRAM MESSAGE MOCK /////
 
 const chatId = 1000;
 const chat_mock = {
@@ -40,7 +28,7 @@ const user_mock = {
     id: 1111,
     first_name: 'TelegramMockMessage_User',
     is_bot: true
-}
+};
 
 const telegram_msg_mock: Message = {
     text: 'Hi!',
@@ -62,12 +50,7 @@ const telegram_msg2_mock: Message = {
 
 
 
-////////////////////////////////////////////////////////
-///////////                                  ///////////
-///////////        createChat COMMAND        ///////////
-///////////                                  ///////////
-////////////////////////////////////////////////////////
-
+///// createChat COMMAND /////
 
 type createChatExecArgs = { chatId: number };
 type createChatDispArgs = { result?: Ichat, error?: any, reply: string };
@@ -78,14 +61,14 @@ const createChatMatch: Command_match<RegExpMatchArray>
     // console.log('createChat: Match');
     const message = msg.text;
     return message?.match(/(hi|hello)[\s\S]*/i);
-}
+};
 
 
 const createChatPrepare: Command_prepare<RegExpMatchArray, createChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('createChat: Prepare');
     return { 'chatId': msg.chat.id };
-}
+};
 
 
 const createChatExecute: Command_execute<createChatExecArgs, createChatDispArgs> 
@@ -118,7 +101,7 @@ This command should not be available for those who already started!`);
         }
     }
 
-} // createChatExecute
+}; // createChatExecute
 
 
 const createChatDisplay: Command_display<createChatDispArgs>
@@ -127,7 +110,7 @@ const createChatDisplay: Command_display<createChatDispArgs>
 
     return response;
 
-} 
+};
 
 
 /**
@@ -142,12 +125,7 @@ const createChat = new Command(createChatMatch, createChatPrepare, createChatExe
 
 
 
-
-////////////////////////////////////////////////////////
-///////////                                  ///////////
-///////////        deleteChat COMMAND        ///////////
-///////////                                  ///////////
-////////////////////////////////////////////////////////
+///// deleteChat COMMAND /////
 
 
 type deleteChatExecArgs = { chatId: number };
@@ -166,14 +144,14 @@ const deleteChatMatch: Command_match<RegExpMatchArray>
     // console.log('deleteChat: Match');
     const message = msg.text;
     return message?.match(/(forget)[\s]*(me)[\s]*(forever)[\s\S]*/i);
-}
+};
 
 
 const deleteChatPrepare: Command_prepare<RegExpMatchArray, deleteChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('deleteChat: Prepare');
     return { 'chatId': msg.chat.id };
-}
+};
 
 
 const deleteChatExecute: Command_execute<deleteChatExecArgs, deleteChatDispArgs> 
@@ -204,10 +182,10 @@ This command should not be available for those who didn't start!`);
             error: e,
             reply: `Something went wrong when i tried to forget you... Maybe you are unforgettable :)
 Sorry for that, you can try again later`
-        }
+        };
     }
 
-} // deleteChatExecute
+}; // deleteChatExecute
 
 
 const deleteChatDisplay: Command_display<deleteChatDispArgs>
@@ -216,7 +194,7 @@ const deleteChatDisplay: Command_display<deleteChatDispArgs>
 
     return response;
 
-} 
+};
 
 
 /**
@@ -230,12 +208,7 @@ const deleteChat = new Command(deleteChatMatch, deleteChatPrepare, deleteChatExe
 
 
 
-////////////////////////////////////////////////////////
-///////////                                  ///////////
-///////////              STATES              ///////////
-///////////                                  ///////////
-////////////////////////////////////////////////////////
-
+///// STATES /////
 
 const greetState = new State('greet', [createChat]);
 const readyState = new State('ready', [deleteChat]);
@@ -245,32 +218,63 @@ const States = [greetState, readyState];
 
 
 
+///// Variables that hold calculation results /////
+
+let resp1: any,
+    resp2: any;
+
+
+
 
 ////////////////////////////////////////////////////////
 ///////////                                  ///////////
-///////////                RUN               ///////////
+///////////      Run tested calculations     ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+
+beforeAll(async () => {
+    await DBconnection;
+
+    resp1 = await decide(telegram_msg_mock,  States, greetState);
+    resp2 = await decide(telegram_msg2_mock, States, greetState);
+
+    return await (await DBconnection).disconnect();
+});
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////          Testing results         ///////////
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
 
 
 
-test('decide_createChat_deleteChat: on greeting', async () => {
-    const resp1 = await decide(telegram_msg_mock, States, greetState);
-
+test('test decide on custom States and Commands: message #1: assumed default State, matched a proper Command, produced proper results and reply', () => {
     expect(resp1.reply).toEqual('Greetings, '+user_mock.first_name+'!');
     expect(resp1.result.chatId).toEqual(chatId);
-    expect(resp1.result.state).toEqual('ready');
-})
+});
 
-test('decide_createChat_deleteChat: on \'forget me!\'', async () => {
-    const resp2 = await decide(telegram_msg2_mock, States, greetState);
-    
+test('test decide on custom States and Commands: message #1: changed State in the DB properly', () => {
+    expect(resp1.result.state).toEqual('ready');
+});
+
+
+
+
+test('test decide on custom States and Commands: message #2: properly read State from the DB, matched a proper Command, produced proper results and reply', () => {
     expect(resp2.reply).toEqual('Goodbye, '+user_mock.first_name+'! I won\'t remebmer you! :(');
+});
+
+test('test decide on custom States and Commands: message #2: affected the DB properly', () => {
     expect(resp2.result.n).toEqual(1);
     expect(resp2.result.ok).toEqual(1);
     expect(resp2.result.deletedCount).toEqual(1);
-})
+});
 
 
 

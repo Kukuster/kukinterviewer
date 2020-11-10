@@ -1,6 +1,6 @@
 'use strict';
 import ChatModel from "../../models/ChatModel";
-import mongoose from "../../mongoose";
+import mongoose, { DBconnection } from "../../mongoose";
 
 
 /**
@@ -12,7 +12,7 @@ import mongoose from "../../mongoose";
 export default async function createNewChat(chatId: number){
 
     return new ChatModel({
-        _id: new (await mongoose.dbPromise).Types.ObjectId(),
+        _id: new (await DBconnection).Types.ObjectId(),
         chatId: chatId,
         Questions: [],
         lastqid: 0,

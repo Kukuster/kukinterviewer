@@ -1,7 +1,7 @@
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
 import TagModel from "../../models/TagModel";
-import mongoose from "../../mongoose";
+import mongoose, { DBconnection } from "../../mongoose";
 
 
 
@@ -30,7 +30,7 @@ type result =
 export default async function addTagsToQuestions(chatId: number, Tags: string[], qids: number[] | 'all')
 {
 
-    const DBconnection = await mongoose.dbPromise;
+    const connectedDB = await DBconnection;
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
     (chat, save): result => {
@@ -81,7 +81,7 @@ export default async function addTagsToQuestions(chatId: number, Tags: string[],
                     // add a new tag to the Tags list, if not present already
                     if (!chatTags.some(T => T.str === validatedTags[i] )){
                         const newTag = new TagModel({
-                            _id: new DBconnection.Types.ObjectId(),
+                            _id: new connectedDB.Types.ObjectId(),
                             str: validatedTags[i],
                             enabled: true
                         });

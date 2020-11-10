@@ -10,7 +10,7 @@ import Command from "../Command";
  *
  */
 
-export default async function default_prepare (this: Command<any,any,any>, msg: any, match: RegExpMatchArray): Promise<Object> {
+export default async function default_prepare (this: Command<any,any,any>, msg: any, match: RegExpMatchArray): Promise<Record<string, any>> {
     //console.log('default {Command_class}.prepare');
     if (Array.isArray(match) && match.length) {
         return { match: match };

@@ -5,7 +5,7 @@
  */
 export function uniquifyArray<T>(ar: T[]): T[];
 export function uniquifyArray(ar: any[]) {
-    var j: {[key:string]: any} = {};
+    const j: {[key:string]: any} = {};
 
     ar.forEach(function (v) {
         j[v + '::' + typeof v] = v;

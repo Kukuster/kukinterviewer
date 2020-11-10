@@ -1,6 +1,7 @@
 'use strict';
 
 import Command from "../core/Command/Command";
+import display_raw from "./Commands/display_raw";
 import start_match from "./Commands/start/match";
 import start_prepare from "./Commands/start/prepare";
 import start_execute from "./Commands/start/execute";
@@ -31,6 +32,10 @@ import addTagsToQuestions_execute from "./Commands/addTagsToQuestions/execute";
 import removeTagsFromQuestions_match from "./Commands/removeTagsFromQuestions/match";
 import removeTagsFromQuestions_prepare from "./Commands/removeTagsFromQuestions/prepare";
 import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/execute";
+
+
+Command.default_display = display_raw;
+
 
 
 // GREET State //

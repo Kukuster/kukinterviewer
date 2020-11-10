@@ -1,23 +1,23 @@
-import mongoose, { Mongoose } from "../../src/core/sheet/mongoose";
+import { DBconnection } from "../../src/core/sheet/mongoose";
 import models from "../../src/core/sheet/models";
 import { Ichat } from "../../src/core/sheet/models/ChatModel";
 
-const ij = process.env.NODE_ENV === 'test'
+const ij = process.env.NODE_ENV === 'test';
 
 ij && jest.setTimeout(20000);
 
-const chatId = 231079996
+const chatId = 231079996;
 
 ij && beforeAll(async ()=>{
     // console.log('executing beforeAll');
-    return await mongoose.dbPromise;
-})
+    return await DBconnection;
+});
 
 ij && afterAll(async ()=>{
     // console.log('executing afterAll');
-    const disconnect = await (await mongoose.dbPromise).disconnect();
+    const disconnect = await (await DBconnection).disconnect();
     return disconnect;
-})
+});
 
 /**
  * 
@@ -28,13 +28,13 @@ ij && afterAll(async ()=>{
  * @return {Promise<Ichat[]>}
  */
 function getChat(chatId: number): Promise<Ichat[]> {
-    const reqPromise = models.ChatModel.find({ chatId: chatId }).exec()
+    const reqPromise = models.ChatModel.find({ chatId: chatId }).exec();
     return reqPromise;
 }
 
 
 ij ? (
-    test('getChat', done => {
+    test('a function using mongoose models and mongoose connection', done => {
         getChat(chatId).then((result) => {
             expect(result).toBe(result);
             // console.log(result);
@@ -42,7 +42,7 @@ ij ? (
             done();
         }).catch((error) => {
             // console.error(error);
-        })
+        });
         // console.log('after defining getChat test, but before getting the results');
     })
 ) : (
@@ -52,7 +52,7 @@ ij ? (
     }).catch((error) => {
         // console.error(error);
     })
-)
+);
 
 
 

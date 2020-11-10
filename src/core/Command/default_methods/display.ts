@@ -1,5 +1,4 @@
 'use strict';
-import bot, { monospace } from "../../../bot";
 import Command, { IIMessage } from "../Command";
 
 /**
@@ -11,15 +10,10 @@ import Command, { IIMessage } from "../Command";
  * @return {Promise<any>}
  *
  */
-export default async function default_display(this: Command<any,any,any>, msg: IIMessage, response: any): Promise<any> {
+export default async function default_display<T>(this: Command<any,any, T>, msg: IIMessage, response: T): Promise<string> {
     //console.log('default {Command_class}.display');
     const chatId = msg.chat.id;
     console.log(JSON.stringify(response, null, 2));
 
-    // console.log('bot:');
-    // console.log(bot);
-
-    return bot.sendMessage(chatId, monospace(JSON.stringify(response, null, 2)), {
-        parse_mode: 'Markdown'
-    });
+    return JSON.stringify(response, null, 2);
 };

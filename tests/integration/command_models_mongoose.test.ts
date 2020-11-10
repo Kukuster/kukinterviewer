@@ -1,22 +1,17 @@
 import Command, { IIMessage, Command_prepare, Command_match, Command_execute, Command_display } from "../../src/core/Command/Command"
-import { Message } from "node-telegram-bot-api";
-import mongoose from "../../src/core/sheet/mongoose";
-import { Document } from "mongoose";
+// import { Message } from "node-telegram-bot-api";
+import mongoose, { DBconnection } from "../../src/core/sheet/mongoose";
 
-beforeAll(async () => {
-    // console.log('executing beforeAll');
-    return await mongoose.dbPromise;
-})
+type Document = mongoose.Document;
 
-afterAll(async () => {
-    // console.log('executing afterAll');
-    const disconnect = await (await mongoose.dbPromise).disconnect();
-    return disconnect;
-})
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////             Test data            ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
 
 
-
-const telegram_msg_mock: Message = {
+const telegram_msg_mock: IIMessage = {
     text: '/findChats ',
     message_id: 222222222,
     date: 333333333,
@@ -24,7 +19,7 @@ const telegram_msg_mock: Message = {
         id: 231079996,
         type: 'private'
     }
-}
+};
 const chatDocumentId = '5eba8f27091ebc3f2033738e';
 
 
@@ -33,7 +28,7 @@ const match: Command_match<RegExpMatchArray> = async function (msg: IIMessage) {
     return msg.text ?
                 msg.text.match(/\/findChats( *)(.*)/) :
                 null;
-}
+};
 
 const prepare: Command_prepare<RegExpMatchArray, { qids: number[] | undefined }> = async function (msg: IIMessage, match: RegExpMatchArray): Promise<{ qids: number[] | undefined }> {
     // console.log('findChats.prepare');
@@ -43,7 +38,7 @@ const prepare: Command_prepare<RegExpMatchArray, { qids: number[] | undefined }>
     }
     return { qids: qids }
 
-}
+};
 
 const execute: Command_execute<
     { qids: number[] | undefined }, 
@@ -62,10 +57,9 @@ const execute: Command_execute<
             .then(chat => {
 
                 if (!chat) {
-                    console.error('failed to query Questions: Chat document is absent');
-                    reject(new Error(JSON.stringify({
-                        error: 'There is no such chat document'+chatId ? (': '+chatId+'.') : '.',
-                    }, null, 2)));
+                    const error = new Error('There is no such chat document'+chatId ? (': '+chatId+'.') : '.');
+                    console.error(error);
+                    reject(error);
                     return;
                 }
 
@@ -82,7 +76,7 @@ const execute: Command_execute<
 
     });
     
-} //const execute
+}; //const execute
 
 
 const display: Command_display<
@@ -102,24 +96,53 @@ const display: Command_display<
 
     return null;
 
-}
+};
 
-const findChats = new Command(match, prepare, execute, display)
-
-
+const findChats = new Command(match, prepare, execute, display);
 
 
+const decide = async function (command: Command<any, any, any>){
+    const match = await command.match(telegram_msg_mock);
+    if (!match) { console.error('ERROR: failed to match!'); return; }
+    const args  = await command.prepare(telegram_msg_mock, match);
+    const resp  = await command.execute(telegram_msg_mock, args);
+    return        await command.display(telegram_msg_mock, resp);
+};
 
-test('Command, custom command run', async (done) => {
-    mongoose.dbPromise.then(async ()=>{
-        const match = await findChats.match(telegram_msg_mock);
-        if (!match) { console.error('ERROR: failed to match!'); return; }
-        const args  = await findChats.prepare(telegram_msg_mock, match);
-        const resp  = await findChats.execute(telegram_msg_mock, args);
-        const _     = await findChats.display(telegram_msg_mock, resp);
-        expect(JSON.stringify(_)).toEqual(JSON.stringify(chatDocumentId))
-        done();
-    });
-})
+
+
+///// Variables that hold calculation results /////
+
+let result: any;
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////      Run tested calculations     ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+beforeAll(async () => {
+    await DBconnection;
+
+    result = await decide(findChats);
+
+    return await (await DBconnection).disconnect();
+});
+
+
+
+////////////////////////////////////////////////////////
+///////////                                  ///////////
+///////////          Testing results         ///////////
+///////////                                  ///////////
+////////////////////////////////////////////////////////
+
+
+test('a custom Command (all methods) using mongoose DB & models', () => {
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(chatDocumentId));
+});
 
 

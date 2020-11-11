@@ -60,11 +60,12 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
         questionText: "do you know .NET?"
      } },
     { m: "Can you add the following question, please: «#dotNET\n do you know .NET?» ",     res: { 
-        questionText: "#dotNET\n do you know .NET?",
+        questionText: "do you know .NET?",
         Tags: ['dotNET']
      } },
     { m: "add new question\n<<#php #python\n #htmlcss       \n\n \n>>   ",                 res: {
-        questionText: "#php #python\n #htmlcss",
+        // this one will pass `.match` mathod, but will fail produce a proper request and output an error
+        questionText: "",
         Tags: ['php', 'python', 'htmlcss']
      } },
 

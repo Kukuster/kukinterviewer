@@ -1,0 +1,26 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "semi": 1, // will be autofixed
+        "no-extra-semi": 1, // will be autofixed
+        "@typescript-eslint/no-extra-semi": 1, // will be autofixed
+        "no-undef": 1,
+        "prefer-const": 1,
+        "no-cond-assign": 0,
+        "no-unused-labels": 1,
+        "@typescript-eslint/no-non-null-assertion": 0
+    },
+    "env": {
+        "node": true,
+        "jest": true
+    }
+}

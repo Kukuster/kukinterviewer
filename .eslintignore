@@ -1,0 +1,15 @@
+node_modules
+dist
+src/assets/*
+*.md
+*.txt
+*.json
+*.yaml
+*.yml
+jest.config.js
+*.sh
+
+LICENSE
+*.html
+*.css
+

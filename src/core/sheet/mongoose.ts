@@ -24,11 +24,6 @@ dbPromise.then((res) => {
         console.error('mongoose.ts: caught exception while trying to connect to the Mongoose DB \n' + error);
     });
 
-    
-export default {
-    // Schema: mongoose.Schema,
-    // Document: mongoose.Document,
-    // connect: mongoose.connect,
-    // model: mongoose.model,
-    dbPromise: dbPromise
-};
+export default mongoose;
+
+export const DBconnection = dbPromise;

@@ -1,6 +1,6 @@
 'use strict';
 import QuestionModel from "../../models/QuestionModel";
-import mongoose from "../../mongoose";
+import mongoose, { DBconnection } from "../../mongoose";
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
 import TagModel from "../../models/TagModel";
@@ -15,7 +15,7 @@ import TagModel from "../../models/TagModel";
  */
 export default async function addQuestion(chatId: number, question: { questionText: NonNullable<string>, Tags?: string[], enabled?: boolean }) {
 
-    const DBconnection = await mongoose.dbPromise;
+    const connectedDB = await DBconnection;
 
     return queryChat(chatId, {"Questions": true, "lastqid": true, "Tags": true}, (chat, save)=>{
 
@@ -27,7 +27,7 @@ export default async function addQuestion(chatId: number, question: { questionTe
         chat.lastqid = chat.lastqid ? chat.lastqid+1 : 1;
 
         const newQuestion = new QuestionModel({
-            _id: new DBconnection.Types.ObjectId(),
+            _id: new connectedDB.Types.ObjectId(),
             qid: chat.lastqid,
             questionText: question.questionText,
             Tags: 
@@ -50,7 +50,7 @@ export default async function addQuestion(chatId: number, question: { questionTe
                 // if a new question's tag is absent in the Tags list
                     // add a new Tag
                     const newTag = new TagModel({
-                        _id: new DBconnection.Types.ObjectId(),
+                        _id: new connectedDB.Types.ObjectId(),
                         str: questionTags[i],
                         enabled: true
                     });

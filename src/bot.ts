@@ -6,9 +6,11 @@ import { TOKEN } from './conf';
 
 if (!TOKEN) {
     process.exit(ec.noTelegramBotApiTOKEN);
-};
+}
 
-export default new TelegramBot(TOKEN, { polling: true });
+export default TelegramBot;
+
+export const bot = new TelegramBot(TOKEN, { polling: true });
 
 /**
  * Telegram formating: monospace text
@@ -18,6 +20,6 @@ export default new TelegramBot(TOKEN, { polling: true });
  */
 export function monospace(str: string): string {
     return '```\n' + str + '\n```';
-};
+}
 
 

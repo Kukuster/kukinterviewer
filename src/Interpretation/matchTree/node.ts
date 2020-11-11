@@ -71,7 +71,7 @@ export class nodeC extends nodeLike {
 
             } else if (this.children[i] instanceof nodeC) {
 
-                let igrandchildren = (this.children[i]).children;
+                const igrandchildren = (this.children[i]).children;
                 
                 for (let j=0; j<igrandchildren.length; j++){
                     

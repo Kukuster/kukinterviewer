@@ -7,9 +7,18 @@ export default async function addQuestion_execute(msg: IIMessage, args: { questi
     const questionText = args.questionText;
     const Tags = args.Tags;
 
-    return {
-        request: args,
-        response: await addQuestion(chatId, { questionText, Tags, enabled: true })
+    if (questionText){
+        return {
+            request: args,
+            response: await addQuestion(chatId, { questionText, Tags, enabled: true })
+        };
+    } else {
+        return {
+            request: args,
+            response: {
+                error: 'unable to add a question with an empty questionText',
+            },
+        };
     };
 
 };

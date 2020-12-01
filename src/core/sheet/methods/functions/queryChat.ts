@@ -1,4 +1,4 @@
-import ChatModel, { Ichat } from "../../models/ChatModel";
+import ChatModel, { Ichat_select, Ichat } from "../../models/ChatModel";
 
 
 /**
@@ -13,7 +13,7 @@ import ChatModel, { Ichat } from "../../models/ChatModel";
  * @returns Promise with _perform_ function return value resolved, or rejected if any DB errors occur
  * 
  */
-export default async function queryChat<T>(chatId: number, select: any, perform: (chat: Ichat, saveChat: ()=>void) => T)
+export default async function queryChat<T>(chatId: number, select: Ichat_select, perform: (chat: Ichat, saveChat: ()=>void) => T)
     : Promise<T>
 {
 

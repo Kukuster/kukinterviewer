@@ -1,6 +1,6 @@
 node_modules
 dist
-src/frontend/*
+src/web/frontend/*
 *.md
 *.txt
 *.json

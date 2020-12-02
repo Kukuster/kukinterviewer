@@ -1,7 +1,5 @@
 <Planned>
 
-• Change the setup and the file structure so that the typescript transpiles properly and the transpiled javascript is executed. Make sure I can do a web frontend with React (in TypeScript).
-
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
 • change Tags to appear as Tags document ids in a question doc, and all the methods accordingly. Maybe add a method: getTagDocById

@@ -15,7 +15,7 @@
     "ts-node": "ts-node",
     "ts": "ts-node",
     "lint": "eslint . --ext .ts",
-    "watch_frontend.ts": "nodemon --watch src/assets/public --watch src/assets/src --ext '*' --exec bash build-frontend.sh"
+    "watch_frontend.ts": "nodemon --watch src/web/frontend/src --ext '*' --exec bash build-frontend.sh"
   },
   "engines": {
     "node": "14.10"

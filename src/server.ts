@@ -27,22 +27,35 @@ function safeStringify<T> (obj: T, indent = 2) {
 
 const server = express();
 
-server.use(express.static('assets/static'));
+server.use(express.static('web/frontend'));
 
 
 server.get('', (req, res) => {
     console.log("server.get('')");
 
-    res.redirect('/app');
+    const home = '/web/frontend/dist/html/home.html';
+    const home_full = __dirname + home;
+    fs.readFile(home_full, (error, content) => {
+        if (error) {
+            res.writeHead(500) &&
+                res.end('HTTP 500');
+            console.log('error reading file "' + home_full + '": ', { error });
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' }) &&
+                res.end(content, 'utf-8');
+            console.log('successfully server contents of a requested file ' + home_full + '');
+        }
+    });
+    // res.redirect('/app');
 
-    console.log();
+    console.log('server.ts: ',{__dirname});
 });
 
 
 server.get('/app', (req, res) => {
     console.log("server.get('/app')");
 
-    const frontendApp = '/assets/index.html';
+    const frontendApp = '/web/frontend/dist/html/app.html';
     const frontendApp_full = __dirname + frontendApp;
     fs.readFile(frontendApp_full, (error, content) => {
         if (error) {
@@ -90,8 +103,8 @@ server.get(/.(css|js|jpg|jpeg|png|svg)$/, (req, res) => {
     console.log('server.get(/.(css|js|jpg|jpeg|png|svg)$/');
     
     console.log({ __dirname, req_url: req.url});
-    // const filePath = __dirname + '/assets/' + req.url;
-    const filePath = __dirname + '/assets/' + req.url;
+    // const filePath = __dirname + '/web/frontend/' + req.url;
+    const filePath = __dirname + '/web/frontend/dist/' + req.url;
     res.sendFile(path.resolve(filePath), (error) => {
 
         if (error){

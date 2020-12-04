@@ -1,8 +1,8 @@
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { questionsQueryShoot } from "./questionsQueryShoot.type";
 import { treeStep } from "../walk";
-import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
-import parseQids from "./parseQids";
+import getTags_fromPassedTree from "./getTags_fromPassedTree";
+import getQids_fromPassedTree from "./getQids_fromPassedTree";
 
 /**
  * 
@@ -15,86 +15,38 @@ import parseQids from "./parseQids";
 export function passedTree_to_QuestionsQuery(path: treeStep[]): questionsQuery | 'all' {
     
     const theShoot: questionsQueryShoot = path[path.length - 1].shoot;
-
-    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
-    
+   
 
     if (theShoot === 'all') {
         return 'all';
 
     } else {
 
-
-        let result: questionsQuery = {};
+        const result: questionsQuery = {};
 
 
         // TAGS //
-
         if (theShoot.Tags === 'some') {
-
-            let Tags: string[] = [];
-
-            for (let i = 0; i < path.length; i++) {
-                const parsedTags = parseTags(path[i].word);
-                if (parsedTags) {
-                    Tags = Tags.concat(parsedTags);
-                };
-            };
-
-            if (Tags.length) {
-                result.Tags = Tags as [string, ...string[]];
-            } else {
-                result.Tags = undefined;
-            }
-
-        } // if Tags === 'some'
-        else {
+            const Tags: string[] = getTags_fromPassedTree(path);
+            result.Tags = Tags.length ? Tags as [string, ...string[]] : undefined;
+        } else {
             result.Tags = theShoot.Tags;
         }
 
 
         // QIDS //
-
-        let qids: number[];
-
         if (theShoot.qids === 'some') {
-
-            let stringDigits: string[] = [];
-
-            for (let i = 0; i < path.length; i++) {
-                const parsedDigits = path[i].word.match(digit);
-                if (parsedDigits) {
-                    stringDigits = stringDigits.concat(parsedDigits);
-                };
-            };
-
-            //console.log('msg: \"'+msg.text+'\"', 'stringDigits: ', stringDigits);
-
-            qids = [];
-
-            stringDigits.forEach(sD => {
-                const int = parseQids(sD);
-
-                int &&
-                    qids.push.apply(qids, int);
-            });
-
-            if (qids.length) {
-                result.qids = qids as [number, ...number[]];
-            } else {
-                result.qids = undefined;
-            }
-
-        } // if qids === 'some'
+            const qids = getQids_fromPassedTree(path);
+            result.qids = qids.length ? qids as [number, ...number[]] : undefined;
+        }
 
 
-
+        // STATUS //
         result.enabled = theShoot.enabled;
 
 
         return result;
 
-    } // if theShoot !== 'all'    
-
+    }
 
 }

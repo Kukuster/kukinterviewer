@@ -92,7 +92,7 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
     
     // parse Tags from the question text
     Tags = Tags.concat(parseTags(questionText) || []);
-    Tags = uniquifyArray(Tags);
+    Tags = uniquifyArray(Tags.map(t => t.toLowerCase()));
     
     // removes lines that contain only tags from the questionText
     questionText = questionText.replace(/^((\s)*|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))*)*$/gm, '');

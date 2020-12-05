@@ -6,12 +6,7 @@ import { Itag, tagSchema } from "./TagModel";
 
 
 
-export type settingsSet = {
-        enabled?: boolean,
-        timezone?: number,
-        asking_period_mins?: number,
-        asking_time_of_day?: { from_hour: number, to_hour: number }
-};
+export type settingsSet = Partial<Settings>;
 
 export type Settings = Ichat["Settings"];
 
@@ -20,8 +15,7 @@ export type settingsKey = keyof Settings;
 export type settingsSetOrKey = settingsSet | settingsKey;
 
 
-
-export interface Ichat extends Document {
+export interface Ichat_schema {
     chatId: number;
     Questions?: Iquestion[];
     lastqid?: number;
@@ -40,7 +34,22 @@ export interface Ichat extends Document {
     running?: boolean;
     state: string;
     Schedule?: { qid: number, datetime: Date }
-};
+}
+
+export interface Ichat extends Document, Ichat_schema {}
+
+/**
+ * Members of this type are passed to mongoose.DocumentQuery.select method.
+ * This is known as "query projection".
+ */
+export type Ichat_select =
+    Partial<Ichat>
+        |
+    Partial<
+        {[K in keyof Ichat_schema]: boolean}
+            &
+        {_id: boolean, _v: boolean}
+    >
 
 
 const chatSchema = new Schema({

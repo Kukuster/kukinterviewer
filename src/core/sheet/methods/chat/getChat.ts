@@ -1,5 +1,5 @@
 'use strict';
-import ChatModel, { Ichat } from "../../models/ChatModel";
+import ChatModel, { Ichat_select, Ichat } from "../../models/ChatModel";
 
 
 /**
@@ -9,6 +9,6 @@ import ChatModel, { Ichat } from "../../models/ChatModel";
  * @returns result of querying the Chat document
  * 
  */
-export default async function getChat(chatId: number, select?: any): Promise<Ichat | null> {
+export default async function getChat(chatId: number, select?: Ichat_select): Promise<Ichat | null> {
     return ChatModel.findOne({ chatId: chatId }).select(select).exec();
 }

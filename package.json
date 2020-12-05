@@ -11,10 +11,11 @@
     "start.ts": "ts-node src/index.ts",
     "start.js": "node dist/index.js",
     "watch.ts": "tsc -w",
-    "watch.js": "nodemon dist/index.js",
+    "watch.js": "nodemon --watch dist --exec node dist/index.js",
     "ts-node": "ts-node",
     "ts": "ts-node",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "watch_frontend.ts": "nodemon --watch src/web/frontend/src --ext '*' --exec bash build-frontend.sh"
   },
   "engines": {
     "node": "14.10"

@@ -1,3 +1,3 @@
-[submodule "src/assets"]
-	path = src/assets
-	url = https://github.com/Kukuster/kukinterviewer_frontend
+[submodule "src/web/frontend"]
+	path = src/web/frontend
+	url = git@github.com:Kukuster/kukinterviewer_frontend.git

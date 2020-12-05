@@ -52,6 +52,9 @@ So that it can be further extended to support such queries:
  - «list enabled questions that contain either both "backend" and "javascript" or "nodejs"»
 
 
+• «show any question» should work
+
+
 • Add data encryption for user data
 
 • implement display methods for all Commands

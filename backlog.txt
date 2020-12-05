@@ -2,8 +2,6 @@
 
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
-• change Tags to appear as Tags document ids in a question doc, and all the methods accordingly. Maybe add a method: getTagDocById
-
 • delete the chat document for Kukuster, and make sure the Greet State and the Start Command work properly.
 
 • make addQuestion work as a two-step Command as well (as message prompt).
@@ -57,6 +55,22 @@ So that it can be further extended to support such queries:
 
 • implement display methods for all Commands
 
+• add "fallback" Command for each State.
+The command's intent is to check if some of the key words that are used in other Commmnads in the State, and make the bot respond with something like:
+<< Sorry, I don't get what do you want me to "tag". Try something simpler.
+You can ask me to:
+    add specific tags to specific questions by id
+    remove specific tags from specific questions by id
+    ...
+    >>
+or
+<< Sorry, do you ask me to "delete" something or to "add" something? I don't get it. Try something simpler.
+You can ask me to:
+    add specific tags to specific questions by id
+    remove specific tags from specific questions by id
+    ...
+    >>
+
 
 
 <Optional>
@@ -88,4 +102,12 @@ This may require storing this data in the database and reuploading it to Telegra
 
 • Add a "revert last action" command.
 For this, i'll have to save data about last executed command in the database, including contents of Questions and etc. to be able to restore it after edition or deletion.
+
+• optimize mongodb queries in sheet methods
+    e.g.:
+        deleteQuestions:
+            ` db.chats.update({"chatId":231079996},{"$pull":{"Questions":{"qid": 34 }}}); `
+            run this in mongo shell, and it will remove question #34 from that chat
+
+• currently bot memorizes all tags as lowercase. Consider changing it to like they did with emails, i.e. case-insensitive, except it memorizes the case with the first time.
 

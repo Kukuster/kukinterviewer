@@ -2,65 +2,46 @@ import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
-import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
-import parseQids from "../../matchTree/extras/parseQids";
+import getQids_fromPassedTree from "../../matchTree/extras/getQids_fromPassedTree";
+import getTags_fromPassedTree from "../../matchTree/extras/getTags_fromPassedTree";
 
 
 export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeStep[]): Promise<questionsQuery> {
 
-
     const theShoot: shoot = path[path.length - 1].shoot;
 
-    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
-    
-    if (theShoot.random){
+
+    if (theShoot.random) {
+        // those questions are asked which are enabled
         return { enabled: true, havingTagsEnabled: true, random: true };
-    } else 
-    if (theShoot.qid){
 
-        let stringDigits: string[] = [];
+    } else if (theShoot.qid) {
 
-        for (let i = 0; i < path.length; i++){
-            const parsedDigits = path[i].word.match(digit);
-            if (parsedDigits) {
-                stringDigits = stringDigits.concat(parsedDigits);
-            };
-        };
+        const qids = getQids_fromPassedTree(path);
 
-        let qids: number[] = [];
-        stringDigits.forEach(sD => {
-            const int = parseQids(sD);
-            int ? qids.push.apply(qids,int) : '';
-        });
-
-        if (qids.length > 0){
+        if (qids.length > 0) {
+            // when explicitly asked for specific qids, give a random one from those which asked regardless of if they're enabled
             return { qids: qids as [number, ...number[]], random: true };
         } else {
+            // those questions are asked which are enabled
             return { enabled: true, havingTagsEnabled: true, random: true };
-        };
+        }
 
-    } else
-    if (theShoot.Tags) {
+    } else if (theShoot.Tags) {
 
-        let Tags: string[] = [];
-
-        for (let i = 0; i < path.length; i++) {
-            const parsedTags = parseTags(path[i].word);
-            if (parsedTags) {
-                Tags = Tags.concat(parsedTags);
-            };
-        };
+        const Tags = getTags_fromPassedTree(path);
 
         if (Tags.length > 0){
+            // when explicitly asked for specific tags, give a random one from those which have any of the given tags but all tags enabled
             return { enabled: true, havingTagsEnabled: true, Tags: Tags as [string, ...string[]], random: true };
         } else {
+            // those questions are asked which are enabled
             return { enabled: true, havingTagsEnabled: true, random: true };
-        };
+        }
 
-    } else // never happens
-    {
+    } else {
+        // never happens
         return { enabled: true, havingTagsEnabled: true, random: true };
-    };
-    
+    }
 
-};
+}

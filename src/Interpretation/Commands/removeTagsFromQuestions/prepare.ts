@@ -1,8 +1,9 @@
 import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
-import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
-import parseQids from "../../matchTree/extras/parseQids";
+import getTags_fromPassedTree from "../../matchTree/extras/getTags_fromPassedTree";
+import getQids_fromPassedTree from "../../matchTree/extras/getQids_fromPassedTree";
+import getQidsAndTags_fromPassedTree from "../../matchTree/extras/getQidsAndTags_fromPassedTree";
 
 
 export default async function removeTagsFromQuestions_prepare (msg: IIMessage, path: treeStep[])
@@ -11,59 +12,23 @@ export default async function removeTagsFromQuestions_prepare (msg: IIMessage, p
 
     const theShoot: shoot = path[path.length - 1].shoot;
 
-    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
 
+    if (theShoot.questions === 'all' && theShoot.Tags === 'all') {
+        
+        return { qids: 'all', Tags: 'all' };
 
-
-    let Tags: string[] = [];
-
-
-    if (theShoot.questions === 'all') {
-
-        if (theShoot.Tags === 'all'){
-            return { qids: 'all', Tags: 'all' };
-        } else {
-
-            for (let i = 1; i < path.length; i++) {
-                const parsedTags = parseTags(path[i].word);
-                if (parsedTags) {
-                    Tags = Tags.concat(parsedTags);
-                };
-            };
-
-            return { qids: 'all', Tags: Tags };
-
-        }
+    } else if (theShoot.Tags === 'all') {
+        
+        return { qids: getQids_fromPassedTree(path), Tags: 'all' };
+        
+    } else if (theShoot.questions === 'all') {
+        
+        return { qids: 'all', Tags: getTags_fromPassedTree(path) };
 
     } else {
+        
+        return getQidsAndTags_fromPassedTree(path);
 
-        let stringDigits: string[] = [];
-
-        for (let i = 1; i < path.length; i++) {
-            const parsedTags = parseTags(path[i].word);
-            if (parsedTags && parsedTags.length) {
-                Tags = Tags.concat(parsedTags);
-            } else {
-                const parsedDigits = path[i].word.match(digit);
-                // console.log('parsedDigits[' + i + ']: ', parsedDigits);
-                if (parsedDigits) {
-                    stringDigits = stringDigits.concat(parsedDigits);
-                };
-            };
-        };
-
-        // console.log('stringDigits', stringDigits);
-
-        let qids: number[] = [];
-        stringDigits.forEach(sD => {
-            const int = parseQids(sD);
-            int ? qids.push.apply(qids,int) : '';
-        });
-
-
-        return theShoot.Tags === 'all' ? { qids: qids, Tags: 'all' } : { qids: qids, Tags: Tags };
-
-    };
-    
+    }
 
 }

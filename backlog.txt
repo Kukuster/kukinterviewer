@@ -2,8 +2,6 @@
 
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
-• delete the chat document for Kukuster, and make sure the Greet State and the Start Command work properly.
-
 • make addQuestion work as a two-step Command as well (as message prompt).
 «add new question»
  - «ok, write me a new question text now»

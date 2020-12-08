@@ -33,6 +33,20 @@ import removeTagsFromQuestions_match from "./Commands/removeTagsFromQuestions/ma
 import removeTagsFromQuestions_prepare from "./Commands/removeTagsFromQuestions/prepare";
 import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/execute";
 
+import suggestMethod_test_match from "./Commands/suggestMethod_test/match";
+import suggestMethod_test_prepare from "./Commands/suggestMethod_test/prepare";
+import suggestMethod_test_execute from "./Commands/suggestMethod_test/execute";
+import suggestMethod_test_display from "./Commands/suggestMethod_test/display";
+
+import confirm_match from "./Commands/confirm/match";
+import confirm_prepare from "./Commands/confirm/prepare";
+import confirm_execute from "./Commands/confirm/execute";
+import confirm_display from "./Commands/confirm/display";
+
+import submitQuestionText_match from "./Commands/submitQuestionText/match";
+import submitQuestionText_prepare from "./Commands/submitQuestionText/prepare";
+import submitQuestionText_execute from "./Commands/submitQuestionText/execute";
+
 
 Command.default_display = display_raw;
 
@@ -55,3 +69,19 @@ export const                listTags_command = new Command(                listT
 export const           turnTagsOnOff_command = new Command(           turnTagsOnOff_match,           turnTagsOnOff_prepare,           turnTagsOnOff_execute);
 export const      addTagsToQuestions_command = new Command(      addTagsToQuestions_match,      addTagsToQuestions_prepare,      addTagsToQuestions_execute);
 export const removeTagsFromQuestions_command = new Command( removeTagsFromQuestions_match, removeTagsFromQuestions_prepare, removeTagsFromQuestions_execute);
+
+export const      suggestMethod_test_command = new Command(      suggestMethod_test_match,      suggestMethod_test_prepare,      suggestMethod_test_execute,      suggestMethod_test_display);
+
+
+
+// PENDING CONFIRMATION State //
+
+export const confirm_command = new Command(confirm_match, confirm_prepare, confirm_execute, confirm_display);
+
+
+
+// AWAITING QUESTIONTEXT State //
+
+export const submitQuestionText_command = new Command(submitQuestionText_match, submitQuestionText_prepare, submitQuestionText_execute);
+
+

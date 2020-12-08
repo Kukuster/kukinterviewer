@@ -21,8 +21,10 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function turnQuestionsOnOff(chatId: number, qids: number[] | 'all', status: 'on' | 'off')
+export default async function turnQuestionsOnOff(chatId: number, args: {qids: number[] | 'all', status: 'on' | 'off'})
+    : Promise<result>
 {
+    const {qids, status} = args;
 
     return queryChat(chatId, { "Questions": true },
     (chat, save): result => {

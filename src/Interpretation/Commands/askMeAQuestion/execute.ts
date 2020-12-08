@@ -1,16 +1,22 @@
 import { IIMessage } from "../../../core/Command/Command";
 import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import turnQuestionsOnOff from "../../../core/sheet/methods/questions/turnQuestionsOnOff";
+import { Iquestion } from "../../../core/sheet/models/QuestionModel";
 
 
-export default async function askMeAQuestion_execute(msg: IIMessage, args: questionsQuery) {
+export default async function askMeAQuestion_execute(msg: IIMessage, args: questionsQuery)
+    : Promise<{
+        request: questionsQuery;
+        response: Iquestion;
+    }>
+{
 
     const chatId = msg.chat.id;
 
     const randomQuestion = (await getQuestions(chatId, args))[0];
 
     if (randomQuestion){
-        turnQuestionsOnOff(chatId, [randomQuestion.qid], 'off');
+        turnQuestionsOnOff(chatId, {qids: [randomQuestion.qid], status: 'off'});
     }
 
     return {

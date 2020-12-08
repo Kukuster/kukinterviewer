@@ -1,7 +1,7 @@
 'use strict';
 
 import * as config from './config.json';
-import { anyJSONvalue } from './core/anyJSONvalue.type';
+import { anyJSONvalue } from './reusable/anyJSONvalue.type';
 
 
 type kukconfig = { [key: string]: {env: string, default: anyJSONvalue} }

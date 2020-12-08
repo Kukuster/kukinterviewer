@@ -20,7 +20,7 @@ const telegram_msg_mock: IIMessage = {
         type: 'private'
     }
 };
-const chatDocumentId = '5eba8f27091ebc3f2033738e';
+const chatDocumentId = '5fcd436a06901efb95b26e40';
 
 
 const match: Command_match<RegExpMatchArray> = async function (msg: IIMessage) {

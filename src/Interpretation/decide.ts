@@ -1,26 +1,29 @@
 'use strict';
 import { IIMessage } from "../core/Command/Command";
-import State from "../core/State/State";
 import getChat from "../core/sheet/methods/chat/getChat";
+import State from "../core/State/State";
+import { ArrayElement } from "../reusable/ArrayElement.type";
 
 
 /**
  * 
  * This function is used by the bot to decide what Command to execute depending on the recieved message and the current State
- * 
  * @param message recieved Telegram message
- * @param States an array of States supported by the app. Each State contains a string identifier and an array of Commands to check for
+ * @param States an array of possible states to consider. Each State contains a string identifier and an array of Commands to check for if in its state
  * @param defaultState a State that is assumed by default if a user has no chat document in the DB (thus doesn't have state)
  * 
  * @returns Promise<void> if no Command was executed, Promise for a returned value from a `{Command}.display` method otherwise.
  * 
  */
-export async function decide(message: IIMessage, States: State[], defaultState: State){
+export async function decide <A extends readonly State<any>[], S extends ArrayElement<A>>
+    (message: IIMessage, States: A, defaultState: S)
+    : Promise<any>
+{
     const chatId = message.chat.id;
 
     const DB_chat = await getChat(chatId, { "state": true, "_id": false });
 
-    let theState: State | undefined;
+    let theState: ArrayElement<A> | undefined;
     
 
     if (!DB_chat){

@@ -1,7 +1,7 @@
 'use strict';
 
 export type addQuestion_testCase = 
-    { m: string,                                                                        res: { questionText?: NonNullable<string>, Tags?: string[] } | null };
+    { m: string,                                                                        res: { questionText?: string | null, Tags?: string[] } | null };
 export const addQuestion_testCases: addQuestion_testCase[] = [
 
     // add -> question -> \n -> *text*
@@ -112,7 +112,9 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
     { m: "add new question << ",                                                           res: null },
     { m: "add question \" ",                                                               res: null },
     { m: "add new question: \n ",                                                          res: null },
-    { m: "add new question ",                                                              res: null },
+    { m: "add new question ",                                                              res: {
+        questionText: null
+    } },
     { m: "question ",                                                                      res: null },
 
     // [ neg ]

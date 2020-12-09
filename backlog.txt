@@ -2,19 +2,7 @@
 
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
-• make addQuestion work as a two-step Command as well (as message prompt).
-«add new question»
- - «ok, write me a new question text now»
-«what do you know about web?»
-
 • make addQuestion support telegram markdown
-
-• make stuff like, when:
- - deleting a lot of tags,
- - deleting a lot of questions,
- - adding/deleting a lot of tags to/from questions,
- - enabling/disabling all the questions/tags
-user be asked by a bot "are you sure you want to ...?" before actually executing
 
 • Add support for complex query logic for questionsQuery (and tagsQuery) 
 
@@ -70,6 +58,13 @@ You can ask me to:
     >>
 
 
+• Limitation for message in telegram is 4096 symbols. When trying to send a longer message, it produces an exception.
+Make a wrapper over bot.sendMessage. Make a wrapper accept an array of strings to send (to cut them by whole pieces).
+
+• Set limit for quesiton text to 4000 symbols.
+
+
+
 
 <Optional>
 
@@ -81,6 +76,16 @@ You can ask me to:
         - getTags
         - turnTagsOnOff
         - getQuestions (only additional questionsQuery Tags flags)
+        - getTagDocById
+        - getTagDocByStr
+
+        - askForQuestionText
+        - finishAddingQuestionText
+        - getAwaitingQuestionTags
+        
+        - askConfirmation
+    
+        - (maybe) executeMethod
 
 
 • Extend listTags Command functionality to support querying by qids

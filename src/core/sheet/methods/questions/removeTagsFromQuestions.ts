@@ -25,8 +25,11 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function removeTagsFromQuestions(chatId: number, Tags: string[] | 'all', qids: number[] | 'all', correctQuestionText: boolean)
+export default async function removeTagsFromQuestions(chatId: number, args: {Tags: string[] | 'all', qids: number[] | 'all', correctQuestionText: boolean})
+    : Promise<result>
 {
+
+    const {Tags, qids, correctQuestionText} = args;
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
     (chat, save): result => {

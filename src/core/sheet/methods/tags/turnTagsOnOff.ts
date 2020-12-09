@@ -23,8 +23,10 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function turnTagsOnOff(chatId: number, Tags: string[] | 'all', status: 'on' | 'off')
+export default async function turnTagsOnOff(chatId: number, args: {Tags: string[] | 'all', status: 'on' | 'off'})
+    : Promise<result>
 {
+    const {Tags, status} = args;
 
     return queryChat(chatId, { "Tags": true },
     (chat, save): result =>{

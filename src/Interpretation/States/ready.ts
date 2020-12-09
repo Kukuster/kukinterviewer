@@ -1,7 +1,7 @@
 'use strict';
 
 import State from "../../core/State/State";
-import { addQuestion_command, addTagsToQuestions_command, askMeAQuestion_command, deleteQuestions_command, listQuestions_command, listTags_command, removeTagsFromQuestions_command, turnQuestionsOnOff_command, turnTagsOnOff_command } from "../Commands";
+import { addQuestion_command, addTagsToQuestions_command, askMeAQuestion_command, deleteQuestions_command, listQuestions_command, listTags_command, removeTagsFromQuestions_command, suggestMethod_test_command, turnQuestionsOnOff_command, turnTagsOnOff_command } from "../Commands";
 
 export default new State('ready', [
             listQuestions_command,
@@ -13,5 +13,6 @@ export default new State('ready', [
             turnTagsOnOff_command,
        addTagsToQuestions_command,
   removeTagsFromQuestions_command,
+     //   suggestMethod_test_command,
 ]);
 

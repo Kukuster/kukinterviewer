@@ -5,8 +5,7 @@ process.env.NTBA_FIX_319 = '1';
 
 import { bot } from "./bot";
 import { decide } from "./Interpretation/decide";
-import States from "./Interpretation/States";
-import greetState from "./Interpretation/States/greet";
+import States, { defaultState } from "./Interpretation/States";
 import { DBconnection } from "./core/sheet/mongoose";
 import server from "./server";
 
@@ -24,7 +23,7 @@ bot.on('message', (msg) => {
     console.log(msg);
     console.log();
 
-    decide(msg, States, greetState);
+    decide(msg, States, defaultState);
 
 });
 

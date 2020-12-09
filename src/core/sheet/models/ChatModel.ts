@@ -1,6 +1,8 @@
 'use strict';
 
 import {Document, Schema, model} from "mongoose";
+import { validStateName } from "../../../Interpretation/States";
+import { confirmableSheetMethod } from "../sheet";
 import { Iquestion, questionSchema } from "./QuestionModel";
 import { Itag, tagSchema } from "./TagModel";
 
@@ -13,6 +15,17 @@ export type Settings = Ichat["Settings"];
 export type settingsKey = keyof Settings;
 
 export type settingsSetOrKey = settingsSet | settingsKey;
+
+export type pending_method<M extends confirmableSheetMethod> = {
+    sheet_method: M,
+    args_tuple: string,
+    // args_tuple: Parameters<typeof sheet[M]>,
+    prev_state: validStateName;
+};
+
+export type awaiting_questionText = {
+    Tags: string[]
+};
 
 
 export interface Ichat_schema {
@@ -32,8 +45,10 @@ export interface Ichat_schema {
     };
     last_time_asked?: Date;
     running?: boolean;
-    state: string;
-    Schedule?: { qid: number, datetime: Date }
+    state: validStateName;
+    Schedule?: { qid: number, datetime: Date },
+    pending_method: pending_method<confirmableSheetMethod> | null,
+    awaiting_questionText: awaiting_questionText | null;
 }
 
 export interface Ichat extends Document, Ichat_schema {}
@@ -95,7 +110,30 @@ const chatSchema = new Schema({
             datetime: Date
         },
         required: false
-    }
+    },
+    pending_method: {
+        type: {
+            sheet_method: {
+                type: String,
+                required: true,
+            },
+            args_tuple: {
+                type: String,
+                required: false,
+            },
+            prev_state: {
+                type: String,
+                required: false,
+            },
+        },
+        required: false,
+    },
+    awaiting_questionText: {
+        type: {
+            Tags: [String],
+        },
+        required: false,
+    },
 });
 
 

@@ -27,8 +27,11 @@ type result =
  * @return {Promise<result>}
  *
  */
-export default async function addTagsToQuestions(chatId: number, Tags: string[], qids: number[] | 'all')
+export default async function addTagsToQuestions(chatId: number, args: { Tags: string[], qids: number[] | 'all'})
+    : Promise<result>
 {
+
+    const {Tags, qids} = args;
 
     const connectedDB = await DBconnection;
 

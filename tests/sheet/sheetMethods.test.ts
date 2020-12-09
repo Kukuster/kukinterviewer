@@ -188,7 +188,7 @@ beforeAll(async () => {
     
     // sets new Settings with object
     for (let i = 0; i<settingsToSetObj.length; i++){
-        await sheet.setSettings(chatId, settingsToSetObj[i]);
+        await sheet.setSettings(chatId, { settings: settingsToSetObj[i]} );
         
         getChatSettingsAllResult_AfterSetSettingsObj.push(
             await sheet.getSettings(chatId)
@@ -201,9 +201,10 @@ beforeAll(async () => {
 
     // sets new Settings with key-value pairs 
     for (let i = 0; i<settingsToSetKeyAndValue.length; i++){
-        await sheet.setSettings(chatId, 
-            settingsToSetKeyAndValue[i][0], 
-            settingsToSetKeyAndValue[i][1]
+        await sheet.setSettings(chatId, {
+                setting: settingsToSetKeyAndValue[i][0], 
+                value: settingsToSetKeyAndValue[i][1]
+            }
         );
 
         getChatSettingsAllResult_AfterSetSettingsKeyAndValue.push(

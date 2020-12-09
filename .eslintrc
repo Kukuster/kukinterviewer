@@ -1,29 +1,66 @@
 {
     "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint"
-    ],
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
     ],
-    "rules": {
-        "semi": 1, // will be autofixed
-        "no-extra-semi": 1, // will be autofixed
-        "@typescript-eslint/no-extra-semi": 1, // will be autofixed
-        "no-undef": 1,
-        "prefer-const": 1,
-        "no-cond-assign": 0,
-        "no-unused-labels": 1,
-        "@typescript-eslint/no-non-null-assertion": 0,
-        "no-useless-escape": 1,
-        "no-fallthrough": 0,
-        "no-case-declarations": 1,
-    },
     "env": {
         "node": true,
         "jest": true
-    }
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "plugins": [
+                "@typescript-eslint"
+            ],
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "rules": {
+                "semi": 1, // will be autofixed
+                "no-extra-semi": 1, // will be autofixed
+                "no-undef": 1,
+                "prefer-const": 1,
+                "no-cond-assign": 0,
+                "no-unused-labels": 1,
+                "no-useless-escape": 1,
+                "no-fallthrough": 0,
+                "no-case-declarations": 1,
+
+
+                "@typescript-eslint/no-extra-semi": 1, // will be autofixed
+                "@typescript-eslint/no-non-null-assertion": 0,
+                "@typescript-eslint/explicit-module-boundary-types": 0,
+            },
+        },
+        {
+            "files": ["**/*.js"],
+            "env": {
+                "node": true,
+                "jest": true,
+                "es6": true,
+            },
+            "rules": {
+                "semi": 1, // will be autofixed
+                "no-extra-semi": 1, // will be autofixed
+                "no-undef": 1,
+                "prefer-const": 1,
+                "no-cond-assign": 0,
+                "no-unused-labels": 1,
+                "no-useless-escape": 1,
+                "no-fallthrough": 0,
+                "no-case-declarations": 1,
+
+
+                "@typescript-eslint/ban-ts-comment": 0
+            },
+            "parserOptions": {
+                "sourceType": "module",
+                "ecmaVersion": 8,
+            }
+        }
+    ],
 }

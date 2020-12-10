@@ -8,7 +8,7 @@ import ChatModel, { Ichat_select, Ichat } from "../../models/ChatModel";
  * @param {callback} perform function to execute on the queried data.
  * Arguments passed are:
  * - queried `Chat` document object
- * - saveChat function. If called, saves (rewrites) chat document after _perform_ function returns a value, but before the _queryChat_ function resolves the returned value
+ * - saveChat function. If called at least one time, saves (rewrites) chat document after _perform_ function returns a value, but before the _queryChat_ function resolves the returned value
  *  
  * @returns Promise with _perform_ function return value resolved, or rejected if any DB errors occur
  * 

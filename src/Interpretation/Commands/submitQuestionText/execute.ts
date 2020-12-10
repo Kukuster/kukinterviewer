@@ -4,62 +4,75 @@ import getAwaitingQuestionTags from "../../../core/sheet/methods/awaiting_questi
 import askForQuestionText from "../../../core/sheet/methods/awaiting_questionText/askForQuestionText";
 import addQuestion from "../../../core/sheet/methods/questions/addQuestion";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
-import { addQuestion_execute_args } from "../addQuestion/execute";
 
 
-export default async function submitQuestionText_execute(msg: IIMessage, args: addQuestion_execute_args | 'deny')
+export type submitQuestionText_execute_args = {
+    action: 'add question';
+    questionText: string;
+    Tags?: string[];
+    enabled?: boolean;
+} | {
+    action: 'ask to provide a questionText (only Tags provided)';
+    questionText: null;
+    Tags?: string[];
+    enabled?: boolean;
+} | {
+    action: 'ask to provide smaller questionText';
+    questionText: null;
+    enabled?: boolean;
+} | {
+    action: 'deny';
+};
+
+export type submitQuestionText_execute_action = 'add question' | 'deny' | 'ask to provide a questionText (only Tags provided)' | 'ask to provide smaller questionText';
+
+
+export default async function submitQuestionText_execute(msg: IIMessage, args: submitQuestionText_execute_args)
     : Promise<{
-        request: addQuestion_execute_args,
+        request: submitQuestionText_execute_args,
         response: Ichat,
-        result?: 'adding a new question',
-    } | {
-        request: addQuestion_execute_args,
-        response: Ichat,
-        result: 'only tags provided',
-    } | {
-        request: 'deny',
-        response: boolean,
-        result: 'denied',
     }>
 {
 
     const chatId = msg.chat.id;
 
 
-    if (args === 'deny') {
+    if (args.action === 'deny') {
         return {
             request: args,
             response: await finishAddingQuestionText(chatId),
-            result: 'denied',
         };
+
+    } else if (args.action === 'add question') {
+        finishAddingQuestionText(chatId);
+        
+        const awaitingTags = await getAwaitingQuestionTags(chatId);
+
+        const Tags = awaitingTags ?
+            awaitingTags.concat(args.Tags || []) :
+            args.Tags;
+        
+        return {
+            request: args,
+            response: await addQuestion(chatId, {
+                questionText: args.questionText,
+                Tags: Tags,
+                enabled: true
+            }),
+        };
+
+    } else if (args.action === 'ask to provide a questionText (only Tags provided)') {
+        return {
+            request: args,
+            response: await askForQuestionText(chatId, args.Tags),
+        };
+        
     } else {
-        if (args.questionText) {
-            finishAddingQuestionText(chatId);
+        return {
+            request: args,
+            response: await askForQuestionText(chatId),
+        };
 
-            const awaitingTags = await getAwaitingQuestionTags(chatId);
-
-            const Tags = awaitingTags ?
-                awaitingTags.concat(args.Tags || []) :
-                args.Tags;
-            
-
-            return {
-                request: args,
-                response: await addQuestion(chatId, {
-                    questionText: args.questionText,
-                    Tags: Tags,
-                    enabled: true
-                }),
-                result: 'adding a new question',
-            };
-        } else {
-
-            return {
-                request: args,
-                response: await askForQuestionText(chatId, args.Tags),
-                result: 'only tags provided',
-            };
-        }
     }
 
 }

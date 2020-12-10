@@ -5,11 +5,13 @@ import { shoot } from "./matchTree";
 import extractQuestionText_fromPassedTree from "../../matchTree/extras/extractQuestionText_fromPassedTree";
 import parseTags_fromQuestionText from "../../textProcessing/parseTags_fromQuestionText";
 import prepareQuestionText from "../../textProcessing/prepareQuestionText";
-import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
+import { addQuestion_execute_args } from "./execute";
 
+
+export const addQuestion_questionText_charactersLimit = 3900;
 
 export default async function addQuestion_prepare(msg: IIMessage, path: treeStep[])
-    : Promise<{ questionText: string | null, Tags?: string[], enabled?: boolean }>
+    : Promise<addQuestion_execute_args>
 {
 
     const theShoot: shoot = path[path.length - 1].shoot;
@@ -17,7 +19,27 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
     const message = msg.text!;
 
 
-    if (theShoot.delimiters) {
+
+    
+
+    if (!theShoot.delimiters) {
+        // no delimiters means no question text detected
+
+        const Tags = parseTags_fromQuestionText(message);
+
+        return {
+            questionText: null,
+            Tags: Tags?.length ? Tags : undefined,
+            action: 'ask to provide a questionText',
+        };
+        
+    } else if (message.length > addQuestion_questionText_charactersLimit) {
+        return {
+            questionText: null,
+            action: 'ask to provide smaller questionText',
+        };
+
+    } else {
         const extracted = extractQuestionText_fromPassedTree(path, message, theShoot.delimiters);
 
         // parse Tags from the extracted question text
@@ -26,17 +48,8 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
 
         return {
             questionText: prepareQuestionText(extracted.questionText),
-            Tags: Tags.length ? Tags : undefined
-        };
-
-    } else {
-        // no delimiters means no question text detected
-
-        const Tags = parseTags_fromQuestionText(message);
-
-        return {
-            questionText: null,
-            Tags: Tags?.length ? Tags : undefined
+            Tags: Tags.length ? Tags : undefined,
+            action: 'add question',
         };
 
         

@@ -58,11 +58,6 @@ You can ask me to:
     >>
 
 
-• Limitation for message in telegram is 4096 symbols. When trying to send a longer message, it produces an exception.
-Make a wrapper over bot.sendMessage. Make a wrapper accept an array of strings to send (to cut them by whole pieces).
-
-• Set limit for quesiton text to 4000 symbols.
-
 
 
 

@@ -1,4 +1,5 @@
 'use strict';
+import { Ichat } from "../../models/ChatModel";
 import queryChat from "../functions/queryChat";
 
 /**
@@ -9,7 +10,7 @@ import queryChat from "../functions/queryChat";
  * @state sets chat state to `'ready'`
  * 
  */
-export default async function finishAddingQuestionText(chatId: number): Promise<boolean> {
+export default async function finishAddingQuestionText(chatId: number): Promise<Ichat> {
 
     return queryChat(chatId, { "awaiting_questionText": true, "state": true }, async (chat, saveChat) => {
 
@@ -17,7 +18,7 @@ export default async function finishAddingQuestionText(chatId: number): Promise<
         chat.awaiting_questionText = null;
         saveChat();
 
-        return true;
+        return chat;
 
     });
 

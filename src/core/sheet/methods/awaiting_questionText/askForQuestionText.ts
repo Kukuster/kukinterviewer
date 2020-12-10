@@ -8,6 +8,7 @@ import queryChat from "../functions/queryChat";
  * Saves the mentioned Tags to the DB, changes the state to `'awaiting questionText'` until the method confirmed or denied
  * 
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
+ * @param Tags tags to add to the awaiting Tags list, while waiting for a questionText
  * @state sets chat state to `'awaiting questionText'`
  * @returns data that's saved to chat (`chat.awaiting_questionText` and `chat.state`)
  * 
@@ -18,18 +19,22 @@ export default async function askForQuestionText(chatId: number, Tags?: string[]
 
     return queryChat(chatId, {"awaiting_questionText": true, "state": true}, (chat, saveChat) => {
 
-        if (Tags && Tags.length &&
-            chat.awaiting_questionText && chat.awaiting_questionText.Tags) {
-            chat.awaiting_questionText.Tags.push(...Tags);
-        } else {
-            chat.awaiting_questionText = {
-                Tags: Tags || []
-            };
+        if (Tags && Tags.length) {
+            if (chat.awaiting_questionText && chat.awaiting_questionText.Tags) {
+                chat.awaiting_questionText.Tags.push(...Tags);
+            } else {
+                chat.awaiting_questionText = {
+                    Tags: Tags || []
+                };
+            }
+
+            saveChat();
         }
 
-        chat.state = 'awaiting questionText';
-
-        saveChat();
+        if (chat.state !== 'awaiting questionText') {
+            chat.state  =  'awaiting questionText';
+            saveChat();
+        }
 
         return chat;
 

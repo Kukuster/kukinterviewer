@@ -2,12 +2,13 @@ import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import parseTags_fromQuestionText from "../../textProcessing/parseTags_fromQuestionText";
 import prepareQuestionText from "../../textProcessing/prepareQuestionText";
-import { addQuestion_execute_args } from "../addQuestion/execute";
+import { addQuestion_questionText_charactersLimit } from "../addQuestion/prepare";
+import { submitQuestionText_execute_args } from "./execute";
 import { denyShoot, shoot } from "./matchTree";
 
 
 export default async function submitQuestionText_prepare(msg: IIMessage, path: treeStep[])
-    : Promise<addQuestion_execute_args | 'deny'>
+    : Promise<submitQuestionText_execute_args>
 {
 
     const theShoot: shoot = path[path.length - 1].shoot;
@@ -15,16 +16,36 @@ export default async function submitQuestionText_prepare(msg: IIMessage, path: t
     const message = msg.text!;
 
     if (theShoot === denyShoot) {
-        return 'deny';
+        return {
+            action: 'deny',
+        };
+
+    } else if (message.length > addQuestion_questionText_charactersLimit) {
+
+        return {
+            action: 'ask to provide smaller questionText',
+            questionText: null,
+        };
 
     } else { 
         // parse Tags from the question text
         const Tags = parseTags_fromQuestionText(message);
 
-        return {
-            questionText: prepareQuestionText(message) || null,
-            Tags: Tags.length ? Tags : undefined
-        };
+        const questionText = prepareQuestionText(message);
+
+        if (questionText) { 
+            return {
+                action: 'add question',
+                questionText: questionText,
+                Tags: Tags.length ? Tags : undefined
+            };
+        } else {
+            return {
+                action: 'ask to provide a questionText (only Tags provided)',
+                questionText: null,
+                Tags: Tags.length ? Tags : undefined
+            };
+        }
 
     }
 

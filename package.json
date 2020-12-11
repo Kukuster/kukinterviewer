@@ -1,7 +1,7 @@
 {
   "name": "kukinterviewer_dev",
   "version": "1.0.0",
-  "description": "server app for Telegram Bot API",
+  "description": "server app for kukinterviewer",
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --runInBand",

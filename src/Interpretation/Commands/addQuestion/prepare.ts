@@ -28,15 +28,15 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
         const Tags = parseTags_fromQuestionText(message);
 
         return {
+            action: 'ask to provide a questionText',
             questionText: null,
             Tags: Tags?.length ? Tags : undefined,
-            action: 'ask to provide a questionText',
         };
         
     } else if (message.length > addQuestion_questionText_charactersLimit) {
         return {
-            questionText: null,
             action: 'ask to provide smaller questionText',
+            questionText: null,
         };
 
     } else {
@@ -47,9 +47,9 @@ export default async function addQuestion_prepare(msg: IIMessage, path: treeStep
 
 
         return {
+            action: 'add question',
             questionText: prepareQuestionText(extracted.questionText),
             Tags: Tags.length ? Tags : undefined,
-            action: 'add question',
         };
 
         

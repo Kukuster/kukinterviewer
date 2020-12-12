@@ -57,7 +57,7 @@ You can ask me to:
     ...
     >>
 
-
+• correct description and comments for the Command class (core/Command/Command.ts)
 
 
 
@@ -81,6 +81,10 @@ You can ask me to:
         - askConfirmation
     
         - (maybe) executeMethod
+
+    - matchTree
+        - confirm
+        - submitQuestionText
 
 
 • Extend listTags Command functionality to support querying by qids

@@ -40,6 +40,11 @@ export const SELF             = new nodeLike(null, [], null, Symbol('self'));
  */
 export const PARENTs_CHILDREN = new nodeLike(null, [], null, Symbol('parent`s children'));
 
+/**
+ * if a node has this as a child, this special `nodeLike` will be replaced by one's own parent.
+ * So the node will have it's PARENT as a child, and therefore itself as a grandchild.
+ */
+export const PARENT           = new nodeLike(null, [], null, Symbol('parent'));
 
 
 /**
@@ -58,7 +63,7 @@ export class nodeC extends nodeLike {
         this.shoot = shoot;
 
         /**
-         * Processing tree definition. Parses each node only two levels down (up to grandchildren), checking for {`nodeLike`} `SELF` and `PARENTs_CHILDREN`.
+         * Processing tree definition. Parses each node only two levels down (up to grandchildren), checking for {`nodeLike`} `SELF`, `PARENT`, and `PARENTs_CHILDREN`.
          */
         for (let i=0; i<this.children.length; i++) {
 
@@ -66,7 +71,7 @@ export class nodeC extends nodeLike {
                 this.children[i] = this;
                 continue;
 
-            } else if (this.children[i] === PARENTs_CHILDREN) {
+            } else if (this.children[i] === PARENTs_CHILDREN || this.children[i] === PARENT) {
                 continue;
 
             } else if (this.children[i] instanceof nodeC) {
@@ -78,7 +83,10 @@ export class nodeC extends nodeLike {
                     if (igrandchildren[j] === PARENTs_CHILDREN){
                         igrandchildren.splice(j, 1, ...this.children);
                         j += this.children.length - 1;
-                    }
+
+                    } else if (igrandchildren[j] === PARENT) {
+                        igrandchildren[j] = this;
+                    } 
                     
                 }
 

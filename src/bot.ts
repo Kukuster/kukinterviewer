@@ -207,9 +207,9 @@ export function sendMessageSafely(chatId: string | number, text: string | string
     
 
     if (options?.emojify) {
-        console.log('sendMessageSafely: going to emojify');
+        // console.log('sendMessageSafely: going to emojify');
         for (let i = 0; i < n; i++) {
-            console.log({ before: messagesToSend[i], afterr: emojify(messagesToSend[i])});
+            // console.log({ before: messagesToSend[i], afterr: emojify(messagesToSend[i])});
             messagesToSend[i] = emojify(messagesToSend[i]);
         }
     }

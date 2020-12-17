@@ -43,6 +43,11 @@ import { turnTagsOnOff_testCases } from "../../src/Interpretation/Commands/turnT
 import { turnTagsOnOff_tree } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree";
 import turnTagsOnOff_match from "../../src/Interpretation/Commands/turnTagsOnOff/match";
 import turnTagsOnOff_prepare from "../../src/Interpretation/Commands/turnTagsOnOff/prepare";
+import { setAskingTime_testBaseDate, setAskingTime_testCases } from "../../src/Interpretation/Commands/setAskingTime/matchTree_testCases";
+import { setAskingTime_tree } from "../../src/Interpretation/Commands/setAskingTime/matchTree";
+import setAskingTime_match from "../../src/Interpretation/Commands/setAskingTime/match";
+import setAskingTime_prepare from "../../src/Interpretation/Commands/setAskingTime/prepare";
+
 
 
 
@@ -128,6 +133,13 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
         prepfunc: turnTagsOnOff_prepare
     },
 
+    setAskingTime: {
+        testCases: setAskingTime_testCases,
+        tree: setAskingTime_tree,
+        matchfunc: setAskingTime_match,
+        prepfunc: setAskingTime_prepare
+    },
+
 };
 
 
@@ -144,7 +156,7 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
 const mock_telegram_message = (messageText: string): IIMessage => ({
     text: messageText,
     message_id: 222222222,
-    date: 333333333,
+    date: setAskingTime_testBaseDate.getTime(),
     chat: {
         id: 444444444,
         type: 'private'

@@ -32,6 +32,9 @@ import addTagsToQuestions_execute from "./Commands/addTagsToQuestions/execute";
 import removeTagsFromQuestions_match from "./Commands/removeTagsFromQuestions/match";
 import removeTagsFromQuestions_prepare from "./Commands/removeTagsFromQuestions/prepare";
 import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/execute";
+import setAskingTime_match from "./Commands/setAskingTime/match";
+import setAskingTime_prepare from "./Commands/setAskingTime/prepare";
+import setAskingTime_execute from "./Commands/setAskingTime/execute";
 
 import suggestMethod_test_match from "./Commands/suggestMethod_test/match";
 import suggestMethod_test_prepare from "./Commands/suggestMethod_test/prepare";
@@ -69,6 +72,7 @@ export const                listTags_command = new Command(                listT
 export const           turnTagsOnOff_command = new Command(           turnTagsOnOff_match,           turnTagsOnOff_prepare,           turnTagsOnOff_execute);
 export const      addTagsToQuestions_command = new Command(      addTagsToQuestions_match,      addTagsToQuestions_prepare,      addTagsToQuestions_execute);
 export const removeTagsFromQuestions_command = new Command( removeTagsFromQuestions_match, removeTagsFromQuestions_prepare, removeTagsFromQuestions_execute);
+export const           setAskingTime_command = new Command(           setAskingTime_match,           setAskingTime_prepare,           setAskingTime_execute);
 
 export const      suggestMethod_test_command = new Command(      suggestMethod_test_match,      suggestMethod_test_prepare,      suggestMethod_test_execute,      suggestMethod_test_display);
 

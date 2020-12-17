@@ -9,7 +9,7 @@ import { extractDatetime_fromPassedTree, extractDuration_fromPassedTree } from "
 
 
 export default async function setAskingTime_prepare (msg: IIMessage, path: treeStep[]): Promise<any>  {
-    console.log(`setAskingTime.prepare(...)`);
+    // console.log(`setAskingTime.prepare(...)`);
 
     const theShoot: shoot = path[path.length - 1].shoot;
 
@@ -141,15 +141,15 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
         }
     }
 
-    console.log({
-        message,
-        path,
-        interval_words,
-        from_time,
-        to_time,
-        atDateTime_words,
-        request,
-    });
+    // console.log({
+    //     message,
+    //     path,
+    //     interval_words,
+    //     from_time,
+    //     to_time,
+    //     atDateTime_words,
+    //     request,
+    // });
 
     // console.log({
     //     message,

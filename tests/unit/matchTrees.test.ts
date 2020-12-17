@@ -3,49 +3,40 @@ import { Command_match, Command_prepare, IIMessage } from "../../src/core/Comman
 
 import { matchTree_testCase } from "../../src/Interpretation/matchTree/extras/matchTree_testCase.type";
 
+import match_byTree from "../../src/Interpretation/Commands/match_byTree";
+
 import { turnQuestionsOnOff_testCases } from "../../src/Interpretation/Commands/turnQuestionsOnOff/matchTree_testCases";
 import { turnQuestionsOnOff_tree }      from "../../src/Interpretation/Commands/turnQuestionsOnOff/matchTree";
-import turnQuestionsOnOff_match         from "../../src/Interpretation/Commands/turnQuestionsOnOff/match";
 import turnQuestionsOnOff_prepare       from "../../src/Interpretation/Commands/turnQuestionsOnOff/prepare";
 import { start_testCases } from "../../src/Interpretation/Commands/start/matchTree_testCases";
 import { start_tree } from "../../src/Interpretation/Commands/start/matchTree";
-import start_match from "../../src/Interpretation/Commands/start/match";
 import start_prepare from "../../src/Interpretation/Commands/start/prepare";
 import { addQuestion_testCases } from "../../src/Interpretation/Commands/addQuestion/matchTree_testCases";
 import { addQuestion_tree } from "../../src/Interpretation/Commands/addQuestion/matchTree";
-import addQuestion_match from "../../src/Interpretation/Commands/addQuestion/match";
 import addQuestion_prepare from "../../src/Interpretation/Commands/addQuestion/prepare";
 import { addTagsToQuestions_testCases } from "../../src/Interpretation/Commands/addTagsToQuestions/matchTree_testCases";
 import { addTagsToQuestions_tree } from "../../src/Interpretation/Commands/addTagsToQuestions/matchTree";
-import addTagsToQuestions_match from "../../src/Interpretation/Commands/addTagsToQuestions/match";
 import addTagsToQuestions_prepare from "../../src/Interpretation/Commands/addTagsToQuestions/prepare";
 import { askMeAQuestion_testCases } from "../../src/Interpretation/Commands/askMeAQuestion/matchTree_testCases";
 import { askMeAQuestion_tree } from "../../src/Interpretation/Commands/askMeAQuestion/matchTree";
-import askMeAQuestion_match from "../../src/Interpretation/Commands/askMeAQuestion/match";
 import askMeAQuestion_prepare from "../../src/Interpretation/Commands/askMeAQuestion/prepare";
 import { deleteQuestions_testCases } from "../../src/Interpretation/Commands/deleteQuestions/matchTree_testCases";
 import { deleteQuestions_tree } from "../../src/Interpretation/Commands/deleteQuestions/matchTree";
-import deleteQuestions_match from "../../src/Interpretation/Commands/deleteQuestions/match";
 import deleteQuestions_prepare from "../../src/Interpretation/Commands/deleteQuestions/prepare";
 import { listQuestions_testCases } from "../../src/Interpretation/Commands/listQuestions/matchTree_testCases";
 import { listQuestions_tree } from "../../src/Interpretation/Commands/listQuestions/matchTree";
-import listQuestions_match from "../../src/Interpretation/Commands/listQuestions/match";
 import listQuestions_prepare from "../../src/Interpretation/Commands/listQuestions/prepare";
 import { removeTagsFromQuestions_testCases } from "../../src/Interpretation/Commands/removeTagsFromQuestions/matchTree_testCases";
 import { removeTagsFromQuestions_tree } from "../../src/Interpretation/Commands/removeTagsFromQuestions/matchTree";
-import removeTagsFromQuestions_match from "../../src/Interpretation/Commands/removeTagsFromQuestions/match";
 import removeTagsFromQuestions_prepare from "../../src/Interpretation/Commands/removeTagsFromQuestions/prepare";
 import { listTags_testCases } from "../../src/Interpretation/Commands/listTags/matchTree_testCases";
 import { listTags_tree } from "../../src/Interpretation/Commands/listTags/matchTree";
-import listTags_match from "../../src/Interpretation/Commands/listTags/match";
 import listTags_prepare from "../../src/Interpretation/Commands/listTags/prepare";
 import { turnTagsOnOff_testCases } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree_testCases";
 import { turnTagsOnOff_tree } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree";
-import turnTagsOnOff_match from "../../src/Interpretation/Commands/turnTagsOnOff/match";
 import turnTagsOnOff_prepare from "../../src/Interpretation/Commands/turnTagsOnOff/prepare";
 import { setAskingTime_testBaseDate, setAskingTime_testCases } from "../../src/Interpretation/Commands/setAskingTime/matchTree_testCases";
 import { setAskingTime_tree } from "../../src/Interpretation/Commands/setAskingTime/matchTree";
-import setAskingTime_match from "../../src/Interpretation/Commands/setAskingTime/match";
 import setAskingTime_prepare from "../../src/Interpretation/Commands/setAskingTime/prepare";
 
 
@@ -66,77 +57,77 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
     start: {
         testCases: start_testCases,
         tree: start_tree,
-        matchfunc: start_match,
+        matchfunc: match_byTree(start_tree),
         prepfunc: start_prepare
     },
 
     turnQuestionsOnOff: {
         testCases: turnQuestionsOnOff_testCases,
         tree: turnQuestionsOnOff_tree,
-        matchfunc: turnQuestionsOnOff_match,
+        matchfunc: match_byTree(turnQuestionsOnOff_tree),
         prepfunc: turnQuestionsOnOff_prepare
     },
 
     addQuestion: {
         testCases: addQuestion_testCases,
         tree: addQuestion_tree,
-        matchfunc: addQuestion_match,
+        matchfunc: match_byTree(addQuestion_tree),
         prepfunc: addQuestion_prepare
     },
 
     addTagsToQuestions: {
         testCases: addTagsToQuestions_testCases,
         tree: addTagsToQuestions_tree,
-        matchfunc: addTagsToQuestions_match,
+        matchfunc: match_byTree(addTagsToQuestions_tree),
         prepfunc: addTagsToQuestions_prepare
     },
 
     askMeAQuestion: {
         testCases: askMeAQuestion_testCases,
         tree: askMeAQuestion_tree,
-        matchfunc: askMeAQuestion_match,
+        matchfunc: match_byTree(askMeAQuestion_tree),
         prepfunc: askMeAQuestion_prepare
     },
 
     deleteQuestions: {
         testCases: deleteQuestions_testCases,
         tree: deleteQuestions_tree,
-        matchfunc: deleteQuestions_match,
+        matchfunc: match_byTree(deleteQuestions_tree),
         prepfunc: deleteQuestions_prepare
     },
 
     listQuestions: {
         testCases: listQuestions_testCases,
         tree: listQuestions_tree,
-        matchfunc: listQuestions_match,
+        matchfunc: match_byTree(listQuestions_tree),
         prepfunc: listQuestions_prepare
     },
 
     removeTagsFromQuestions: {
         testCases: removeTagsFromQuestions_testCases,
         tree: removeTagsFromQuestions_tree,
-        matchfunc: removeTagsFromQuestions_match,
+        matchfunc: match_byTree(removeTagsFromQuestions_tree),
         prepfunc: removeTagsFromQuestions_prepare
     },
 
     listTags: {
         testCases: listTags_testCases,
         tree: listTags_tree,
-        matchfunc: listTags_match,
+        matchfunc: match_byTree(listTags_tree),
         prepfunc: listTags_prepare
     },
 
     turnTagsOnOff: {
         testCases: turnTagsOnOff_testCases,
         tree: turnTagsOnOff_tree,
-        matchfunc: turnTagsOnOff_match,
+        matchfunc: match_byTree(turnTagsOnOff_tree),
         prepfunc: turnTagsOnOff_prepare
     },
 
     setAskingTime: {
         testCases: setAskingTime_testCases,
         tree: setAskingTime_tree,
-        matchfunc: setAskingTime_match,
+        matchfunc: match_byTree(setAskingTime_tree),
         prepfunc: setAskingTime_prepare
     },
 

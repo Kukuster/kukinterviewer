@@ -2,6 +2,7 @@
 
 import {Document, Schema, model} from "mongoose";
 import { validStateName } from "../../../Interpretation/States";
+import { PickSubproperties_dotNotation } from "../../../reusable/mongooseSchemaUpdateSet.type";
 import { confirmableSheetMethod } from "../sheet";
 import { Iquestion, questionSchema } from "./QuestionModel";
 import { Itag, tagSchema } from "./TagModel";
@@ -40,13 +41,14 @@ export interface Ichat_schema {
     Settings: {
         enabled: boolean,
         timezone?: number,
-        asking_period_mins?: number,
-        asking_time_of_day?: { from_hour: number, to_hour: number }
+        asking_period_ms?: number,
+        asking_timeOfDay_from?: number,
+        asking_timeOfDay_to?: number,
     };
     last_time_asked?: Date;
     running?: boolean;
     state: validStateName;
-    Schedule?: { qid: number, datetime: Date },
+    next_question?: Date,
     pending_method: pending_method<confirmableSheetMethod> | null,
     awaiting_questionText: awaiting_questionText | null;
 }
@@ -65,6 +67,15 @@ export type Ichat_select =
             &
         {_id: boolean, _v: boolean}
     >
+
+/**
+ * Members of this type are passed to mongoose.Model<Ichat>.update({$set}) property
+ */
+export type Ichat_set = Partial<
+    Ichat_schema
+        &
+    PickSubproperties_dotNotation<Ichat_schema>
+>;
 
 
 const chatSchema = new Schema({
@@ -90,25 +101,17 @@ const chatSchema = new Schema({
         type: {
             enabled:  { type: Boolean, required: true },
             timezone: { type: Number, required: false },
-            asking_period_mins: { type: Number, required: false },
-            asking_time_of_day: { 
-                type: {
-                    from_hour: Number,
-                    to_hour: Number
-                },
-                    required: false
-            }
+            asking_period_ms: { type: Number, required: false },
+            asking_timeOfDay_from: { type: Number, required: false },
+            asking_timeOfDay_to: { type: Number, required: false },
         },
         required: true
     },
     last_time_asked: { type: Date,          required: false },
     running:         { type: Boolean,       required: false },
     state:           { type: String,        required: true },
-    Schedule: {
-        type: {
-            qid: Number,
-            datetime: Date
-        },
+    next_question: {
+        type: Date,
         required: false
     },
     pending_method: {

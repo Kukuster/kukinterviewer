@@ -8,61 +8,49 @@ import { extractDatetime_fromPassedTree, extractDuration_fromPassedTree } from "
 
 
 
-export default async function setAskingTime_prepare (msg: IIMessage, path: treeStep[]): Promise<any>  {
+export default async function setAskingTime_prepare (msg: IIMessage, path: treeStep[]): Promise<setAskingTime_partialArgs> {
     // console.log(`setAskingTime.prepare(...)`);
-
-    const theShoot: shoot = path[path.length - 1].shoot;
 
     const path_len = path.length;
 
     const message = msg.text!;
 
     const request: setAskingTime_partialArgs = {};
-
-    const maybe: { [K in keyof setAskingTime_partialArgs]: Date | number | string } = {};
     
-    let to_time: number | undefined = 0,  to_meridiem: number | undefined = 0,
-        at_time: number | undefined = 0,  at_meridiem: number | undefined = 0,
-      from_time: number | undefined = 0,from_meridiem: number | undefined = 0,
-        interval_amount: number | undefined, interval_timeunit: number | undefined, interval_adverb: number | undefined, interval_regularly: number | undefined;
+    let toTime_word: number | undefined = 0,  toMeridiem_word: number | undefined = 0,
+      fromTime_word: number | undefined = 0,fromMeridiem_word: number | undefined = 0;
+    let atDateTime_words: number[] = [];
+    let interval_words:   number[] = [];
 
-    const timeLocale = "en-US";
-    const timeZone = 'UTC';
 
     const now = new Date(roundBy(msg.date, 1000));
+
 
     let gotDate: number | null;
     let gotInterval: number | null;
     let regularly: number | undefined;
 
-    let atDateTime_words: number[] = [];
 
-    let interval_words: number[] = [];
 
-    
+    /**
+     * remember the position of matched shoots within the tree
+     */
     for (let i = 0; i < path_len; i++){
         const nd = path[i];
         const shoot = nd.shoot as shoot;
         
 
         if        (shoot === 'to (time)') {
-            to_time = i;
+            toTime_word = i;
 
         } else if (shoot === 'to (meridiem)') {
-            to_meridiem = i;
+            toMeridiem_word = i;
 
         } else if (shoot === 'from (time)') {
-            from_time = i;
+            fromTime_word = i;
 
         } else if (shoot === 'from (meridiem)') {
-            from_meridiem = i;
-
-
-        } else if (shoot === 'at (time)') {
-            at_time = i;
-
-        } else if (shoot === 'at (meridiem)') {
-            at_meridiem = i;
+            fromMeridiem_word = i;
 
         } else if (shoot === 'at - a datetime word') {
             // saves the last sequence of adjacent "at time" words
@@ -96,83 +84,52 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     }
 
 
-    if (to_time) {
-        if (to_meridiem) {
-            gotDate = extractDatetime_fromPassedTree(path, message, to_time, to_meridiem, now);
-            if (gotDate) { 
-                request.to = getTimeWithoutDate(gotDate);
-            }
-        } else {
-            gotDate = extractDatetime_fromPassedTree(path, message, to_time, to_time, now);
-            if (gotDate) {
-                request.to = getTimeWithoutDate(gotDate);
-            }
-        }
-    }
-    if (from_time) {
-        if (from_meridiem) {
-            gotDate = extractDatetime_fromPassedTree(path, message, from_time, from_meridiem, now);
-            if (gotDate) {
-                request.from = getTimeWithoutDate(gotDate);
-            }
-        } else {
-            gotDate = extractDatetime_fromPassedTree(path, message, from_time, from_time, now);
-            if (gotDate) {
-                request.from = getTimeWithoutDate(gotDate);
-            }
-        }
-    }
 
+    /**
+     * extract the actual data from the message with cutting off a parsable substring by coordinates of nodes of a passed tree
+     */
+    // request.to
+    if (toTime_word) {
+        if (toMeridiem_word) {
+            gotDate = extractDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now);            
+        } else {
+            gotDate = extractDatetime_fromPassedTree(path, message, toTime_word, toTime_word, now);
+        }
+        request.to = gotDate ? getTimeWithoutDate(gotDate) : 'matched by a matchTree but failed to parse';
+    }
+    // request.from
+    if (fromTime_word) {
+        if (fromMeridiem_word) {
+            gotDate = extractDatetime_fromPassedTree(path, message, fromTime_word, fromMeridiem_word, now);
+        } else {
+            gotDate = extractDatetime_fromPassedTree(path, message, fromTime_word, fromTime_word, now);
+        }
+        request.from = gotDate ? getTimeWithoutDate(gotDate) : 'matched by a matchTree but failed to parse';
+    }
+    // request.next_unix
     if (atDateTime_words.length) {
         gotDate = extractDatetime_fromPassedTree(path, message, atDateTime_words[0], atDateTime_words[atDateTime_words.length - 1], now);
-        if (gotDate) {
-            request.next_unix = gotDate;
-        }
+        request.next_unix = gotDate ? gotDate : 'matched by a matchTree but failed to parse';
     }
-
+    // request.interval_ms
     if (interval_words.length) {
         gotInterval = extractDuration_fromPassedTree(path, message, interval_words[0], interval_words[interval_words.length - 1]);
-        if (gotInterval) {
-            request.interval_ms = gotInterval;
-        }
-    } else {
-        if (regularly) {
-            request.interval_ms = timeUnitsVocabulary.days;
-        }
+        request.interval_ms = gotInterval ? gotInterval : 'matched by a matchTree but failed to parse';
+    } else if (regularly) {
+        request.interval_ms = timeUnitsVocabulary.days;
     }
 
-    // console.log({
-    //     message,
-    //     path,
-    //     interval_words,
-    //     from_time,
-    //     to_time,
-    //     atDateTime_words,
-    //     request,
-    // });
 
-    // console.log({
-    //     message,
-    //     path,
-    //     // "cutMessage_by_matchTreePath(path, message, 1, 2)": cutMessage_by_matchTreePath(path, message, 1, 2),
-    //     // "cutMessage_by_matchTreePath(path, message, 0, 2)": cutMessage_by_matchTreePath(path, message, 0, 2),
-    //     // "cutMessage_by_matchTreePath(path, message, 3, 4)": cutMessage_by_matchTreePath(path, message, 3, 4),
-    //     // "cutMessage_by_matchTreePath(path, message, 0, 5)": cutMessage_by_matchTreePath(path, message, 0, 5),
-    //     // "cutMessage_by_matchTreePath(path, message, -1, 5)": cutMessage_by_matchTreePath(path, message, -1, 5),
-    // });
 
+    /**
+     * reassigning properties in a particular order
+     */
     return {
-        // request,
-        // rPretty: {
-        //     interval: request.interval_ms !== undefined ? prettyMilliseconds(request.interval_ms) : undefined,
-        //     from: request.from !== undefined ? (new Date(request.from)).toLocaleTimeString(timeLocale, {timeZone}) : undefined,
-        //     to:     request.to !== undefined ? (new Date(request.to))  .toLocaleTimeString(timeLocale, {timeZone}) : undefined,
-        //     next_unix: request.next_unix !== undefined ? (new Date(request.next_unix)).toLocaleString(timeLocale, {timeZone}) : undefined,
-        // }
         interval_ms:  request.interval_ms,
-        from:      request.from,
-        to:        request.to,
-        next_unix: request.next_unix,
+        from:         request.from,
+        to:           request.to,
+        next_unix:    request.next_unix,
     };
+
 
 }

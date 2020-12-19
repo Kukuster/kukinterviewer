@@ -17,10 +17,12 @@
     "ts-node": "ts-node",
     "ts": "ts-node",
     "lint": "eslint . --ext .ts",
-    "watch_frontend.ts": "nodemon --watch src/web/frontend/src --ext '*' --exec bash build-frontend.sh"
+    "watch_frontend.ts": "nodemon --watch src/web/frontend/src --ext '*' --exec bash build-frontend.sh",
+    "build_all": "tsc && bash build-frontend.sh",
+    "start": "node dist/index.js"
   },
   "engines": {
-    "node": "14.10"
+    "node": "12.x"
   },
   "author": "Kukuster <KukusterMOP@gmail.com>",
   "license": "ISC",

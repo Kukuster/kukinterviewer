@@ -1,6 +1,6 @@
 'use strict';
 import ChatModel from "../../models/ChatModel";
-import mongoose, { DBconnection } from "../../mongoose";
+import { DBconnection } from "../../mongoose";
 
 
 /**
@@ -17,18 +17,12 @@ export default async function createNewChat(chatId: number){
         Questions: [],
         lastqid: 0,
         Tags: [],
-        Pending_to_delete: [],
         Settings: {
             enabled: false,
-            //timezone: undefined,
-            //asking_period_mins: 120,
-            //asking_time_of_day: { from_hour: 10, to_hour: 18 }
         },
         //last_time_asked: new Date(),
-        //running: false,
-        state: 'ready',
-        //Schedule: { qid: -1, datetime: new Date() }
-        pending_method: null,
+        state: 'asking for timezone',
+        intermediate_data: {},
     }).save();
 
 }

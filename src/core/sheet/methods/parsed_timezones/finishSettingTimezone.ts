@@ -10,15 +10,12 @@ import queryChat from "../functions/queryChat";
  * @state sets chat state to `'ready'`
  * 
  */
-export default async function finishAddingQuestionText(chatId: number): Promise<Ichat> {
+export default async function finishSettingTimezone(chatId: number): Promise<Ichat> {
 
     return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
-        console.log('finishAddingQuestionText');
+
         chat.state = 'ready';
-        if (!chat.intermediate_data){
-            chat.intermediate_data = {};
-        }
-        chat.intermediate_data.parsed_timezones = null;
+        chat.intermediate_data.awaiting_questionText = null;
         chat.markModified('intermediate_data');
         saveChat();
 

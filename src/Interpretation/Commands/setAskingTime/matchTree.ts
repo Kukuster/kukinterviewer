@@ -25,7 +25,7 @@ const question_s = /^questions?[?!.,;:]*$/i;
 
 
 const every = /^every[?!.,;:]*$/i;
-const number = /^(\d*(\.\d+)?)[?!.,;:]*$/i;
+const number = /^(\d*(\.\d*)?)[?!.,;:]*$/i;
 const timeunit = /^(nanosecond|ns|µs|μs|us|microsecond|millisecond|ms|second|sec|s|minute|min|m|hour|hr|h|day|d|week|wk|w|month|b|year|yr|y)s?[?!.,;:]*$/i;
 
 const timeunit_ly = /^(bi)?(hourly|daily|weekly|monthly|yearly|annually)[?!.,;:]*$/i;
@@ -38,11 +38,11 @@ const meridiem = /^([ap]\.?m\.?)[?!.,;:]*$/i;
 
 
 const date = /^(0?\d|1[012]).(0?\d|1\d|2\d|3[01]).(0?\d|1\d|2[01234])[?!.,;:]*$/i;
-const clock_or_date = /^(\d{1,2})([:.](\d{1,2}))([:.](\d{1,2}))?[?!.,;:]*$/;
-const day = /\b(sun(day)?|mon(day)?|tues(day)?|wed(nesday)?|thur(sday|s)?|fri(day)?|sat(urday)?)[?!.,;:]*$/;
+const clock_or_date = /^(\d{1,2})([:.](\d{1,2}))([:.](\d{1,2}))?[?!.,;:]*$/i;
+const day = /\b(sun(day)?|mon(day)?|tues(day)?|wed(nesday)?|thur(sday|s)?|fri(day)?|sat(urday)?|tomorrow)[?!.,;:]*$/i;
 const month = /^((\d{1,2})\s*(st|nd|rd|th))\s(day\s)?(of\s)?(january|february|march|april|may|june|july|august|september|october|november|december)[?!.,;:]*$/i;
-const dayMod = /^\b(morning|noon|afternoon|night|evening|midnight)[?!.,;:]*$/;
-const usual_timeunit = /^(second|minute|hour|day|week|month|year)[?!.,;:]*$/;
+const dayMod = /^\b(morning|noon|afternoon|night|evening|midnight)[?!.,;:]*$/i;
+const usual_timeunit = /^(second|minute|hour|day|week|month|year)[?!.,;:]*$/i;
 
 
 const next = /^(next|another)[?!.,;:]*$/i;
@@ -106,7 +106,7 @@ const nullnode = node(nullRE, []);
 let  start_ask_me_branch,
     finish_ask_me_branch,
     ask_questions_branch,
-    dont_ask_me_branch,
+      dont_ask_me_branch,
     dont_start_ask_me_branch,
    dont_finish_ask_me_branch: nodeLike[];
 
@@ -285,6 +285,12 @@ const REGULARITY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?:
 
 
 const NEXTTIME_datetime = (fork: nodeLike[], deadLeaf?: RegExp, shoot?: shoot) => BRANCH([
+    node(number, [
+        node(timeunit, fork, shoot as shoot),
+        node(meridiem, fork, shoot as shoot),
+        ...fork,
+        deadLeaf ? node(deadLeaf, []) : nullnode,
+    ], shoot as shoot),
     node(clock, [
         node(meridiem, fork, shoot as shoot),
         ...fork,
@@ -299,6 +305,7 @@ const NEXTTIME_datetime = (fork: nodeLike[], deadLeaf?: RegExp, shoot?: shoot) =
     node(month, fork, shoot as shoot),
     node(dayMod, fork, shoot as shoot),
     node(usual_timeunit, fork, shoot as shoot),
+    node(later, fork, shoot as shoot),
     // node(at, fork),
 ], [fork]);
 
@@ -397,6 +404,7 @@ export const setAskingTime_tree =
                     AFTER_timeclock([
                         UNTIL_timeclock([], frb, 'from (time)', 'from (meridiem)'),
                     ], frb, 'to (time)', 'to (meridiem)'),
+                    // questions([...PARENT'S CHILDREN])
                     node(frb, []),
                 ]),
                 node(nolater, [

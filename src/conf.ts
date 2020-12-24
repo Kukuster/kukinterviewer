@@ -35,3 +35,5 @@ export const PORT = <number>evalConfig(config,'PORT')
 
 export const HOST = <string>evalConfig(config,'HOST');
 
+export const TZ  =  <string>evalConfig(config,'TZ');
+

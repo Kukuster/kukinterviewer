@@ -1,5 +1,6 @@
 import { nodeC } from "../../src/Interpretation/matchTree/node";
 import { Command_match, Command_prepare, IIMessage } from "../../src/core/Command/Command";
+import MockDate from "mockdate";
 
 import { matchTree_testCase } from "../../src/Interpretation/matchTree/extras/matchTree_testCase.type";
 
@@ -35,9 +36,12 @@ import listTags_prepare from "../../src/Interpretation/Commands/listTags/prepare
 import { turnTagsOnOff_testCases } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree_testCases";
 import { turnTagsOnOff_tree } from "../../src/Interpretation/Commands/turnTagsOnOff/matchTree";
 import turnTagsOnOff_prepare from "../../src/Interpretation/Commands/turnTagsOnOff/prepare";
-import { setAskingTime_testBaseDate, setAskingTime_testCases } from "../../src/Interpretation/Commands/setAskingTime/matchTree_testCases";
+import { setAskingTime_testBaseDate_unix, setAskingTime_testCases } from "../../src/Interpretation/Commands/setAskingTime/matchTree_testCases";
 import { setAskingTime_tree } from "../../src/Interpretation/Commands/setAskingTime/matchTree";
 import setAskingTime_prepare from "../../src/Interpretation/Commands/setAskingTime/prepare";
+import { turnAskingOnOff_testCases } from "../../src/Interpretation/Commands/turnAskingOnOff/matchTree_testCases";
+import { turnAskingOnOff_tree } from "../../src/Interpretation/Commands/turnAskingOnOff/matchTree";
+import turnAskingOnOff_prepare from "../../src/Interpretation/Commands/turnAskingOnOff/prepare";
 
 
 
@@ -131,6 +135,12 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
         prepfunc: setAskingTime_prepare
     },
 
+    turnAskingOnOff: {
+        testCases: turnAskingOnOff_testCases,
+        tree: turnAskingOnOff_tree,
+        matchfunc: match_byTree(turnAskingOnOff_tree),
+        prepfunc: turnAskingOnOff_prepare
+    },
 };
 
 
@@ -144,10 +154,12 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
 ////////////////////////////////////////////////////////
 
 
+MockDate.set(setAskingTime_testBaseDate_unix);
+
 const mock_telegram_message = (messageText: string): IIMessage => ({
     text: messageText,
     message_id: 222222222,
-    date: setAskingTime_testBaseDate.getTime(),
+    date: setAskingTime_testBaseDate_unix,
     chat: {
         id: 444444444,
         type: 'private'

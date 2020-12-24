@@ -10,7 +10,7 @@ export default async function suggestMethod_test_display(msg: IIMessage, chat: I
     
     const chatId = msg.chat.id;
 
-    const { sheet_method, args_tuple } = chat.pending_method!;
+    const { sheet_method, args_tuple } = chat.intermediate_data.pending_method!;
 
     const pre_response = `this is a test command`;
     const response = `Are you sure you want to execute:

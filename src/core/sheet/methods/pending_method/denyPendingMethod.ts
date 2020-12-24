@@ -11,13 +11,17 @@ import queryChat from "../functions/queryChat";
  */
 export default async function denyPendingMethod(chatId: number): Promise<void> {
 
-    return queryChat(chatId, { "pending_method": true, "state": true }, async (chat, saveChat) => {
-        const pendingMethod = chat.pending_method;
+    return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
+        const pendingMethod = chat.intermediate_data!.pending_method;
 
         if (pendingMethod){
 
             chat.state = pendingMethod.prev_state;
-            chat.pending_method = null;
+            if (!chat.intermediate_data) {
+                chat.intermediate_data = {};
+            }
+            chat.intermediate_data.pending_method = null;
+            chat.markModified('intermediate_data');
             saveChat();
 
             return;

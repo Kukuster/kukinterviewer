@@ -23,20 +23,16 @@ const settingsToSetObj: settingsSet[]
 = [
     {
         'enabled': true,
-        'timezone': 2,
-        'asking_period_mins': 180,
-        'asking_time_of_day': {
-            'from_hour': 8,
-            'to_hour': 20
-        }
+        'timezone': 'US/Alaska',
+        'asking_period_ms': 180,
+        'asking_timeOfDay_from': 8,
+        'asking_timeOfDay_to': 20,
     },
     {
         'enabled': false,
-        'timezone': 3,
-        'asking_time_of_day': {
-            'from_hour': 9,
-            'to_hour': 19
-        }
+        'timezone': 'Europe/Kiev',
+        'asking_timeOfDay_from': 9,
+        'asking_timeOfDay_to': 19,
     },
 
 ]
@@ -47,10 +43,8 @@ type settingsKeyValueTuple<T extends settingsKey> = [T, settingsSet[T]];
 const settingsToSetKeyAndValue: [settingsKey, settingsSet[settingsKey]][] = [
     ['enabled', true],
     ['timezone', 2],
-    ['asking_time_of_day', {
-        from_hour: 10,
-        to_hour: 18
-    }]
+    ['asking_timeOfDay_from', 10],
+    ['asking_timeOfDay_to', 18],
 ];
 
 

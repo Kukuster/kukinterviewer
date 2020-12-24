@@ -29,17 +29,19 @@ export default async function confirmPendingMethod(chatId: number)
     : Promise < confirmedResponse | deniedResponse >
 {
 
-
-    return queryChat(chatId, { "pending_method": true, "state": true }, async (chat, saveChat) => {
-        const pendingMethod = chat.pending_method;
-
+    return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
+        const pendingMethod = chat.intermediate_data!.pending_method;
 
         if (pendingMethod){
 
             const { sheet_method, args_tuple, prev_state } = pendingMethod;
 
             chat.state = prev_state;
-            chat.pending_method = null;
+            if (!chat.intermediate_data) {
+                chat.intermediate_data = {};
+            }
+            chat.intermediate_data.pending_method = null;
+            chat.markModified('intermediate_data');
             saveChat();
             
 

@@ -59,6 +59,23 @@ You can ask me to:
 
 • correct description and comments for the Command class (core/Command/Command.ts)
 
+• improve setAskingTime Command:
+    - so that it recognises «every *timeunit*» as to be equivalent to «every 1 *timeunit*»
+    - so that it recognises «8 p.m.» as to be equivalent to «8 pm»
+
+• showSetting Command for messages:
+    - «tell me when will you ask me next question»
+    - «tell me what time of day do you ask me»
+    - «tell me what time of day are you interviewing me»
+    - «tell me what time of day you can ask me questions»
+    - «tell me what time do you finish ask me any questions»
+    - «tell me what time do you start ask me questions»
+    - «tell me what time do you start interviewing me»
+
+• Enable/disable bot Command
+
+
+
 
 
 <Optional>

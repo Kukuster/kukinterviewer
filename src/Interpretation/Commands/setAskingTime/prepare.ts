@@ -2,28 +2,39 @@ import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { setAskingTime_partialArgs } from "./execute";
 import { shoot } from "./matchTree";
-import { getTimeWithoutDate, timeUnitsVocabulary } from "../../../reusable/datetime";
+import { getDateWithoutTime, getTimeWithoutDate, timeUnitsVocabulary } from "../../../reusable/datetime";
 import roundBy from "../../../reusable/roundBy";
-import { extractDatetime_fromPassedTree, extractDuration_fromPassedTree } from "../../matchTree/extras/time";
+import { extractForthcomingDatetime_fromPassedTree, extractDuration_fromPassedTree } from "../../matchTree/extras/time";
+import getSettings from "../../../core/sheet/methods/chat/getSettings";
 
 
 
 export default async function setAskingTime_prepare (msg: IIMessage, path: treeStep[]): Promise<setAskingTime_partialArgs> {
-    // console.log(`setAskingTime.prepare(...)`);
+    process.env.NODE_ENV !== 'test' && console.log(`setAskingTime.prepare(...)`);
 
     const path_len = path.length;
 
     const message = msg.text!;
+    const chatId = msg.chat.id;
 
-    const request: setAskingTime_partialArgs = {};
+    // sometimes with msg.date it sends not the full date, but only a time of some very old day
+    const msgdate = msg.date;
     
+    const msgdatetime = getDateWithoutTime().getTime() + getTimeWithoutDate(msgdate);
+    const timezone = await getSettings(chatId, 'timezone');
+
+
+    const now = new Date(roundBy(msgdatetime, 1000));
+    const request: setAskingTime_partialArgs = {
+        now: now.getTime()
+    };
+    process.env.NODE_ENV !== 'test' && console.log({msg, now});
+
+
     let toTime_word: number | undefined = 0,  toMeridiem_word: number | undefined = 0,
       fromTime_word: number | undefined = 0,fromMeridiem_word: number | undefined = 0;
     let atDateTime_words: number[] = [];
     let interval_words:   number[] = [];
-
-
-    const now = new Date(roundBy(msg.date, 1000));
 
 
     let gotDate: number | null;
@@ -91,24 +102,25 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     // request.to
     if (toTime_word) {
         if (toMeridiem_word) {
-            gotDate = extractDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now);            
+            gotDate = extractForthcomingDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now, timezone);
+            // console.log(`extractDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now)`);
         } else {
-            gotDate = extractDatetime_fromPassedTree(path, message, toTime_word, toTime_word, now);
+            gotDate = extractForthcomingDatetime_fromPassedTree(path, message, toTime_word, toTime_word, now, timezone);
         }
         request.to = gotDate ? getTimeWithoutDate(gotDate) : 'matched by a matchTree but failed to parse';
     }
     // request.from
     if (fromTime_word) {
         if (fromMeridiem_word) {
-            gotDate = extractDatetime_fromPassedTree(path, message, fromTime_word, fromMeridiem_word, now);
+            gotDate = extractForthcomingDatetime_fromPassedTree(path, message, fromTime_word, fromMeridiem_word, now, timezone);
         } else {
-            gotDate = extractDatetime_fromPassedTree(path, message, fromTime_word, fromTime_word, now);
+            gotDate = extractForthcomingDatetime_fromPassedTree(path, message, fromTime_word, fromTime_word, now, timezone);
         }
         request.from = gotDate ? getTimeWithoutDate(gotDate) : 'matched by a matchTree but failed to parse';
     }
     // request.next_unix
     if (atDateTime_words.length) {
-        gotDate = extractDatetime_fromPassedTree(path, message, atDateTime_words[0], atDateTime_words[atDateTime_words.length - 1], now);
+        gotDate = extractForthcomingDatetime_fromPassedTree(path, message, atDateTime_words[0], atDateTime_words[atDateTime_words.length - 1], now, timezone);
         request.next_unix = gotDate ? gotDate : 'matched by a matchTree but failed to parse';
     }
     // request.interval_ms
@@ -125,6 +137,7 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
      * reassigning properties in a particular order
      */
     return {
+        now:          now.getTime(),
         interval_ms:  request.interval_ms,
         from:         request.from,
         to:           request.to,

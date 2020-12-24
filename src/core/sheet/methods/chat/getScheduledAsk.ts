@@ -8,7 +8,7 @@ import getChatProperty from "./getChatProperty";
  * @param datetime the time a next question will be asked
  */
 export default async function getScheduledAsk(chatId: number)
-    : Promise<Date | undefined>
+    : Promise<Date | null | undefined>
 {
 
     return getChatProperty(chatId, "next_question");

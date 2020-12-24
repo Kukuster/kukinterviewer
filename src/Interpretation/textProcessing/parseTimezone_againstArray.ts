@@ -1,4 +1,4 @@
-import { Country, getAllCountries, getAllTimezones, getCountry, getTimezone } from "countries-and-timezones";
+import { Country } from "countries-and-timezones";
 import { Timezone } from "node-schedule";
 import { splitToWords } from "../matchTree/extras/splitToWords";
 
@@ -36,7 +36,7 @@ export default function parseTimezone_againstArray(input: string, Array: string[
         return {
             result: "didn't figure anything out",
             description: "filtered strWords is empty"
-        }
+        };
     }
 
     const inputWords_len = inputWords.length;
@@ -71,7 +71,7 @@ export default function parseTimezone_againstArray(input: string, Array: string[
     
     for (let i = 0; i < Array_len; i++){
         
-        const timezoneWords = ( Array[i].replace(/[\/_-]/g, " ") ).split(' ');
+        const timezoneWords = ( Array[i].replace(/[/_-]/g, " ") ).split(' ');
         const timezoneWords_len = timezoneWords.length;
 
         timezoneWordsMatched = 0;

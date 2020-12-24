@@ -1,6 +1,5 @@
 import { Job } from "node-schedule";
 import { IIMessage } from "../../../core/Command/Command";
-import autoNextAskingTime from "../../../core/schedule/autoNextAskingTime";
 import scheduleNextQuestion from "../../../core/schedule/scheduleNextQuestion";
 import setChatProperty from "../../../core/sheet/methods/chat/setChatProperty";
 import switchAsking from "../../../core/sheet/methods/chat/switchAsking";

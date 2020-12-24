@@ -128,12 +128,12 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
         prepfunc: turnTagsOnOff_prepare
     },
 
-    setAskingTime: {
-        testCases: setAskingTime_testCases,
-        tree: setAskingTime_tree,
-        matchfunc: match_byTree(setAskingTime_tree),
-        prepfunc: setAskingTime_prepare
-    },
+    // setAskingTime: {
+    //     testCases: setAskingTime_testCases,
+    //     tree: setAskingTime_tree,
+    //     matchfunc: match_byTree(setAskingTime_tree),
+    //     prepfunc: setAskingTime_prepare
+    // },
 
     turnAskingOnOff: {
         testCases: turnAskingOnOff_testCases,

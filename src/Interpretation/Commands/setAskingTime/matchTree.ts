@@ -1,25 +1,20 @@
-import { node, nodeLike, SELF, PARENTs_CHILDREN, PARENT, nodeC } from "../../matchTree/node";
+import { node, nodeLike, nodeC } from "../../matchTree/node";
 
 
 // any punctuation mark at the end:
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 const root = /[\s\S]+/g;
 
 const nullRE = /(?!x)x/;
 
-const anyText = /^[\S]+$/g;
 
 // const list = /^((list|show|detail|reveal|pull|bring|search|find)(ing)?|(get|output)(t?ing)?|(displa(y|ing))|explos(e|ing))$/i;
 
-const ask =     /^(ask|give)[?!.,;:]*$/i;
-const asking =  /^(asking|giving)[?!.,;:]*$/i;
 const ask_ing = /^(ask(ing)?|giv(e|ing))[?!.,;:]*$/i;
 
 const me = /^me[?!.,;:]*$/i;
 
-const question =   /^question[?!.,;:]*$/i;
-const questions =  /^questions[?!.,;:]*$/i;
 const question_s = /^questions?[?!.,;:]*$/i;
 
 
@@ -171,7 +166,7 @@ const INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, sho
 
 
 // every [-> number ] -> timeunit
-const EVERY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_every?: shoot) => BRANCH([    
+const EVERY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot) => BRANCH([    
     node(every, [
         ...INTERVAL([THIS_BRANCH_ITSELF, ...fork], deadLeaf, shoot_amount, shoot_timeunit),
         deadLeaf ? node(deadLeaf, []) : nullnode,
@@ -276,11 +271,11 @@ const FINISHING_timeclock = (fork: nodeLike[], deadLeaf?: RegExp, shoot_time?: s
 // [regularly -> ] timeunit_ly
 const REGULARITY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_regularly?: shoot, shoot_every?: shoot) => BRANCH([
     node(regularly, [
-        ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_every),
+        ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly),
         ...fork,
         deadLeaf ? node(deadLeaf, []) : nullnode,
     ], shoot_regularly as shoot),
-    ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_every),
+    ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly),
 ], [fork]);
 
 

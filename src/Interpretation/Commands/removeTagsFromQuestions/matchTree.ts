@@ -1,25 +1,25 @@
-import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
+import { node, SELF } from "../../matchTree/node";
 
 
 // any punctuation mark at the end: 
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 const root = /[\s\S]+/g;
 
-const del = /^(delet(e|in(g|')?)?|eras(e|in(g|')?)?|remov(e|in(g|')?)?|eliminat(e|in(g|')?)?|drop(pin('|g)?)?|wip(e|in(g|')?)?)*[\?\!\.,;:]*$/i;
+const del = /^(delet(e|in(g|')?)?|eras(e|in(g|')?)?|remov(e|in(g|')?)?|eliminat(e|in(g|')?)?|drop(pin('|g)?)?|wip(e|in(g|')?)?)*[?!.,;:]*$/i;
 const question = /^questions?(\S*)*/i;
-const questionDigit = /^questions?[\?\!\.,;:]*(#|№|N|n|@)(\d+)[\?\!\.,;:]*/i;
+const questionDigit = /^questions?[?!.,;:]*(#|№|N|n|@)(\d+)[?!.,;:]*/i;
 const tag = /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;
-const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
-const all = /^(all|each|every)[\?\!\.,;:]*$/i;
-const tagWord = /^(hash)?tag(ged|ging|s)?[\?\!\.,;:]*$/i;
-const untagWord = /^(un(hash)?tag(ged|ging)?|unset(ted|ting)?)[\?\!\.,;:]*$/i;
-const set = /^(set(ting)?|mak(e|ing)|let(ting)?|got|made)[\?\!\.,;:]*$/i;
+const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
+const all = /^(all|each|every)[?!.,;:]*$/i;
+const tagWord = /^(hash)?tag(ged|ging|s)?[?!.,;:]*$/i;
+const untagWord = /^(un(hash)?tag(ged|ging)?|unset(ted|ting)?)[?!.,;:]*$/i;
+const set = /^(set(ting)?|mak(e|ing)|let(ting)?|got|made)[?!.,;:]*$/i;
 
 
-const frb = /^(search|turn(in('|g)?)?|add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)|withdraw(ing)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing)?)[\?\!\.,;:]*$/i;
+const frb = /^(search|turn(in('|g)?)?|add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)|withdraw(ing)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing)?)[?!.,;:]*$/i;
 
-const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
+const neg = /^(don't|never|not?)*[?!.,;:]*$/i;
 
 
 

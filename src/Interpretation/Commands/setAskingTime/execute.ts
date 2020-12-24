@@ -32,14 +32,14 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
             Ichat
     } & {
         enabled?: Ichat
-    } = {}
+    } = {};
     
     const results: { 
         [A in keyof setAskingTime_partialArgs]?:
             'failed to parse' | 'failed to save' | number
     } & {
         enabled?: boolean | 'failed to save'
-    } = {}
+    } = {};
 
 
     // set DB settings in accord to requested asking interval

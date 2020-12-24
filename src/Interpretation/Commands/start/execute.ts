@@ -20,7 +20,7 @@ export default async function start_execute(msg: IIMessage, arg: boolean) {
         return {
             request: arg,
             response: {
-                chat: await createNewChat(chatId),
+                chat: await createNewChat(chatId, {state: 'asking for timezone'}),
                 description: "created a new chat document, now waiting for timezone",
             },
         };

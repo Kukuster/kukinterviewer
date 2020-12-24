@@ -91,7 +91,7 @@ This command should not be available for those who already started!`);
 
     try {        
         return {
-            result: await sheet.createNewChat(chatId),
+            result: await sheet.createNewChat(chatId, {state: 'ready'}),
             reply: reply
         };
     } catch (e) {

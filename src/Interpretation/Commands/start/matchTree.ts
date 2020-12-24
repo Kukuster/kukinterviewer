@@ -4,88 +4,88 @@ import { node, nodeC } from "../../matchTree/node";
 
 
 // any punctuation mark at the end:
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 
 const rootRE =  /[\s\S]+/g;
 
 
-const hello = /^(hello|hi|hey|hiya|ahoy|'ello|low|hey)[\?\!\.,;:]*$/i;
+const hello = /^(hello|hi|hey|hiya|ahoy|'ello|low|hey)[?!.,;:]*$/i;
 
-const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(ss|zz)up|yo|alrighty?)[\?\!\.,;:]*$/i;
+const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(ss|zz)up|yo|alrighty?)[?!.,;:]*$/i;
 
-const hello_foreign = /^(bonjour|hola|salaam|privet)[\?\!\.,;:]*$/i;
+const hello_foreign = /^(bonjour|hola|salaam|privet)[?!.,;:]*$/i;
 
 const guten = /^guten$/i;
-const tag = /^tag$[\?\!\.,;:]*$/i;
+const tag = /^tag$[?!.,;:]*$/i;
 
 
-const good = /^(good|great|nice|pleasure|lovely|cool|peachy|amazing|cool|pleased)[\?\!\.,;:]*$/i;
-const timeOfDay = /^(morning?|evening?|afternoon)[\?\!\.,;:]*$/i;
+const good = /^(good|great|nice|pleasure|lovely|cool|peachy|amazing|cool|pleased)[?!.,;:]*$/i;
+const timeOfDay = /^(morning?|evening?|afternoon)[?!.,;:]*$/i;
 
-const its = /^it's[\?\!\.,;:]*$/i;
-const its_good_to = /^(to|ot|2|two)[\?\!\.,;:]*$/i;
-const its_good_to_meet = /^(meet|see|c)[\?\!\.,;:]*$/i;
-const its_good_to_meet_you = /^(you|ya|ye|u)[\?\!\.,;:]*$/i;
-
-
-const how = /^(how|huw|hou)[\?\!\.,;:]*$/i;
-const hows = /^(how|huw|hou)'?s[\?\!\.,;:]*$/i;
-const howr = /^how'?re?[\?\!\.,;:]*$/i;
-const is = /^i?s[\?\!\.,;:]*$/i;
-const are = /^(are|r)[\?\!\.,;:]*$/i;
-
-const how_are_things = /^(things|deeds|deals|shits|craps)[\?\!\.,;:]*$/i;
-const hows_thing = /^(thing|deed|deal|shit|crap|everythin(g|')?|nothin(g|')?|life|goin(g|')?)[\?\!\.,;:]*$/i;
-
-const your = /^(your|ur)[\?\!\.,;:]*$/i;
-
-const hows_your_stuff = /^(stuff|thing|day|nothing?)[\?\!\.,;:]*$/i;
-
-const do_ = /^(do|doo)[\?\!\.,;:]*$/i;
-
-const have_you = /^have[\?\!\.,;:]*$/i;
-const been = /^been[\?\!\.,;:]*$/i;
-
-const it = /^(it|eet)[\?\!\.,;:]*$/i;
-const going = /^(goin(g|')?|happenin(g|')?)[\?\!\.,;:]*$/i;
-
-const long = /^long?[\?\!\.,;:]*$/i;
-const time = /^time?[\?\!\.,;:]*$/i;
-const longtime = /^long?-time[\?\!\.,;:]*$/i;
-
-const no = /^not?[\?\!\.,;:]*$/i;
-const see = /^seen?[\?\!\.,;:]*$/i;
-
-const i = /^(i|eye|aye)[\?\!\.,;:]*$/i;
-const im = /^i'?m[\?\!\.,;:]*$/i;
-const am = /^a?m[\?\!\.,;:]*$/i;
-
-const im_glad = /^(glad|exited|honored)[\?\!\.,;:]*$/i;
+const its = /^it's[?!.,;:]*$/i;
+const its_good_to = /^(to|ot|2|two)[?!.,;:]*$/i;
+const its_good_to_meet = /^(meet|see|c)[?!.,;:]*$/i;
+const its_good_to_meet_you = /^(you|ya|ye|u)[?!.,;:]*$/i;
 
 
-const you = /^(you|u|yo)[\?\!\.,;:]*$/i;
-const ok = /^(ok(ay|ey)?|alrighty?|fine)[\?\!\.,;:]*$/i;
+const how = /^(how|huw|hou)[?!.,;:]*$/i;
+const hows = /^(how|huw|hou)'?s[?!.,;:]*$/i;
+const howr = /^how'?re?[?!.,;:]*$/i;
+const is = /^i?s[?!.,;:]*$/i;
+const are = /^(are|r)[?!.,;:]*$/i;
+
+const how_are_things = /^(things|deeds|deals|shits|craps)[?!.,;:]*$/i;
+const hows_thing = /^(thing|deed|deal|shit|crap|everythin(g|')?|nothin(g|')?|life|goin(g|')?)[?!.,;:]*$/i;
+
+const your = /^(your|ur)[?!.,;:]*$/i;
+
+const hows_your_stuff = /^(stuff|thing|day|nothing?)[?!.,;:]*$/i;
+
+const do_ = /^(do|doo)[?!.,;:]*$/i;
+
+const have_you = /^have[?!.,;:]*$/i;
+const been = /^been[?!.,;:]*$/i;
+
+const it = /^(it|eet)[?!.,;:]*$/i;
+const going = /^(goin(g|')?|happenin(g|')?)[?!.,;:]*$/i;
+
+const long = /^long?[?!.,;:]*$/i;
+const time = /^time?[?!.,;:]*$/i;
+const longtime = /^long?-time[?!.,;:]*$/i;
+
+const no = /^not?[?!.,;:]*$/i;
+const see = /^seen?[?!.,;:]*$/i;
+
+const i = /^(i|eye|aye)[?!.,;:]*$/i;
+const im = /^i'?m[?!.,;:]*$/i;
+const am = /^a?m[?!.,;:]*$/i;
+
+const im_glad = /^(glad|exited|honored)[?!.,;:]*$/i;
 
 
-const what = /^(what|wat)[\?\!\.,;:]*$/i;
-const whats = /^(what|wat)'?s[\?\!\.,;:]*$/i;
-const whats_up = /^(up|new|crackin(g|')?|happenin(g|')?)[\?\!\.,;:]*$/i;
-const the = /^(the|da|de)[\?\!\.,;:]*$/i;
-const craic = /^(craic|crack|fuck)[\?\!\.,;:]*$/i;
-
-const here = /^(here|hear|heer|hee|he)[\?\!\.,;:]*$/i;
-const we = /^(we|wee|vi)[\?\!\.,;:]*$/i;
-const go = /^(go|gaw)[\?\!\.,;:]*$/i;
+const you = /^(you|u|yo)[?!.,;:]*$/i;
+const ok = /^(ok(ay|ey)?|alrighty?|fine)[?!.,;:]*$/i;
 
 
-const so = /^(so)[\?\!\.,;:]*$/i;
+const what = /^(what|wat)[?!.,;:]*$/i;
+const whats = /^(what|wat)'?s[?!.,;:]*$/i;
+const whats_up = /^(up|new|crackin(g|')?|happenin(g|')?)[?!.,;:]*$/i;
+const the = /^(the|da|de)[?!.,;:]*$/i;
+const craic = /^(craic|crack|fuck)[?!.,;:]*$/i;
+
+const here = /^(here|hear|heer|hee|he)[?!.,;:]*$/i;
+const we = /^(we|wee|vi)[?!.,;:]*$/i;
+const go = /^(go|gaw)[?!.,;:]*$/i;
 
 
-const its_been__ = /^(ages|decades|years|month|weeks)[\?\!\.,;:]*$/i;
-const a = /^a[\?\!\.,;:]*$/i;
-const while_ = /^while[\?\!\.,;:]*$/i;
-const too = /^(too|2|two)[\?\!\.,;:]*$/i;
+const so = /^(so)[?!.,;:]*$/i;
+
+
+const its_been__ = /^(ages|decades|years|month|weeks)[?!.,;:]*$/i;
+const a = /^a[?!.,;:]*$/i;
+const while_ = /^while[?!.,;:]*$/i;
+const too = /^(too|2|two)[?!.,;:]*$/i;
 
 
 export type shoot = true;

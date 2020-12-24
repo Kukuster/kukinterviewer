@@ -9,7 +9,7 @@ import { DBconnection } from "../../mongoose";
  * @state sets chat state to `'ready'`
  * 
  */
-export default async function createNewChat(chatId: number){
+export default async function createNewChat(chatId: number, args: { state: string }) {
 
     return new ChatModel({
         _id: new (await DBconnection).Types.ObjectId(),
@@ -21,7 +21,7 @@ export default async function createNewChat(chatId: number){
             enabled: false,
         },
         //last_time_asked: new Date(),
-        state: 'asking for timezone',
+        state: args.state,
         intermediate_data: {},
     }).save();
 

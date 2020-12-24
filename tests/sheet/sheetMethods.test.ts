@@ -164,7 +164,7 @@ beforeAll(async () => {
     }
 
     // create new chat
-    createChatResult = await sheet.createNewChat(chatId);
+    createChatResult = await sheet.createNewChat(chatId, {state: 'ready'});
     // remember this mongoDB document ID of this chat
     chatDocId = createChatResult._id;
 

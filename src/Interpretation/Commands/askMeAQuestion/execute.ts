@@ -44,7 +44,7 @@ export default async function askMeAQuestion_execute(msg_or_chatId: IIMessage | 
     const response: askMeAQuestion_response = {
         question: randomQuestion,
         questionsLeft: enabledQuestions.length,
-    }
+    };
     
     if (response.questionsLeft === 0){
         await switchAsking(chatId, 'off');
@@ -55,4 +55,4 @@ export default async function askMeAQuestion_execute(msg_or_chatId: IIMessage | 
         response: response
     };
 
-};
+}

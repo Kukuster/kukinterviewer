@@ -41,7 +41,7 @@ export default function parseTimezone(input: string)
         return {
             result: "didn't figure anything out",
             description: "filtered strWords is empty"
-        }
+        };
     }
 
     const inputWords_len = inputWords.length;
@@ -69,7 +69,7 @@ export default function parseTimezone(input: string)
     //////////////////////////////////////////////////
     /// if a country name equals to the whole input ///
     for (const id in Countries){
-        if (Countries.hasOwnProperty(id) && typeof Countries[id] === 'object'){
+        if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object'){
             
             // if found a country by name
             if (input.trim() === Countries[id].name){
@@ -94,7 +94,7 @@ export default function parseTimezone(input: string)
     } // for id in Contries
     /// if input contains a full country name ///
     for (const id in Countries) {
-        if (Countries.hasOwnProperty(id) && typeof Countries[id] === 'object') {
+        if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object') {
 
             // if found a country by name
             if (input.match(new RegExp(Countries[id].name, 'i'))) {
@@ -119,9 +119,9 @@ export default function parseTimezone(input: string)
     } // for id in Contries
     /// if input contains all words from a full country name ///
     for (const id in Countries) {
-        if (Countries.hasOwnProperty(id) && typeof Countries[id] === 'object') {
+        if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object') {
             
-            const countryWords = ( Countries[id].name.replace(/[\/_-]/g, " ") ).split(' ');
+            const countryWords = ( Countries[id].name.replace(/[/_-]/g, " ") ).split(' ');
             const countryWords_len = countryWords.length;
 
             // if a country name is made of several words (its not that many of them)
@@ -142,7 +142,7 @@ export default function parseTimezone(input: string)
                     };
                 }
 
-            };
+            }
 
         }
     } // for id in Contries
@@ -182,9 +182,9 @@ export default function parseTimezone(input: string)
     let timezoneWordsMatched = 0;
 
     for (const name in Timezones) {
-        if (Timezones.hasOwnProperty(name) && typeof Timezones[name] === 'object') {
+        if (Object.prototype.hasOwnProperty.call(Timezones, name) && typeof Timezones[name] === 'object') {
             
-            const timezoneWords = ( Timezones[name].name.replace(/[\/_-]/g, " ") ).split(' ');
+            const timezoneWords = ( Timezones[name].name.replace(/[/_-]/g, " ") ).split(' ');
             const timezoneWords_len = timezoneWords.length;
 
             timezoneWordsMatched = 0;
@@ -267,7 +267,7 @@ export default function parseTimezone(input: string)
     const MatchedTimezones2: Timezone[] = [];
 
     for (const name in Timezones) {
-        if (Timezones.hasOwnProperty(name) && typeof Timezones[name] === 'object') {
+        if (Object.prototype.hasOwnProperty.call(Timezones, name) && typeof Timezones[name] === 'object') {
 
             for (let i = 0; i < notShortWords_len; i++) {
                 if (name.match(new RegExp(notShortWords[i], 'i'))){

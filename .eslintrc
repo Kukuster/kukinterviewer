@@ -8,6 +8,7 @@
         "jest": true
     },
     "overrides": [
+        // TS
         {
             "files": ["**/*.ts"],
             "parser": "@typescript-eslint/parser",
@@ -20,7 +21,7 @@
                 "plugin:@typescript-eslint/recommended"
             ],
             "rules": {
-                "indent": ["warning", 4],
+                // "indent": [1, 4],
                 "semi": 1, // will be autofixed
                 "no-extra-semi": 1, // will be autofixed
                 "no-undef": 1,
@@ -35,8 +36,45 @@
                 "@typescript-eslint/no-extra-semi": 1, // will be autofixed
                 "@typescript-eslint/no-non-null-assertion": 0,
                 "@typescript-eslint/explicit-module-boundary-types": 0,
+                "@typescript-eslint/no-inferrable-types": 0,
             },
         },
+
+        // TS TESTS
+        {
+            "files": ["**/*.test.ts"],
+            "parser": "@typescript-eslint/parser",
+            "plugins": [
+                "@typescript-eslint"
+            ],
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended"
+            ],
+            "rules": {
+                // "indent": [1, 4],
+                "semi": 1, // will be autofixed
+                "no-extra-semi": 1, // will be autofixed
+                "no-undef": 1,
+                "prefer-const": 0,
+                "no-cond-assign": 0,
+                "no-unused-labels": 1,
+                "no-useless-escape": 1,
+                "no-fallthrough": 0,
+                "no-case-declarations": 1,
+                "no-unused-vars": 0,
+
+
+                "@typescript-eslint/no-extra-semi": 1, // will be autofixed
+                "@typescript-eslint/no-non-null-assertion": 0,
+                "@typescript-eslint/explicit-module-boundary-types": 0,
+                "@typescript-eslint/no-inferrable-types": 0,
+                "@typescript-eslint/no-explicit-any": 0,
+            },
+        },
+
+        // JS
         {
             "files": ["**/*.js"],
             "env": {
@@ -45,7 +83,7 @@
                 "es6": true,
             },
             "rules": {
-                "indent": ["warning", 4],
+                // "indent": [1, 4],
                 "semi": 1, // will be autofixed
                 "no-extra-semi": 1, // will be autofixed
                 "no-undef": 1,

@@ -21,7 +21,8 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     const msgdate = msg.date;
     
     const msgdatetime = getDateWithoutTime().getTime() + getTimeWithoutDate(msgdate);
-    const timezone = await getSettings(chatId, 'timezone');
+    // const timezone = await getSettings(chatId, 'timezone');
+    const timezone = "Europe/Kiev";
 
 
     const now = new Date(roundBy(msgdatetime, 1000));

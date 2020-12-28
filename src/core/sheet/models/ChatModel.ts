@@ -51,10 +51,14 @@ export interface Ichat_schema {
     next_question?: Date | null,
     intermediate_data: {
         awaiting_questionText?: awaiting_questionText | null;
-        parsed_timezones?: string[] | null;
+        parsed_timezones?: {
+            timezones?: string[],
+            country?: string,
+            countries?: string[],
+        } | null;
         pending_method?: pending_method<confirmableSheetMethod> | null;
     };
-};
+}
 
 export interface Ichat extends Document, Ichat_schema {}
 
@@ -144,7 +148,20 @@ const chatSchema = new Schema({
                 required: false,
             },
             parsed_timezones: {
-                type: [String],
+                type: {
+                    timezones: {
+                        type: [String],
+                        required: false,
+                    },
+                    country: {
+                        type: [String],
+                        required: false,
+                    },
+                    countries: {
+                        type: [String],
+                        required: false,
+                    },
+                },
                 required: false,
             },
         },

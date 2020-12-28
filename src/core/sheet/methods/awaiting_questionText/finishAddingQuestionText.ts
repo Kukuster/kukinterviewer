@@ -18,7 +18,7 @@ export default async function finishAddingQuestionText(chatId: number): Promise<
         if (!chat.intermediate_data){
             chat.intermediate_data = {};
         }
-        chat.intermediate_data.parsed_timezones = null;
+        chat.intermediate_data.awaiting_questionText = null;
         chat.markModified('intermediate_data');
         saveChat();
 

@@ -1,4 +1,5 @@
 'use strict';
+import { Ichat } from "../../models/ChatModel";
 import queryChat from "../functions/queryChat";
 
 /**
@@ -9,7 +10,7 @@ import queryChat from "../functions/queryChat";
  * @state sets chat state to `'ready'`
  * 
  */
-export default async function getAwaitingParsedTimezones(chatId: number): Promise<string[] | null> {
+export default async function getAwaitingParsedTimezones(chatId: number): Promise<Ichat["intermediate_data"]["parsed_timezones"] | null> {
 
     return queryChat(chatId, { "intermediate_data": true }, async (chat) => {
         

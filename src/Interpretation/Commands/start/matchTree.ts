@@ -14,7 +14,7 @@ const hello = /^(hello|hi|hey|hiya|ahoy|'ello|low|hey)[?!.,;:]*$/i;
 
 const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(ss|zz)up|yo|alrighty?)[?!.,;:]*$/i;
 
-const hello_foreign = /^(bonjour|hola|salaam|privet)[?!.,;:]*$/i;
+const hello_foreign = /^(bonjour|hola|salaam|privet|aloha)[?!.,;:]*$/i;
 
 const guten = /^guten$/i;
 const tag = /^tag$[?!.,;:]*$/i;

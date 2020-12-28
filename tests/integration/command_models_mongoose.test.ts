@@ -20,7 +20,9 @@ const telegram_msg_mock: IIMessage = {
         type: 'private'
     }
 };
-const chatDocumentId = '5fcd436a06901efb95b26e40';
+
+// this should be set to a mongodb document ID of the chat with that chatId
+const chatDocumentId = '5fe9c44824ba6162dcf5cc87';
 
 
 const match: Command_match<RegExpMatchArray> = async function (msg: IIMessage) {

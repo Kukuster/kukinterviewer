@@ -208,17 +208,25 @@ server.post('/bot-sendMessage', (req, res) => {
 
     // NO for human-interval. Choosing parse-duration.
 
-    const parsed_datetime = convertFromTZ(datejs(message, currDate), clientTimezone);
+    const parsed_datetime = datejs(message, currDate);
     // const parsed_datetime = new Date(datejs(message, currDate).toUTCString());
     const parsed_datetime_unix = parsed_datetime.getTime();
     const parsed_date_unix = getDateWithoutTime(parsed_datetime_unix);
     const parsed_time_unix = getTimeWithoutDate(parsed_datetime_unix);
+
+    const TZparsed_datetime = convertFromTZ(datejs(message, currDate), clientTimezone);
+    // const TZparsed_datetime = new Date(datejs(message, currDate).toUTCString());
+    const TZparsed_datetime_unix = TZparsed_datetime.getTime();
+    const TZparsed_date_unix = getDateWithoutTime(TZparsed_datetime_unix);
+    const TZparsed_time_unix = getTimeWithoutDate(TZparsed_datetime_unix);
+
+
     const formulated_datetime = parsed_datetime.toDateString() + ' '  + parsed_datetime.toTimeString();
     // const parsed_datetime_diff = parsed_datetime.getTime() - currDate.getTime();
     const parsed_datetime_diff = getTimeDifference(parsed_datetime, currDate, 'seconds'); console.log({ parsed_datetime_diff});
     const formulated_datetime_diff = prettyMilliseconds(parsed_datetime_diff, { verbose: true });
     const injected_datetime = `
-parse-duration: ${parsed_duration} 
+parse-duration: ${parsed_duration}
 formulated-duration: ${formulated_duration}
 
 now:            ${currDate}
@@ -237,7 +245,13 @@ unix datetime:  ${parsed_datetime_unix}
 unix date:      ${parsed_date_unix}
 unix time:      ${parsed_time_unix}
 
-This time later: ${formulated_datetime_diff}`;
+date.js_TZ:     ${TZparsed_datetime}
+unix datetime:  ${TZparsed_datetime_unix}
+unix date:      ${TZparsed_date_unix}
+unix time:      ${TZparsed_time_unix}
+
+`;
+// This time later: ${formulated_datetime_diff}`;
 
     const parsed_timezone = parseTimezone(message);
     // console.log('\n\n\n\n\n\n\n\n');

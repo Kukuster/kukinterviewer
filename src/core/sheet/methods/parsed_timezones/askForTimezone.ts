@@ -13,18 +13,26 @@ import queryChat from "../functions/queryChat";
  * @returns data that's saved to chat (`chat.intermediate_data` and `chat.state`)
  * 
  */
-export default async function askForTimezone(chatId: number, parsedTimezones: string[])
+export default async function askForTimezone(chatId: number, parsed_timezones?: {
+    timezones?: string[],
+    countries?: string[],
+    country?:   string,
+})
     : Promise<Ichat>
 {
 
+    const timezones = parsed_timezones?.timezones;
+    const countries = parsed_timezones?.countries;
+    const country   = parsed_timezones?.country;
+
     return queryChat(chatId, {"intermediate_data": true, "state": true}, (chat, saveChat) => {
 
-        if (parsedTimezones && parsedTimezones.length) {
+        if (parsed_timezones && (timezones || countries || country)) {
             if (!chat.intermediate_data){
                 chat.intermediate_data = {};
             }
 
-            chat.intermediate_data.parsed_timezones = parsedTimezones;
+            chat.intermediate_data.parsed_timezones = parsed_timezones;
 
             chat.markModified('intermediate_data');
             saveChat();

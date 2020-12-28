@@ -8,6 +8,9 @@ import display_raw from "./Commands/display_raw";
 import { start_tree } from "./Commands/start/matchTree";
 import start_prepare from "./Commands/start/prepare";
 import start_execute from "./Commands/start/execute";
+import submitTimezone_match from "./Commands/submitTimezone/match";
+import submitTimezone_prepare from "./Commands/submitTimezone/prepare";
+import submitTimezone_execute from "./Commands/submitTimezone/execute";
 import { listQuestions_tree } from "./Commands/listQuestions/matchTree";
 import listQuestions_prepare from "./Commands/listQuestions/prepare";
 import listQuestions_execute from "./Commands/listQuestions/execute";
@@ -65,6 +68,10 @@ Command.default_display = display_raw;
 
 export const start_command = new Command(match_byTree(start_tree), start_prepare, start_execute);
 
+
+// ASKING FOR TIMEZONE State //
+
+export const submitTimezone_command = new Command(submitTimezone_match, submitTimezone_prepare, submitTimezone_execute);
 
 
 // READY State //

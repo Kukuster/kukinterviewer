@@ -15,7 +15,9 @@ export default async function finishSettingTimezone(chatId: number): Promise<Ich
     return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
 
         chat.state = 'ready';
-        chat.intermediate_data.awaiting_questionText = null;
+        if (chat.intermediate_data){
+            chat.intermediate_data.parsed_timezones = null;
+        }
         chat.markModified('intermediate_data');
         saveChat();
 

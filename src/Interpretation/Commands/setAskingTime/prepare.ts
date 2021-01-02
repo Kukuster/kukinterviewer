@@ -2,7 +2,7 @@ import { IIMessage } from "../../../core/Command/Command";
 import { treeStep } from "../../matchTree/walk";
 import { setAskingTime_partialArgs } from "./execute";
 import { shoot } from "./matchTree";
-import { getDateWithoutTime, getTimeWithoutDate, timeUnitsVocabulary } from "../../../reusable/datetime";
+import { getTimeWithoutDate, timeUnitsVocabulary } from "../../../reusable/datetime";
 import { extractForthcomingDatetime_fromPassedTree, extractDuration_fromPassedTree } from "../../matchTree/extras/time";
 
 
@@ -10,7 +10,6 @@ import { extractForthcomingDatetime_fromPassedTree, extractDuration_fromPassedTr
 export default async function setAskingTime_prepare (msg: IIMessage, path: treeStep[])
     : Promise<setAskingTime_partialArgs | null>
 {
-    process.env.NODE_ENV !== 'test' && console.log(`setAskingTime.prepare(...)`);
 
     const path_len = path.length;
 
@@ -20,7 +19,7 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     // const msgdate = msg.date;
     // const msgdatetime = getDateWithoutTime().getTime() + getTimeWithoutDate(msgdate);
     // const timezone = await getSettings(chatId, 'timezone');
-    // const now = new Date(roundBy(msgdatetime, 1000));
+    // const now = new Date(round(msgdatetime, 1000));
     
     const now = new Date();
 
@@ -30,7 +29,6 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
             shiftByTimezone: false,
         },
     };
-    process.env.NODE_ENV !== 'test' && console.log({msg, now});
 
 
     let toTime_word: number | undefined = 0,  toMeridiem_word: number | undefined = 0,
@@ -125,7 +123,6 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     if (toTime_word) {
         if (toMeridiem_word) {
             gotDate = extractForthcomingDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now);
-            // console.log(`extractDatetime_fromPassedTree(path, message, toTime_word, toMeridiem_word, now)`);
         } else {
             gotDate = extractForthcomingDatetime_fromPassedTree(path, message, toTime_word, toTime_word, now);
         }
@@ -156,7 +153,6 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
     }
     // request.interval_ms
     if (interval_words.length) {
-        // console.log('\x1b[2m%s\x1b[0m', `interval_words.length = ${interval_words.length}, regularly = ${regularly}, skipping "regularly"`);
         gotInterval = extractDuration_fromPassedTree(path, message, interval_words[0], interval_words[interval_words.length - 1]);
         request.interval = {
             interval_ms: gotInterval ? gotInterval : 'matched by a matchTree but failed to parse',

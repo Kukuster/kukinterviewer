@@ -6,7 +6,7 @@ import { splitToWords } from "../../matchTree/extras/splitToWords";
 export default async function suggestMethod_test_match(msg: IIMessage)
     : Promise<[confirmableSheetMethod, string | undefined] | null>
 {
-    // console.log('suggestMethod_test.match');
+    console.log('suggestMethod_test.match');
     const message = msg.text;
     if (!message) {
         return null;

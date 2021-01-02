@@ -21,7 +21,7 @@ export default async function queryChat<T>(chatId: number, select: Ichat_select,
         ChatModel.findOne({ chatId: chatId })
             .select(select)
             .exec()
-            .then(chat => {
+            .then(async chat => {
 
                 if (!chat) {
                     const error = new Error('tried to query the chat with chatId=' + chatId + ', which doesn\'t exist');
@@ -32,7 +32,7 @@ export default async function queryChat<T>(chatId: number, select: Ichat_select,
 
                 let saveChat = false;
 
-                const result = perform(chat, ()=>{
+                const result = await perform(chat, ()=>{
                     saveChat = true;
                 });
 

@@ -1,9 +1,24 @@
 import { IIMessage } from "../../../core/Command/Command";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
-import deleteQuestions from "../../../core/sheet/methods/questions/deleteQuestions";
 import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
+import { Ichat_withNonEmptyFields } from "../../../core/sheet/models/ChatModel";
 
-export default async function deleteQuestions_execute(msg: IIMessage, query: questionsQuery | 'all') {
+
+export type deleteQuestions_execute_return = {
+    request: questionsQuery | "all";
+    qids: number[];
+    action: 'noop (no such questions)',
+    response: null;
+} | {
+    request: questionsQuery | "all";
+    qids: number[];
+    action: 'confirm deleting questions',
+    response: Ichat_withNonEmptyFields<"intermediate_data">;  
+};
+
+export default async function deleteQuestions_execute(msg: IIMessage, query: questionsQuery | 'all')
+    : Promise<deleteQuestions_execute_return>
+{
 
     const chatId = msg.chat.id;
 
@@ -11,18 +26,20 @@ export default async function deleteQuestions_execute(msg: IIMessage, query: que
 
     const qids = questions.map(q => q.qid);
 
-    if (qids.length > 1) { 
+    if (qids.length !== 0) {
         return {
             request: query,
-            response: await askConfirmation(chatId, 'deleteQuestions', JSON.stringify(qids))
+            qids: qids,
+            action: 'confirm deleting questions',
+            response: await askConfirmation(chatId, 'deleteQuestions', JSON.stringify(qids)),
         };
     } else {
         return {
             request: query,
-            response: await deleteQuestions(chatId, qids)
+            qids: qids,
+            action: 'noop (no such questions)',
+            response: null,
         };
     }
-
-
 
 }

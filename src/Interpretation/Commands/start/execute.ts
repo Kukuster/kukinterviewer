@@ -1,8 +1,20 @@
 import { IIMessage } from "../../../core/Command/Command";
 import createNewChat from "../../../core/sheet/methods/chat/createNewChat";
 import getChat from "../../../core/sheet/methods/chat/getChat";
+import { Ichat } from "../../../core/sheet/models/ChatModel";
 
-export default async function start_execute(msg: IIMessage, arg: boolean) {
+
+export type start_execute_return = {
+    request: true;
+    response: {
+        chat: Ichat;
+        description: "the chat document already exists, here it is" | "created a new chat document, now waiting for timezone";
+    };
+};
+
+export default async function start_execute(msg: IIMessage, arg: true)
+    : Promise<start_execute_return>
+{
 
     const chatId = msg.chat.id; 
 

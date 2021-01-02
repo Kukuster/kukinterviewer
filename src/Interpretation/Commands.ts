@@ -8,18 +8,23 @@ import display_raw from "./Commands/display_raw";
 import { start_tree } from "./Commands/start/matchTree";
 import start_prepare from "./Commands/start/prepare";
 import start_execute from "./Commands/start/execute";
+import start_display from "./Commands/start/display";
 import submitTimezone_match from "./Commands/submitTimezone/match";
 import submitTimezone_prepare from "./Commands/submitTimezone/prepare";
 import submitTimezone_execute from "./Commands/submitTimezone/execute";
+import submitTimezone_display from "./Commands/submitTimezone/display";
 import { listQuestions_tree } from "./Commands/listQuestions/matchTree";
 import listQuestions_prepare from "./Commands/listQuestions/prepare";
 import listQuestions_execute from "./Commands/listQuestions/execute";
+import listQuestions_display from "./Commands/listQuestions/display";
 import { addQuestion_tree } from "./Commands/addQuestion/matchTree";
 import addQuestion_prepare from "./Commands/addQuestion/prepare";
 import addQuestion_execute from "./Commands/addQuestion/execute";
+import addQuestion_display from "./Commands/addQuestion/display";
 import { deleteQuestions_tree } from "./Commands/deleteQuestions/matchTree";
 import deleteQuestions_prepare from "./Commands/deleteQuestions/prepare";
 import deleteQuestions_execute from "./Commands/deleteQuestions/execute";
+import deleteQuestions_display from "./Commands/deleteQuestions/display";
 import { askMeAQuestion_tree } from "./Commands/askMeAQuestion/matchTree";
 import askMeAQuestion_prepare from "./Commands/askMeAQuestion/prepare";
 import askMeAQuestion_execute from "./Commands/askMeAQuestion/execute";
@@ -59,6 +64,9 @@ import confirm_display from "./Commands/confirm/display";
 import { submitQuestionText_tree } from "./Commands/submitQuestionText/matchTree";
 import submitQuestionText_prepare from "./Commands/submitQuestionText/prepare";
 import submitQuestionText_execute from "./Commands/submitQuestionText/execute";
+import submitQuestionText_display from "./Commands/submitQuestionText/display";
+
+
 
 Command.default_display = display_raw;
 
@@ -66,19 +74,19 @@ Command.default_display = display_raw;
 
 // GREET State //
 
-export const start_command = new Command(match_byTree(start_tree), start_prepare, start_execute);
+export const start_command = new Command(match_byTree(start_tree), start_prepare, start_execute, start_display);
 
 
 // ASKING FOR TIMEZONE State //
 
-export const submitTimezone_command = new Command(submitTimezone_match, submitTimezone_prepare, submitTimezone_execute);
+export const submitTimezone_command = new Command(submitTimezone_match, submitTimezone_prepare, submitTimezone_execute, submitTimezone_display);
 
 
 // READY State //
 
-export const           listQuestions_command = new Command(            match_byTree(listQuestions_tree),            listQuestions_prepare,           listQuestions_execute);
-export const             addQuestion_command = new Command(              match_byTree(addQuestion_tree),              addQuestion_prepare,             addQuestion_execute);
-export const         deleteQuestions_command = new Command(          match_byTree(deleteQuestions_tree),          deleteQuestions_prepare,         deleteQuestions_execute);
+export const           listQuestions_command = new Command(            match_byTree(listQuestions_tree),            listQuestions_prepare,           listQuestions_execute,             listQuestions_display);
+export const             addQuestion_command = new Command(match_byTree(addQuestion_tree,{chars:'max'}),              addQuestion_prepare,             addQuestion_execute,               addQuestion_display);
+export const         deleteQuestions_command = new Command(          match_byTree(deleteQuestions_tree),          deleteQuestions_prepare,         deleteQuestions_execute,           deleteQuestions_display);
 export const          askMeAQuestion_command = new Command(           match_byTree(askMeAQuestion_tree),           askMeAQuestion_prepare,          askMeAQuestion_execute);
 export const      turnQuestionsOnOff_command = new Command(       match_byTree(turnQuestionsOnOff_tree),       turnQuestionsOnOff_prepare,      turnQuestionsOnOff_execute);
 export const                listTags_command = new Command(                 match_byTree(listTags_tree),                 listTags_prepare,                listTags_execute);
@@ -100,6 +108,6 @@ export const confirm_command = new Command(match_byTree(confirm_tree), confirm_p
 
 // AWAITING QUESTIONTEXT State //
 
-export const submitQuestionText_command = new Command(match_byTree(submitQuestionText_tree), submitQuestionText_prepare, submitQuestionText_execute);
+export const submitQuestionText_command = new Command(match_byTree(submitQuestionText_tree,{chars:Infinity}), submitQuestionText_prepare, submitQuestionText_execute, submitQuestionText_display);
 
 

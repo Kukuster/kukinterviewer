@@ -62,6 +62,41 @@ export interface Ichat_schema {
 
 export interface Ichat extends Document, Ichat_schema {}
 
+export function is_Document(value: unknown): value is Document {
+    return value !== undefined &&
+           value !== null &&
+           Object.hasOwnProperty.call(value, 'model') &&
+           Object.hasOwnProperty.call(value, 'save');
+}
+
+export function is_Ichat_schema(value: unknown): value is Ichat_schema {
+    return value !== undefined &&
+           value !== null &&
+           Object.hasOwnProperty.call(value, 'chatId') &&
+           Object.hasOwnProperty.call(value, 'state');
+}
+
+/**
+ * `is_Ichat_schema(value) && is_Document(value)`
+ * @param value a value to check
+ */
+export function is_Ichat(value: unknown): value is Ichat {
+    return is_Ichat_schema(value) && is_Document(value);
+}
+
+/**
+ * A subset of Ichat with assertion about certain fields being necesserily defined and non-empty
+ */
+export type Ichat_withNonEmptyFields<T extends keyof Ichat_schema> = Ichat & {[key in T]-?: NonNullable<Ichat_schema[key]>};
+
+export function is_Ichat_withNonEmptyFields<T extends keyof Ichat_schema>(value: unknown, keys: readonly T[]): value is Ichat_withNonEmptyFields<T> {
+    return value !== undefined &&
+           value !== null &&
+           is_Document(value) &&
+           keys.every(k => Object.hasOwnProperty.call(value, k));
+}
+
+
 /**
  * Members of this type are passed to mongoose.DocumentQuery.select method.
  * This is known as "query projection".

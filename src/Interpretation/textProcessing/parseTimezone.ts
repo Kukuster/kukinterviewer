@@ -17,6 +17,7 @@ export type parseTimezone_result = {
     description?: string,
 } | {
     result: 'a number of matching timezones within a country',
+    country_name: string,
     timezones: Timezone_str[],
     description?: string,
 } | {
@@ -135,7 +136,6 @@ export default function parseTimezone(input: string, preparsed?: {
 
     const inputWords_len = inputWords.length;
 
-    process.env.NODE_ENV !== 'test' && console.log({inputWords});
     //////////////////////////////////////////////////
     /////      try by literal timezone name      /////
     //////////////////////////////////////////////////
@@ -210,7 +210,7 @@ export default function parseTimezone(input: string, preparsed?: {
     for (const id in Countries) {
         if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object') {
             
-            const countryWords = ( Countries[id].name.replace(/[/_-]/g, " ") ).split(' ');
+            const countryWords = ( Countries[id].name.replace(/[:/_-]/g, " ") ).split(' ');
             const countryWords_len = countryWords.length;
 
             // if a country name is made of several words (its not that many of them)
@@ -224,11 +224,19 @@ export default function parseTimezone(input: string, preparsed?: {
                 }
 
                 if (countryWordsMatched === countryWords_len){
-                    return {
-                        result: 'a country with a number of timezones',
-                        country: Countries[id],
-                        description: "found several by all literal words of a country name (input contains all words of a country name)",
-                    };
+                    if (Countries[id].timezones.length === 1) {
+                        return {
+                            result: 'a single timezone',
+                            timezone: Countries[id].timezones[0],
+                            description: "found by all literal words of a country name (input contains all words of a country name)",
+                        };
+                    } else {
+                        return {
+                            result: 'a country with a number of timezones',
+                            country: Countries[id],
+                            description: "found several by all literal words of a country name (input contains all words of a country name)",
+                        };
+                    }
                 }
 
             }
@@ -273,7 +281,7 @@ export default function parseTimezone(input: string, preparsed?: {
     for (const name in Timezones) {
         if (Object.prototype.hasOwnProperty.call(Timezones, name) && typeof Timezones[name] === 'object') {
             
-            const timezoneWords = ( Timezones[name].name.replace(/[/_-]/g, " ") ).split(' ');
+            const timezoneWords = ( Timezones[name].name.replace(/[:/_-]/g, " ") ).split(' ');
             const timezoneWords_len = timezoneWords.length;
 
             timezoneWordsMatched = 0;
@@ -360,7 +368,7 @@ export default function parseTimezone(input: string, preparsed?: {
 
             for (let i = 0; i < notShortWords_len; i++) {
                 if (name.match(new RegExp(notShortWords[i], 'i'))){
-                    pushIfAbsent(MatchedTimezones2, notShortWords[i]);
+                    pushIfAbsent(MatchedTimezones2, name);
                 }
             } // for i in notShortWords
 

@@ -1,9 +1,10 @@
 'use strict';
 import QuestionModel from "../../models/QuestionModel";
-import mongoose, { DBconnection } from "../../mongoose";
+import { DBconnection } from "../../mongoose";
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
 import TagModel from "../../models/TagModel";
+import { Ichat_withNonEmptyFields } from "../../models/ChatModel";
 
 /**
  * 
@@ -13,7 +14,9 @@ import TagModel from "../../models/TagModel";
  * @returns return of `save()` when saving `chat` document, or an error if any occured on the way
  * 
  */
-export default async function addQuestion(chatId: number, question: { questionText: NonNullable<string>, Tags?: string[], enabled?: boolean }) {
+export default async function addQuestion(chatId: number, question: { questionText: NonNullable<string>, Tags?: string[], enabled?: boolean })
+    : Promise<Ichat_withNonEmptyFields<'Questions' | 'lastqid'>>
+{
 
     const connectedDB = await DBconnection;
 
@@ -55,18 +58,18 @@ export default async function addQuestion(chatId: number, question: { questionTe
                         enabled: true
                     });
                     chatTags.push(newTag);
-                };
-            };
-        };
+                }
+            }
+        }
 
         chat.Questions = chatQuestions;
         chat.Tags      = chatTags;
 
         save();
 
-        return chat;
+        // assert this type (that's assignable to Ichat), because those fields are necessarily going to be nonempty
+        return chat as Ichat_withNonEmptyFields<'Questions' | 'lastqid'>;
     });
 
-};
-
+}
 

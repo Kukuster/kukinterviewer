@@ -1,4 +1,3 @@
-import http from 'http';
 import path from 'path';
 import fs from 'fs';
 import { PORT, HOST, TZ } from './conf';
@@ -7,16 +6,12 @@ import { inspect } from 'util';
 import getChat from './core/sheet/methods/chat/getChat';
 import getAllChats from './core/sheet/methods/chat/getAllChats';
 import bodyParser from 'body-parser';
-import { monospace, sendMessageSafely } from './bot';
+import { sendMessageSafely } from './bot';
 import { ParseMode } from 'node-telegram-bot-api';
 import parseDuration from "parse-duration";
 import prettyMilliseconds from "pretty-ms";
-import humanInterval from 'human-interval';
 import datejs from 'date.js';
-import roundBy from './reusable/roundBy';
-import { setAskingTime_testBaseDate } from './Interpretation/Commands/setAskingTime/matchTree_testCases';
 import { convertFromTZ, convertTZ, getDateWithoutTime, getTimeDifference, getTimeWithoutDate } from './reusable/datetime';
-import { getAllCountries, getAllTimezones } from 'countries-and-timezones';
 import parseTimezone from './Interpretation/textProcessing/parseTimezone';
 
 
@@ -202,9 +197,7 @@ server.post('/bot-sendMessage', (req, res) => {
 
 
     const parsed_duration  = parseDuration(message);
-    const parsed_duration2 = humanInterval(message);
     const formulated_duration  = parsed_duration  ? prettyMilliseconds(parsed_duration,  { verbose: true }) : null;
-    const formulated_duration2 = parsed_duration2 ? prettyMilliseconds(parsed_duration2, { verbose: true }) : null;
 
     // NO for human-interval. Choosing parse-duration.
 
@@ -263,10 +256,13 @@ unix time:      ${TZparsed_time_unix}
     // console.log({parsed_timezone});
 
     // sendMessageSafely(chatId, message +'\n'+ JSON.stringify(parsed_timezone, null, 2), {
-    sendMessageSafely(chatId, message +'\n'+ monospace(injected_datetime), {
+    // sendMessageSafely(chatId, message +'\n'+ monospace(injected_datetime), {
+    // sendMessageSafely(chatId, message +'\n'+ monospace(JSON.stringify(getAllCountries(),null,2)), {
+    sendMessageSafely(chatId, message, {
         parse_mode: parseMode,
         emojify: reqBody.emojify,
         // processBeforeSend: monospace,
+        // processRightBeforeSend_Markdown: monospace,
     });
 
     // console.log('Got POST request body: ', req.body);
@@ -278,7 +274,7 @@ unix time:      ${TZparsed_time_unix}
 
 
 
-export default server.listen(PORT, HOST, ()=>{
+export default server.listen(PORT, HOST, () => {
     console.log('server: Running at '+HOST+':'+PORT);
 });
 

@@ -31,21 +31,24 @@ export default async function confirmPendingMethod(chatId: number)
 
     return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
         const pendingMethod = chat.intermediate_data!.pending_method;
-
         if (pendingMethod){
 
             const { sheet_method, args_tuple, prev_state } = pendingMethod;
 
             chat.state = prev_state;
+        
+            const result = await executeMethod(chatId, sheet_method, args_tuple);
+
             if (!chat.intermediate_data) {
                 chat.intermediate_data = {};
             }
             chat.intermediate_data.pending_method = null;
             chat.markModified('intermediate_data');
-            saveChat();
-            
+            // NOTE: if the executed sheet method returns Ichat and uses "intermediate_data" field,
+            // the "intermediate_data" field won't be rewritten
 
-            const result = await executeMethod(chatId, sheet_method, args_tuple);
+            saveChat();
+
             return {
                 confirmed: true,
                 result: result,

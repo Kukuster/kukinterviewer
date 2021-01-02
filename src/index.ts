@@ -10,6 +10,7 @@ import { DBconnection } from "./core/sheet/mongoose";
 import server from "./server";
 import scheduleQuestionsForEveryone from "./core/sheet/methods/scheduleQuestionsForEveryone";
 import { TZ } from "./conf";
+import { unemojify } from "node-emoji";
 
 process.env.TZ = TZ;
 
@@ -25,6 +26,12 @@ bot.on('message', (msg) => {
     console.log('recieved message:');
     console.log(msg);
     console.log();
+
+    if (!msg.text) {
+        if (msg.sticker && msg.sticker.emoji) {
+            msg.text = unemojify(msg.sticker.emoji);
+        }
+    }
 
     decide(msg, States, defaultState);
 

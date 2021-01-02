@@ -1,5 +1,6 @@
 import { IIMessage } from "../../../core/Command/Command";
-import TelegramBot, { bot, monospace } from "../../../bot";
+import { sendMessageSafely } from "../../../bot";
+import { maybeTelegramBotMessage } from "../../../botlib";
 import { Awaited } from "../../../reusable/Awaited.type";
 import { confirmableSheetMethod_returnType } from "../../../core/sheet/sheet";
 
@@ -14,23 +15,21 @@ pendingMethodResult: {
         confirmed: false
     }
 )
-    : Promise<TelegramBot.Message>
+    : Promise<maybeTelegramBotMessage[]>
 {
     
     const chatId = msg.chat.id;
 
     if (pendingMethodResult.confirmed) {
         const reply = `ok, done`;
-        await bot.sendMessage(chatId, monospace(JSON.stringify(pendingMethodResult.result, null, 2)), {
-            parse_mode: 'Markdown'
-        });
-        return bot.sendMessage(chatId, reply, {
-            parse_mode: 'Markdown'
+
+        return sendMessageSafely(chatId, reply, {
+            parse_mode: 'HTML',
         });
     } else {
         const reply = `ok, not doing that`;
-        return bot.sendMessage(chatId, reply, {
-            parse_mode: 'Markdown'
+        return sendMessageSafely(chatId, reply, {
+            parse_mode: 'HTML',
         });
     }
 

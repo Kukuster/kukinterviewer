@@ -1,5 +1,5 @@
 'use strict';
-import { Ichat } from "../../models/ChatModel";
+import { Ichat, Ichat_withNonEmptyFields } from "../../models/ChatModel";
 import { confirmableSheetMethod } from "../../sheet";
 import queryChat from "../functions/queryChat";
 
@@ -19,7 +19,7 @@ import queryChat from "../functions/queryChat";
  * 
  */
 export default async function askConfirmation(chatId: number, method: confirmableSheetMethod, args_serialized: string)
-    : Promise<Ichat>
+    : Promise<Ichat_withNonEmptyFields<'intermediate_data'>>
 {
 
     return queryChat(chatId, {"intermediate_data": true, "state": true}, (chat, saveChat) => {
@@ -38,7 +38,7 @@ export default async function askConfirmation(chatId: number, method: confirmabl
         chat.markModified('intermediate_data');
         saveChat();
 
-        return chat;
+        return chat as Ichat_withNonEmptyFields<'intermediate_data'>;
 
     });    
 

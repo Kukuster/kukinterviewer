@@ -1,4 +1,5 @@
 import { node, nodeLike } from "../../matchTree/node";
+import { questionDisabledSign, questionDisabledByTagsSign, questionEnabledSign } from "../../textForming/formQuestionOutput";
 
 
 // any punctuation mark at the end: 
@@ -33,11 +34,13 @@ const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
 
 const frb = /^(erase|remove|turn|delete|eliminate|destroy|drop|wipe|withdraw|enable|disable|dismiss|add(ing)?|new|creat(e|ing)|insert(ing)?|submit(ing)?|includ(e|ing)|regular(ly)|every|at|@)[?!.,;:]*$/i;
 const frb_askingTime = /^((0?\d|1[012]).(0?\d|1\d|2\d|3[01]).(0?\d|1\d|2[01234])|(\d{1,2})([:.](\d{1,2}))([:.](\d{1,2}))?|(sun(day)?|mon(day)?|tues(day)?|wed(nesday)?|thur(sday|s)?|fri(day)?|sat(urday)?|tomorrow)|((\d{1,2})\s*(st|nd|rd|th))\s(day\s)?(of\s)?(january|february|march|april|may|june|july|august|september|october|november|december)|(morning|noon|afternoon|night|evening|midnight)|(second|minute|hour|day|week|month|year)|([ap]\.?m\.?))[?!.,;:]*$/i;
+const frb_emoji = new RegExp('('+questionDisabledSign+'|'+questionDisabledByTagsSign+'|'+questionEnabledSign+')');
 const list = /^((list|show|detail|reveal|pull|bring|search|find)(ing)?|(get|output)(t?ing)?|(displa(y|ing))|explos(e|ing))$/i;
 
 const tagWord = /^(hash)?tag(ged|ging)?[?!.,;:]*$/i;
 
 const neg = /^(don't|never|not?)*[?!.,;:]*$/i;
+
 
 
 
@@ -56,6 +59,7 @@ let askMeChildren:     nodeLike[],
 const frb_frb_neg: nodeLike[] = [
     node(neg, []),
     node(frb_askingTime, []),
+    node(frb_emoji, []),
     node(frb, []),
 ];
 
@@ -180,7 +184,9 @@ node(root, [
             ], ofTag as shoot),
             ...frb_frb_neg,
         ]),
-        node(digit, [], ofQid as shoot),
+        node(digit, [
+            node(tag, []),
+        ], ofQid as shoot),
         ...frb_frb_neg,
     ]),
 

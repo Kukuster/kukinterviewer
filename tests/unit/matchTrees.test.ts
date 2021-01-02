@@ -75,7 +75,7 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
     addQuestion: {
         testCases: addQuestion_testCases,
         tree: addQuestion_tree,
-        matchfunc: match_byTree(addQuestion_tree),
+        matchfunc: match_byTree(addQuestion_tree, { chars: 'max' }),
         prepfunc: addQuestion_prepare
     },
 

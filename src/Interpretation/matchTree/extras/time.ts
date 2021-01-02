@@ -1,7 +1,7 @@
 import datejs from 'date.js';
 import parseDuration from 'parse-duration';
 import { getNextDay, isValidDate, verboseDatetime } from "../../../reusable/datetime";
-import roundBy from "../../../reusable/roundBy";
+import round from "../../../reusable/round";
 import { treeStep } from "../walk";
 import cutMessage_by_matchTreePath from "./cutMessage_by_matchTreePath";
 
@@ -66,7 +66,7 @@ export const extractForthcomingDatetime_fromPassedTree = (path: treeStep[], mess
     }
 
     if (parsedDatetime && isValidDate(new Date(parsedDatetime))) {
-        return roundBy(parsedDatetime, 1000);
+        return round(parsedDatetime, 1000);
     } else {
         return null;
     }

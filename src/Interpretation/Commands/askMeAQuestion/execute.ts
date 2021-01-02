@@ -27,7 +27,6 @@ export default async function askMeAQuestion_execute(msg_or_chatId: IIMessage | 
         response: askMeAQuestion_response;
     }>
 {
-    process.env.NODE_ENV !== 'test' && console.log(`askMeAQuestion.execute(...)`);
     const chatId = typeof msg_or_chatId === 'number' ? msg_or_chatId : msg_or_chatId.chat.id;
 
 

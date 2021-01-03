@@ -11,21 +11,17 @@ export type askMeAQuestion_response = {
 };
 
 
+export type askMeAQuestion_execute_return = {
+    request: questionsQuery;
+    response: askMeAQuestion_response;
+};
+
 export default async function askMeAQuestion_execute(msg: IIMessage, args: questionsQuery)
-    : Promise<{
-        request: questionsQuery;
-        response: askMeAQuestion_response;
-    }>;
+    : Promise<askMeAQuestion_execute_return>;
 export default async function askMeAQuestion_execute(chatId: number, args: questionsQuery)
-    : Promise<{
-        request: questionsQuery;
-        response: askMeAQuestion_response;
-    }>;
+    : Promise<askMeAQuestion_execute_return>;
 export default async function askMeAQuestion_execute(msg_or_chatId: IIMessage | number, args: questionsQuery)
-    : Promise<{
-        request: questionsQuery;
-        response: askMeAQuestion_response;
-    }>
+    : Promise<askMeAQuestion_execute_return>
 {
     const chatId = typeof msg_or_chatId === 'number' ? msg_or_chatId : msg_or_chatId.chat.id;
 

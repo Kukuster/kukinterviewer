@@ -69,84 +69,84 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
     start: {
         testCases: start_testCases.filter(tc => tc.res !== null),
         tree: start_tree,
-        matchfunc: match_byTree(start_tree),
+        matchfunc: match_byTree(start_tree, {unmatchesInRow: 20}),
         prepfunc: start_prepare
     },
 
     turnQuestionsOnOff: {
         testCases: turnQuestionsOnOff_testCases.filter(tc => tc.res !== null),
         tree: turnQuestionsOnOff_tree,
-        matchfunc: match_byTree(turnQuestionsOnOff_tree),
+        matchfunc: match_byTree(turnQuestionsOnOff_tree, {unmatchesInRow: 20}),
         prepfunc: turnQuestionsOnOff_prepare
     },
 
     addQuestion: {
         testCases: addQuestion_testCases.filter(tc => tc.res !== null),
         tree: addQuestion_tree,
-        matchfunc: match_byTree(addQuestion_tree),
+        matchfunc: match_byTree(addQuestion_tree, { chars: 'max', unmatchesInRow: 20 }),
         prepfunc: addQuestion_prepare
     },
 
     addTagsToQuestions: {
         testCases: addTagsToQuestions_testCases.filter(tc => tc.res !== null),
         tree: addTagsToQuestions_tree,
-        matchfunc: match_byTree(addTagsToQuestions_tree),
+        matchfunc: match_byTree(addTagsToQuestions_tree, {unmatchesInRow: 20}),
         prepfunc: addTagsToQuestions_prepare
     },
 
     askMeAQuestion: {
         testCases: askMeAQuestion_testCases.filter(tc => tc.res !== null),
         tree: askMeAQuestion_tree,
-        matchfunc: match_byTree(askMeAQuestion_tree),
+        matchfunc: match_byTree(askMeAQuestion_tree, {unmatchesInRow: 20}),
         prepfunc: askMeAQuestion_prepare
     },
 
     deleteQuestions: {
         testCases: deleteQuestions_testCases.filter(tc => tc.res !== null),
         tree: deleteQuestions_tree,
-        matchfunc: match_byTree(deleteQuestions_tree),
+        matchfunc: match_byTree(deleteQuestions_tree, {unmatchesInRow: 20}),
         prepfunc: deleteQuestions_prepare
     },
 
     listQuestions: {
         testCases: listQuestions_testCases.filter(tc => tc.res !== null),
         tree: listQuestions_tree,
-        matchfunc: match_byTree(listQuestions_tree),
+        matchfunc: match_byTree(listQuestions_tree, {unmatchesInRow: 20}),
         prepfunc: listQuestions_prepare
     },
 
     removeTagsFromQuestions: {
         testCases: removeTagsFromQuestions_testCases.filter(tc => tc.res !== null),
         tree: removeTagsFromQuestions_tree,
-        matchfunc: match_byTree(removeTagsFromQuestions_tree),
+        matchfunc: match_byTree(removeTagsFromQuestions_tree, {unmatchesInRow: 20}),
         prepfunc: removeTagsFromQuestions_prepare
     },
 
     listTags: {
         testCases: listTags_testCases.filter(tc => tc.res !== null),
         tree: listTags_tree,
-        matchfunc: match_byTree(listTags_tree),
+        matchfunc: match_byTree(listTags_tree, {unmatchesInRow: 20}),
         prepfunc: listTags_prepare
     },
 
     turnTagsOnOff: {
         testCases: turnTagsOnOff_testCases.filter(tc => tc.res !== null),
         tree: turnTagsOnOff_tree,
-        matchfunc: match_byTree(turnTagsOnOff_tree),
+        matchfunc: match_byTree(turnTagsOnOff_tree, {unmatchesInRow: 20}),
         prepfunc: turnTagsOnOff_prepare
     },
 
     setAskingTime: {
         testCases: setAskingTime_testCases,
         tree: setAskingTime_tree,
-        matchfunc: match_byTree(setAskingTime_tree),
+        matchfunc: match_byTree(setAskingTime_tree, {unmatchesInRow: 20}),
         prepfunc: setAskingTime_prepare
     },
     
     turnAskingOnOff: {
         testCases: turnAskingOnOff_testCases,
         tree: turnAskingOnOff_tree,
-        matchfunc: match_byTree(turnAskingOnOff_tree),
+        matchfunc: match_byTree(turnAskingOnOff_tree, {unmatchesInRow: 20}),
         prepfunc: turnAskingOnOff_prepare
     },
 };

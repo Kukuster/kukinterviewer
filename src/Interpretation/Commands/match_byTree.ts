@@ -6,7 +6,7 @@ import { nodeLike } from "../matchTree/node";
 import { traverse, treeStep } from "../matchTree/walk";
 
 
-export default (matchTree: nodeLike, lim: {chars?: number | 'max', words?: number} = {chars: 800}) => async function match_byTree(msg: IIMessage): Promise<treeStep[] | null> {
+export default (matchTree: nodeLike, lim: {chars?: number | 'max', words?: number, unmatchesInRow?: number} = {chars: 800}) => async function match_byTree(msg: IIMessage): Promise<treeStep[] | null> {
     const message = msg.text;
     if (!message) {
         return null;
@@ -28,7 +28,7 @@ export default (matchTree: nodeLike, lim: {chars?: number | 'max', words?: numbe
 
     const path: treeStep[] = [];
 
-    traverse(matchTree, Words, path);
+    traverse(matchTree, Words, path, lim.unmatchesInRow);
 
     return (path.length && path[path.length - 1].shoot) ?
         path :

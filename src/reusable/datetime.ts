@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import round from "./round";
 
 export function getDateWithoutTime(dateTime: Date): Date;
 export function getDateWithoutTime(dateTime_str: string):  Date;
@@ -137,7 +138,45 @@ export function convertTZ(date: Date, tzString: string) {
 }
 
 export function convertFromTZ(date: Date, tzString: string) {
-    return DateTime.fromISO(date.toISOString()).setZone(tzString, {keepLocalTime: true}).toJSDate();
+    return DateTime.fromISO(date.toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();
+}
+
+export function convertTimeOfDayFromTZ(date: Date, tzString: string) {
+    const rightNow = new Date();
+    const today = getDateWithoutTime(rightNow);
+    const givenTimeOfDay_unix = getTimeWithoutDate(date);
+    const todayTime_datetime_unix = today.getTime() + givenTimeOfDay_unix;
+
+    const converted_datetime = DateTime.fromISO((new Date(todayTime_datetime_unix)).toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();
+
+    const converted_time_normalized = normalizeTimeOfDay(getTimeWithoutDate(converted_datetime));
+    return converted_time_normalized;
+}
+
+
+export function normalizeTimeOfDay(datetime: number){
+    return mod(datetime, timeUnitsVocabulary.days);
+}
+
+export function mod(n: number, m: number) {
+    return ((n % m) + m) % m;
+}
+
+
+export function getTimezoneOffsetString(tzString: string){
+    const fullOffset_inMins = DateTime.fromJSDate(new Date()).setZone(tzString).offset;
+    const fullOffset_inHrs  = fullOffset_inMins / 60;
+    const offsetHrs_inMins = round(fullOffset_inMins, 60, "down");
+    const offsetHrs_inHrs = offsetHrs_inMins / 60;
+    const offsetMins_inMins = fullOffset_inMins - offsetHrs_inMins;
+
+    const offset_sign = fullOffset_inMins < 0 ? '-' : '+';
+    const prefixZero = Math.abs(offsetHrs_inHrs) < 10 ? '0' : '';
+    
+    const minsStr = offsetMins_inMins === 0 ? '00' : offsetMins_inMins;
+
+    const offsetStr = `GMT${offset_sign}${prefixZero}${Math.abs(offsetHrs_inHrs)}:${minsStr}`;
+    return offsetStr;
 }
 
 

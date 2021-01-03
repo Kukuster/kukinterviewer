@@ -1,5 +1,9 @@
 <Planned>
 
+• currently askingTimeOfDay_from and _to are being saved in GMT by converting from client time to the server time (GMT)
+Instead, I have to save the time in client's time, and wrap getters of these settings in converting it from client time to the server time (GMT).
+This way change to daylight savings time will automatically be accounted for, without rewriting to each client's Chat document.
+
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
 • make addQuestion support telegram markdown

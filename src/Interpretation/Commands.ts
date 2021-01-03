@@ -65,6 +65,7 @@ import { submitQuestionText_tree } from "./Commands/submitQuestionText/matchTree
 import submitQuestionText_prepare from "./Commands/submitQuestionText/prepare";
 import submitQuestionText_execute from "./Commands/submitQuestionText/execute";
 import submitQuestionText_display from "./Commands/submitQuestionText/display";
+import askMeAQuestion_display from "./Commands/askMeAQuestion/display";
 
 
 
@@ -74,40 +75,113 @@ Command.default_display = display_raw;
 
 // GREET State //
 
-export const start_command = new Command(match_byTree(start_tree), start_prepare, start_execute, start_display);
+export const start_command = new Command(
+    match_byTree(start_tree),
+    start_prepare,
+    start_execute,
+    start_display,
+);
 
 
 // ASKING FOR TIMEZONE State //
 
-export const submitTimezone_command = new Command(submitTimezone_match, submitTimezone_prepare, submitTimezone_execute, submitTimezone_display);
+export const submitTimezone_command = new Command(
+    submitTimezone_match,
+    submitTimezone_prepare,
+    submitTimezone_execute, 
+    submitTimezone_display,
+);
 
 
 // READY State //
 
-export const           listQuestions_command = new Command(            match_byTree(listQuestions_tree),            listQuestions_prepare,           listQuestions_execute,             listQuestions_display);
-export const             addQuestion_command = new Command(match_byTree(addQuestion_tree,{chars:'max'}),              addQuestion_prepare,             addQuestion_execute,               addQuestion_display);
-export const         deleteQuestions_command = new Command(          match_byTree(deleteQuestions_tree),          deleteQuestions_prepare,         deleteQuestions_execute,           deleteQuestions_display);
-export const          askMeAQuestion_command = new Command(           match_byTree(askMeAQuestion_tree),           askMeAQuestion_prepare,          askMeAQuestion_execute);
-export const      turnQuestionsOnOff_command = new Command(       match_byTree(turnQuestionsOnOff_tree),       turnQuestionsOnOff_prepare,      turnQuestionsOnOff_execute);
-export const                listTags_command = new Command(                 match_byTree(listTags_tree),                 listTags_prepare,                listTags_execute);
-export const           turnTagsOnOff_command = new Command(            match_byTree(turnTagsOnOff_tree),            turnTagsOnOff_prepare,           turnTagsOnOff_execute);
-export const      addTagsToQuestions_command = new Command(       match_byTree(addTagsToQuestions_tree),       addTagsToQuestions_prepare,      addTagsToQuestions_execute);
-export const removeTagsFromQuestions_command = new Command(  match_byTree(removeTagsFromQuestions_tree),  removeTagsFromQuestions_prepare, removeTagsFromQuestions_execute);
-export const           setAskingTime_command = new Command(            match_byTree(setAskingTime_tree),            setAskingTime_prepare,           setAskingTime_execute);
-export const         turnAskingOnOff_command = new Command(          match_byTree(turnAskingOnOff_tree),          turnAskingOnOff_prepare,         turnAskingOnOff_execute);
+export const listQuestions_command = new Command(
+    match_byTree(listQuestions_tree, {unmatchesInRow:20}),
+    listQuestions_prepare,
+    listQuestions_execute,
+    listQuestions_display,
+);
+export const addQuestion_command = new Command(
+    match_byTree(addQuestion_tree,{chars:'max', unmatchesInRow:20}),
+    addQuestion_prepare,
+    addQuestion_execute,
+    addQuestion_display,
+);
+export const deleteQuestions_command = new Command(
+    match_byTree(deleteQuestions_tree, {unmatchesInRow:20}),
+    deleteQuestions_prepare,
+    deleteQuestions_execute,
+    deleteQuestions_display,
+);
+export const askMeAQuestion_command = new Command(
+    match_byTree(askMeAQuestion_tree, {unmatchesInRow:20}),
+    askMeAQuestion_prepare,
+    askMeAQuestion_execute,
+    askMeAQuestion_display,
+);
+export const turnQuestionsOnOff_command = new Command(
+    match_byTree(turnQuestionsOnOff_tree, {unmatchesInRow:20}),
+    turnQuestionsOnOff_prepare,
+    turnQuestionsOnOff_execute,
+);
+export const listTags_command = new Command(
+    match_byTree(listTags_tree, {unmatchesInRow:20}),
+    listTags_prepare,
+    listTags_execute,
+);
+export const turnTagsOnOff_command = new Command(
+    match_byTree(turnTagsOnOff_tree, {unmatchesInRow:20}),
+    turnTagsOnOff_prepare,
+    turnTagsOnOff_execute,
+);
+export const addTagsToQuestions_command = new Command(
+    match_byTree(addTagsToQuestions_tree, {unmatchesInRow:20}),
+    addTagsToQuestions_prepare,
+    addTagsToQuestions_execute,
+);
+export const removeTagsFromQuestions_command = new Command(
+    match_byTree(removeTagsFromQuestions_tree, {unmatchesInRow:20}),
+    removeTagsFromQuestions_prepare,
+    removeTagsFromQuestions_execute,
+);
+export const setAskingTime_command = new Command(
+    match_byTree(setAskingTime_tree, {unmatchesInRow:20}),
+    setAskingTime_prepare,
+    setAskingTime_execute,
+);
+export const turnAskingOnOff_command = new Command(
+    match_byTree(turnAskingOnOff_tree, {unmatchesInRow:20}),
+    turnAskingOnOff_prepare,
+    turnAskingOnOff_execute,
+);
 
-export const      suggestMethod_test_command = new Command(                    suggestMethod_test_match,       suggestMethod_test_prepare,      suggestMethod_test_execute,      suggestMethod_test_display);
+export const suggestMethod_test_command = new Command(
+    suggestMethod_test_match,
+    suggestMethod_test_prepare,
+    suggestMethod_test_execute,
+    suggestMethod_test_display,
+);
 
 
 
 // PENDING CONFIRMATION State //
 
-export const confirm_command = new Command(match_byTree(confirm_tree), confirm_prepare, confirm_execute, confirm_display);
+export const confirm_command = new Command(
+    match_byTree(confirm_tree, {unmatchesInRow:20}),
+    confirm_prepare,
+    confirm_execute,
+    confirm_display,
+);
 
 
 
 // AWAITING QUESTIONTEXT State //
 
-export const submitQuestionText_command = new Command(match_byTree(submitQuestionText_tree,{chars:Infinity}), submitQuestionText_prepare, submitQuestionText_execute, submitQuestionText_display);
+export const submitQuestionText_command = new Command(
+    match_byTree(submitQuestionText_tree,{chars:Infinity}),
+    submitQuestionText_prepare,
+    submitQuestionText_execute,
+    submitQuestionText_display,
+);
 
 

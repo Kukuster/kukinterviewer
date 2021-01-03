@@ -5,7 +5,7 @@ import getSettings from "../../../core/sheet/methods/chat/getSettings";
 import setChatProperty from "../../../core/sheet/methods/chat/setChatProperty";
 import setSettings from "../../../core/sheet/methods/chat/setSettings";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
-import { convertFromTZ } from "../../../reusable/datetime";
+import { convertFromTZ, convertTimeOfDayFromTZ, normalizeTimeOfDay, timeUnitsVocabulary } from "../../../reusable/datetime";
 
 
 
@@ -137,7 +137,7 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
     if (args.from        && typeof args.from.datetime === 'number') {
         console.log('\x1b[2m%s\x1b[0m','going to set Settings.asking_timeOfDay_from');
         if (args.from.shiftByTimezone && timezone) {
-            args.from.datetime = convertFromTZ(new Date(args.from.datetime), timezone).getTime();
+            args.from.datetime = convertTimeOfDayFromTZ(new Date(args.from.datetime), timezone);
         }
         queriesResult.from = await setSettings(chatId, {setting: "asking_timeOfDay_from", value: args.from.datetime});
         if (args.from.datetime === queriesResult.from.Settings.asking_timeOfDay_from) {
@@ -157,7 +157,7 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
     if (args.to          && typeof args.to.datetime === 'number') {
         console.log('\x1b[2m%s\x1b[0m','going to set Settings.asking_timeOfDay_to');
         if (args.to.shiftByTimezone && timezone) {
-            args.to.datetime = convertFromTZ(new Date(args.to.datetime), timezone).getTime();
+            args.to.datetime = convertTimeOfDayFromTZ(new Date(args.to.datetime), timezone);
         }
         queriesResult.to = await setSettings(chatId, {setting: "asking_timeOfDay_to", value: args.to.datetime});
         if (args.to.datetime === queriesResult.to.Settings.asking_timeOfDay_to) {

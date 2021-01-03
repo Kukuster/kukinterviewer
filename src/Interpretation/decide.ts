@@ -50,6 +50,7 @@ export async function decide <A extends readonly State<any>[], S extends ArrayEl
      * This is how the bot decides on the Command
     */
     for (const i in theState.Commands){
+        // console.log(`trying '${theState.name}'.Command[${i}]`);
         let match;
         if ( match     = await theState.Commands[i].match  (message)){
             const args = await theState.Commands[i].prepare(message, match);

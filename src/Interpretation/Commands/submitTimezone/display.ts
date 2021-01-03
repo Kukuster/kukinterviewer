@@ -2,7 +2,7 @@ import { IIMessage } from "../../../core/Command/Command";
 import { sendMessageSafely } from "../../../bot";
 import { maybeTelegramBotMessage } from "../../../botlib";
 import { submitTimezone_execute_return } from "./execute";
-import { getTimezone } from "countries-and-timezones";
+import { getTimezoneOffsetString } from "../../../reusable/datetime";
 
 
 export default async function submitTimezone_display(msg: IIMessage, data: submitTimezone_execute_return | null)
@@ -20,7 +20,7 @@ export default async function submitTimezone_display(msg: IIMessage, data: submi
     
     if (data.result.result === 'a single timezone') {
         const reply = `Got it.
-Going to sign up your timezone as <b>${data.result.timezone}</b> (${getTimezone(data.result.timezone)?.dstOffsetStr}), OK?.
+Going to sign up your timezone as <b>${data.result.timezone}</b> (${getTimezoneOffsetString(data.result.timezone)}), OK?.
 
 This is going to be it with the set up, and I'll be able to write down your questions and start asking you when you want`;
 

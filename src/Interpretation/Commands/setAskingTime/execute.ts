@@ -5,7 +5,7 @@ import getSettings from "../../../core/sheet/methods/chat/getSettings";
 import setChatProperty from "../../../core/sheet/methods/chat/setChatProperty";
 import setSettings from "../../../core/sheet/methods/chat/setSettings";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
-import { convertFromTZ, convertTimeOfDayFromTZ, normalizeTimeOfDay, timeUnitsVocabulary } from "../../../reusable/datetime";
+import { convertFromTZ, convertTimeOfDayFromTZ } from "../../../reusable/datetime";
 
 
 
@@ -69,10 +69,20 @@ export type setAskingTime_result = {
     from?:        number | 'failed to parse' | 'failed to save',
     to?:          number | 'failed to parse' | 'failed to save',
     enabled?:     boolean | 'failed to save',
+    timezone?:    string;
 }
 
 
-export default async function setAskingTime_execute(msg: IIMessage, args: setAskingTime_partialArgs | null) {
+
+export type setAskingTime_execute_return = {
+    request: setAskingTime_partialArgs;
+    response: setAskingTime_result;
+};
+
+
+export default async function setAskingTime_execute(msg: IIMessage, args: setAskingTime_partialArgs | null)
+    : Promise<setAskingTime_execute_return | null>
+{
     console.log(`setAskingTime.execute(...)`);
 
     if (args === null){
@@ -89,9 +99,10 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
     } = {};
     
     const results: setAskingTime_result = {};
-
+    
     const timezone = await getSettings(chatId, 'timezone');
-
+    
+    results.timezone = timezone;
 
 
     // set DB settings in accord to requested asking interval
@@ -203,7 +214,6 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
 
     queriesResult.enabled = await setSettings(chatId, { setting: "enabled", value: true });
     results.enabled = queriesResult.enabled.Settings.enabled === true ? true : 'failed to save';
-    
 
     return {
         request: args,

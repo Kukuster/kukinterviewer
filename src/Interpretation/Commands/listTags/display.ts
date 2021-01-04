@@ -122,6 +122,10 @@ export default async function listTags_display(msg: IIMessage, data: listTags_ex
         }
 
 
+
+        //////////////////////////////////////////
+        ////     form and send a sentence     ////
+        //////////////////////////////////////////
         let sentence = `${here_is_are}${a_all_tags}${ofQuestionsWithQids}`;
         
         // if no such tags

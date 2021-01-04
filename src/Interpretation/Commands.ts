@@ -49,6 +49,7 @@ import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/
 import { setAskingTime_tree } from "./Commands/setAskingTime/matchTree";
 import setAskingTime_prepare from "./Commands/setAskingTime/prepare";
 import setAskingTime_execute from "./Commands/setAskingTime/execute";
+import setAskingTime_display from "./Commands/setAskingTime/display";
 import { turnAskingOnOff_tree } from "./Commands/turnAskingOnOff/matchTree";
 import turnAskingOnOff_prepare from "./Commands/turnAskingOnOff/prepare";
 import turnAskingOnOff_execute from "./Commands/turnAskingOnOff/execute";
@@ -152,6 +153,7 @@ export const setAskingTime_command = new Command(
     match_byTree(setAskingTime_tree, {unmatchesInRow:20}),
     setAskingTime_prepare,
     setAskingTime_execute,
+    setAskingTime_display,
 );
 export const turnAskingOnOff_command = new Command(
     match_byTree(turnAskingOnOff_tree, {unmatchesInRow:20}),

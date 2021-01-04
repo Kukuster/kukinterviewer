@@ -1,7 +1,7 @@
 import { IIMessage } from "../../../core/Command/Command";
 import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../botlib";
 import { addQuestion_execute_return } from "./execute";
-import randomElement from "../../../reusable/randomElement";
+import either from "../../../reusable/randomElement";
 import formQuestionOutput from "../../textForming/formQuestionOutput";
 import { sendMessageSafely } from "../../../bot";
 
@@ -24,12 +24,12 @@ export default async function addQuestion_display(msg: IIMessage, data: addQuest
 
             if (addedQuestion){
                 const addedQuestion_output = await formQuestionOutput(chatId, addedQuestion);
-                messageParts.push(randomElement([
+                messageParts.push(either([
                     `Added a question:`,
                 ]));
                 messageParts.push(addedQuestion_output);
             } else {
-                messageParts.push(randomElement([
+                messageParts.push(either([
                     `I think I just added the question`,
                 ]));
             }
@@ -42,16 +42,16 @@ export default async function addQuestion_display(msg: IIMessage, data: addQuest
         }
 
     } else if (data.request.action === 'ask to provide a questionText') {
-        messageParts.push(randomElement([
+        messageParts.push(either([
             `waiting for the question text`,
             `now write me your question text`,
             `now write me the actual question text`,
         ]));
 
     } else if (data.request.action === 'ask to provide smaller questionText') {
-        messageParts.push(randomElement([
+        messageParts.push(either([
             `Sorry, but I have a limit of ${TelegramMessageLengthSoftLimit} characters per question. `,
-        ]) + randomElement([
+        ]) + either([
             `Try a shorter text`,
             `Try to make it shorter. or split the text in multiple questions`,
         ]));

@@ -13,9 +13,10 @@ const rootRE =  /[\s\S]+/g;
 const confirm = /^(confirm|proceed|sure|ofcourse|ofc|((you|u|yuo|yu|yo|ya)bet))[?!.,;:]*$/i;
 const deny    = /^(deny)[?!.,;:]*$/i;
 
-//const yes=/^y((e|u|a|o|ee|oo)(s|p)?)?[?!.,;:]*$/i;
+// const yes=/^y((e|u|a|o|ee|oo)(s|p)?)?[?!.,;:]*$/i;
 const yes = /^y((e|u|a|o|ee|oo)?(s|p))?[?!.,;:]*$/i;
 const no =  /^(n|no|nope|nah|nil|nicht|nein|net|abort|cancel|don'?t|won'?t|doesn'?t)[?!.,;:]*$/i;
+const nnooononon = /^(no*)+[?!.,;:]*$/i;
 
 const of = /^of[?!.,;:]*$/i;
 const course = /^course[?!.,;:]*$/i;
@@ -62,6 +63,11 @@ export const confirm_tree =
         ], confirmShoot as shoot),
 
         node(no, [
+            node(yes, []),
+            node(confirm, [])
+        ], denyShoot as shoot),
+
+        node(nnooononon, [
             node(yes, []),
             node(confirm, [])
         ], denyShoot as shoot),

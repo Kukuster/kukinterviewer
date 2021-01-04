@@ -6,15 +6,18 @@ This way change to daylight savings time will automatically be accounted for, wi
 
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
-• make addQuestion support telegram markdown
+• make addQuestion support telegram markdown and links
 To figure out formatting in the message for question text see "entities": "hashtag", "bold", "italic", "text_link", "code", "underline", "strikethrough"
+
+• if a questionText contains links, set a field in the question document: `"hasAttachments": true`, so that if a question has this field, when listing questions, this question will always be listed in a separate message.
 
 • Enrich addQuestion Command matchTree to support:
     - «add new question with tag #web»
 
 • Enrich turnQuestionsOnOff and turnTagsOnOff Commands matchTrees to support:
-    - «don't ask #lorem questions»
-    - «don't ask me questions tagged #lorem»
+    - «enable all #lorem questions» (enabled all questions with tag #lorem)
+    - «don't ask #lorem questions» (disables #lorem tag)
+    - «don't ask me questions tagged #lorem» (disables #lorem tag)
     - «don't ask me questions not tagged with #lorem» (disabled all tags except #lorem)
     - «don't ask me untagged questions» (disables all untagged questions)
     - «don't ask me questions #4, 6, 10» (disables list of questions by qids)
@@ -103,6 +106,12 @@ Don't require that tag to be enabled for queried questions. Only require all oth
   It doesn't understand "ask me questions twice a day", but it understands "ask me questions every 12 hours".
   It doesn't understand "ask me questions every other day", but it understands "ask me questions every 2 days".
   It doesn't understand "ask me questions every hour", but it understands "ask me questions every 1 hour".
+
+• extend listQuestions and listTags Commands functionality to support querying quantity:
+    - «tell me how many questions do we have»
+    - «show me how many enabled tags do we have»
+    - «count me how many enabled tags do we have»
+    - «calculate me how many enabled tags do we have»
 
 
 

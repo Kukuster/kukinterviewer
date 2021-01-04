@@ -2,7 +2,7 @@ import { IIMessage } from "../../../core/Command/Command";
 import { sendMessageSafely } from "../../../bot";
 import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../botlib";
 import { submitQuestionText_execute_return } from "./execute";
-import randomElement from "../../../reusable/randomElement";
+import either from "../../../reusable/randomElement";
 import formQuestionOutput from "../../textForming/formQuestionOutput";
 
 
@@ -22,12 +22,12 @@ export default async function submitQuestionText_display(msg: IIMessage, data: s
 
             if (addedQuestion) {
                 const addedQuestion_output = await formQuestionOutput(chatId, addedQuestion);
-                messageParts.push(randomElement([
+                messageParts.push(either([
                     `Added a question:`,
                 ]));
                 messageParts.push(addedQuestion_output);
             } else {
-                messageParts.push(randomElement([
+                messageParts.push(either([
                     `I think I just added the question`,
                 ]));
             }
@@ -40,21 +40,21 @@ export default async function submitQuestionText_display(msg: IIMessage, data: s
 
 
     } else if (data.request.action === 'ask to provide smaller questionText') {
-        messageParts.push(randomElement([
+        messageParts.push(either([
             `Sorry, but I have a limit of ${TelegramMessageLengthSoftLimit} characters per question. `,
-        ]) + randomElement([
+        ]) + either([
             `Try a shorter text`,
             `Try to make it shorter. or split the text in multiple questions`,
         ]));
 
     } else if (data.request.action === 'ask to provide a questionText (only Tags provided)') {
-        messageParts.push(randomElement([
+        messageParts.push(either([
             `ok, you provided the tags, but I need an actual question text`,
             `ok, I'll use these tags, but I need an actual question text`,
         ]));
 
     } else if (data.request.action === 'deny') {
-        messageParts.push(randomElement([
+        messageParts.push(either([
             `ok, I'm not adding a question`,
             `ok, not adding a question`,
         ]));

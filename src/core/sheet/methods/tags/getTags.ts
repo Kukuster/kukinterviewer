@@ -5,7 +5,7 @@ import queryChat from "../functions/queryChat";
 
 export type tagsQuery = {
     qids?:             number[],
-    tagStrParts?:      string[],
+    tagsStrParts?:      string[],
     enabled?:          boolean
 };
 
@@ -16,7 +16,7 @@ export type tagsQuery = {
  */
 function isProperTagsQuery(query: number[] | 'all' | tagsQuery): query is tagsQuery {
     return (query as tagsQuery).qids!              !== undefined ||
-           (query as tagsQuery).tagStrParts!       !== undefined ||
+           (query as tagsQuery).tagsStrParts!       !== undefined ||
            (query as tagsQuery).enabled!           !== undefined;
 };
 
@@ -55,9 +55,9 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
             };
             
             // leave only those that contain any of provided strings (if provided)
-            if (query.tagStrParts !== undefined && query.tagStrParts.length > 0) {
+            if (query.tagsStrParts !== undefined && query.tagsStrParts.length > 0) {
                 let tagStrRegexps: RegExp[] = [];
-                query.tagStrParts.forEach(s => {
+                query.tagsStrParts.forEach(s => {
                     s ?
                         tagStrRegexps.push(new RegExp(s, 'i'))
                         : undefined;

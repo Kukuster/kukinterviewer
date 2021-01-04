@@ -3,8 +3,9 @@ import { sendMessageSafely } from "../../../bot";
 import { maybeTelegramBotMessage } from "../../../botlib";
 import { listQuestions_execute_return } from "./execute";
 import formQuestionOutput from "../../textForming/formQuestionOutput";
-import randomElement from "../../../reusable/randomElement";
+import either from "../../../reusable/randomElement";
 import formList from "../../textForming/formList";
+import youDontHaveQuestions from "../../textForming/youDontHaveQuestions";
 
 
 export default async function listQuestions_display(msg: IIMessage, data: listQuestions_execute_return)
@@ -25,11 +26,7 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
     if (request === "all"){
         if (questions_len === 0){
 
-            messageParts.push(randomElement([
-                `You don't have any questions at all!`,
-                `There are no questions in your list`,
-                `There are 0 questions in your list`,
-            ]));
+            messageParts.push(youDontHaveQuestions());
 
             return sendMessageSafely(chatId, messageParts, {
                 parse_mode: 'HTML',
@@ -38,29 +35,25 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         } else {
 
             messageParts.push(
-                randomElement([
+                either([
                     `Here are `,
                     `Showing you `,
                     `Here is the list of `,
                     `Showing you the list of `,
-                ]) + randomElement([
+                ]) + either([
                     `all the questions you have:\n`,
                     `all the questions I have in your list:\n`,
                     `all your questions:\n`,
-                ])
+                ]) + `<i>(total ${questions_len} questions)</i>`
             );
 
             for (let i = 0; i < questions_len; i++){
                 messageParts.push(`${await formQuestionOutput(chatId, questions[i])}`);
             }
 
-            return sendMessageSafely(chatId, messageParts, {
-                parse_mode: 'HTML',
-            });
-
         }
 
-    } else {
+    } else { // request is questionsQuery
 
         let here_is_are = '';
         let oneRandomOrAll = '';
@@ -74,19 +67,19 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         ////    Beginning of the sentence    ////
         /////////////////////////////////////////
         if (questions_len === 0) {
-            here_is_are = randomElement([
+            here_is_are = either([
                 `You've asked for `,
             ]);
         } else if (questions_len === 1) {
-            here_is_are = randomElement([
+            here_is_are = either([
                 `Showing you `,
                 `Here is `,
             ]);
         } else if (questions_len >= 2) {
-            here_is_are = randomElement([
+            here_is_are = either([
                 `Showing you `,
                 `Here are `,
-                `${randomElement(['Here is','Showing you'])} the list of `,
+                `${either(['Here is','Showing you'])} the list of `,
             ]);
         }
 
@@ -96,9 +89,9 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         //////////////////////////////////////////
         // TODO: implement listQuestions by havingTagsEnabled
         if (request.enabled === true) {
-            en_dis_abled = randomElement(['enabled ','enabled ','enabled ','activated ']);
+            en_dis_abled = either(['enabled ','enabled ','enabled ','activated ']);
         } else if (request.enabled === false) {
-            en_dis_abled = randomElement(['disabled ','disabled ','turned off ','deactivated ']);
+            en_dis_abled = either(['disabled ','disabled ','turned off ','deactivated ']);
         } else {
             en_dis_abled = '';
         }
@@ -108,17 +101,21 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         //// requested multiple or any random ////
         //////////////////////////////////////////
         if (request.random === true) {
-            oneRandomOrAll = randomElement([
+            oneRandomOrAll = either([
                 `a random ${en_dis_abled}question `,
                 `any ${en_dis_abled}question `,
             ]);
         } else {
             if (questions_len === 0) {
-                oneRandomOrAll = randomElement([
+                oneRandomOrAll = either([
                     `any ${en_dis_abled}questions `,
                 ]);
+            } else if (questions_len === 1) {
+                oneRandomOrAll = either([
+                    `a ${en_dis_abled}question `,
+                ]);
             } else {
-                oneRandomOrAll = randomElement([
+                oneRandomOrAll = either([
                     `all the ${en_dis_abled}questions `,
                     `all ${en_dis_abled}questions `,
                 ]);
@@ -130,13 +127,13 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         ////          if tags matter          ////
         //////////////////////////////////////////
         if (request.Tags === 'no') {
-            tagged_untagged = randomElement(['with no tags ', 'without any tags ', 'untagged ']);
+            tagged_untagged = either(['with no tags ', 'without any tags ', 'untagged ']);
 
         } else if (request.Tags === 'any') {
-            tagged_untagged = randomElement(['tagged with any tag ', 'tagged ', 'with any tag ']);
+            tagged_untagged = either(['tagged with any tag ', 'tagged ', 'with any tag ']);
 
         } else if (Array.isArray(request.Tags) && request.Tags.length) {
-            tagged_untagged = randomElement(['tagged with ', 'with tags ']);
+            tagged_untagged = either(['tagged with ', 'with tags ']);
             tagged_untagged += formList(request.Tags, {prefix: '#', comma: ',', conj: 'or'}) + ' ';
         }
 
@@ -168,15 +165,23 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         //////////////////////////////////////////
         if (tagged_untagged || with_qids || questionTextParts) {
             if (request.random === true) {
-                oneRandomOrAll += randomElement([
+                oneRandomOrAll += either([
                     `from those which are `,
                     `from those that are `,
                 ]);
             } else {
-                oneRandomOrAll += randomElement([
-                    `that are `,
-                    `which are `,
-                ]);
+                if (questions_len === 1){
+                    oneRandomOrAll += either([
+                        `that is `,
+                        `that's `,
+                        `which is `,
+                    ]);
+                } else {
+                    oneRandomOrAll += either([
+                        `that are `,
+                        `which are `,
+                    ]);
+                }
             }
         }
 
@@ -187,13 +192,14 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
         let sentence = `${here_is_are}${oneRandomOrAll}${tagged_untagged}${with_qids}`;
 
         if (questions_len === 0){
-            sentence += '\n' + randomElement([
-                `${randomElement([`There are no`,`We don't have`])} such questions on ${randomElement(['your','the'])} list`,
+            sentence += '\n' + either([
+                `${either([`There are no`,`We don't have`])} such questions on ${either(['your','the'])} list`,
                 `There are no such questions`,
                 `There are no such questions`,
             ]);
         } else {
-            sentence += `:\n<i>${formList(questions.map(Q => Q.qid), {prefix: '#', comma: ',', conj: 'and'})}</i>\n`;
+            sentence += `:\n<i>${formList(questions.map(Q => Q.qid), {prefix: '#', comma: ',', conj: 'and'})}\n` +
+            `(total ${questions_len} questions)</i>`;
         }
 
         messageParts.push(`${sentence}`);
@@ -202,10 +208,10 @@ export default async function listQuestions_display(msg: IIMessage, data: listQu
             questions.map(Q => formQuestionOutput(chatId, Q)),
         )));
 
-        return sendMessageSafely(chatId, messageParts, {
-            parse_mode: 'HTML',
-        });
-
     }
+
+    return sendMessageSafely(chatId, messageParts, {
+        parse_mode: 'HTML',
+    });
 
 }

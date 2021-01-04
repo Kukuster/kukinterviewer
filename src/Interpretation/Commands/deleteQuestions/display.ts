@@ -5,6 +5,7 @@ import { deleteQuestions_execute_return } from "./execute";
 import either from "../../../reusable/randomElement";
 import formList from "../../textForming/formList";
 import { arraysAreEqualSets } from "../../../reusable/compareArrays";
+import youDontHaveQuestions from "../../textForming/youDontHaveQuestions";
 
 
 export default async function deleteQuestions_display(msg: IIMessage, data: deleteQuestions_execute_return)
@@ -23,11 +24,7 @@ export default async function deleteQuestions_display(msg: IIMessage, data: dele
     if (data.request === 'all'){
 
         if (data.action === 'noop (no such questions)'){
-            messageParts.push(either([
-                `You don't have any questions at all!`,
-                `There are no questions in your list`,
-                `There are 0 questions in your list`,
-            ]));
+            messageParts.push(youDontHaveQuestions());
 
         } else if (data.action === 'confirm deleting questions'){
 

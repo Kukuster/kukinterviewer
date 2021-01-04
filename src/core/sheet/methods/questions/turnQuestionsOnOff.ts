@@ -1,6 +1,6 @@
 import queryChat from "../functions/queryChat";
 
-type result =
+export type turnQuestionsOnOff_result =
 {
     hasChanges: false,
     reason: 'no questions with such qids' |
@@ -18,16 +18,16 @@ type result =
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
  * @param qids list of `question` document `qid`s to switch `enabled` status. Will be validated.
  * @param status whether to turn on or off questions
- * @return {Promise<result>}
+ * @return {Promise<turnQuestionsOnOff_result>}
  *
  */
 export default async function turnQuestionsOnOff(chatId: number, args: {qids: number[] | 'all', status: 'on' | 'off'})
-    : Promise<result>
+    : Promise<turnQuestionsOnOff_result>
 {
     const {qids, status} = args;
 
     return queryChat(chatId, { "Questions": true },
-    (chat, save): result => {
+    (chat, save): turnQuestionsOnOff_result => {
 
         const applyStatus = status === 'on' ? true : false;
 

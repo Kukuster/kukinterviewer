@@ -1,7 +1,7 @@
 import { Job } from "node-schedule";
+import { maybeTelegramBotMessage } from "../../../botlib";
 import { IIMessage } from "../../../core/Command/Command";
 import scheduleNextQuestion from "../../../core/schedule/scheduleNextQuestion";
-import setChatProperty from "../../../core/sheet/methods/chat/setChatProperty";
 import switchAsking from "../../../core/sheet/methods/chat/switchAsking";
 import queryChat from "../../../core/sheet/methods/functions/queryChat";
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
@@ -17,7 +17,7 @@ export default async function turnAskingOnOff_execute(msg: IIMessage, arg: shoot
             scheduledNext: Ichat | {
                 request: questionsQuery;
                 response: askMeAQuestion_response;
-            } | Job | null | undefined
+            } | Job | maybeTelegramBotMessage[] | null | undefined
         }
     }>
 {

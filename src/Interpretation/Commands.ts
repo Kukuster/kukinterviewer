@@ -28,12 +28,15 @@ import deleteQuestions_display from "./Commands/deleteQuestions/display";
 import { askMeAQuestion_tree } from "./Commands/askMeAQuestion/matchTree";
 import askMeAQuestion_prepare from "./Commands/askMeAQuestion/prepare";
 import askMeAQuestion_execute from "./Commands/askMeAQuestion/execute";
+import askMeAQuestion_display from "./Commands/askMeAQuestion/display";
 import { turnQuestionsOnOff_tree } from "./Commands/turnQuestionsOnOff/matchTree";
 import turnQuestionsOnOff_prepare from "./Commands/turnQuestionsOnOff/prepare";
 import turnQuestionsOnOff_execute from "./Commands/turnQuestionsOnOff/execute";
+import turnQuestionsOnOff_display from "./Commands/turnQuestionsOnOff/display";
 import { listTags_tree } from "./Commands/listTags/matchTree";
 import listTags_prepare from "./Commands/listTags/prepare";
 import listTags_execute from "./Commands/listTags/execute";
+import listTags_display from "./Commands/listTags/display";
 import { turnTagsOnOff_tree } from "./Commands/turnTagsOnOff/matchTree";
 import turnTagsOnOff_prepare from "./Commands/turnTagsOnOff/prepare";
 import turnTagsOnOff_execute from "./Commands/turnTagsOnOff/execute";
@@ -65,7 +68,6 @@ import { submitQuestionText_tree } from "./Commands/submitQuestionText/matchTree
 import submitQuestionText_prepare from "./Commands/submitQuestionText/prepare";
 import submitQuestionText_execute from "./Commands/submitQuestionText/execute";
 import submitQuestionText_display from "./Commands/submitQuestionText/display";
-import askMeAQuestion_display from "./Commands/askMeAQuestion/display";
 
 
 
@@ -123,11 +125,13 @@ export const turnQuestionsOnOff_command = new Command(
     match_byTree(turnQuestionsOnOff_tree, {unmatchesInRow:20}),
     turnQuestionsOnOff_prepare,
     turnQuestionsOnOff_execute,
+    turnQuestionsOnOff_display,
 );
 export const listTags_command = new Command(
     match_byTree(listTags_tree, {unmatchesInRow:20}),
     listTags_prepare,
     listTags_execute,
+    listTags_display,
 );
 export const turnTagsOnOff_command = new Command(
     match_byTree(turnTagsOnOff_tree, {unmatchesInRow:20}),

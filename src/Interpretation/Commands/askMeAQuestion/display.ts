@@ -3,6 +3,8 @@ import { sendMessageSafely } from "../../../bot";
 import { maybeTelegramBotMessage } from "../../../botlib";
 import { askMeAQuestion_execute_return } from "./execute";
 import formQuestionAsked from "../../textForming/formQuestionAsked";
+import youDontHaveQuestions from "../../textForming/youDontHaveQuestions";
+import randomElement from "../../../reusable/randomElement";
 
 
 export default async function askMeAQuestion_display(msg_or_chatId: IIMessage | number, data: askMeAQuestion_execute_return)
@@ -26,12 +28,13 @@ export default async function askMeAQuestion_display(msg_or_chatId: IIMessage | 
 
         messageParts.push(await formQuestionAsked(chatId, data.response.question));
 
-        return sendMessageSafely(chatId, messageParts, {
-            parse_mode: 'HTML',
-        });
-
     } else {
-        // 
+        messageParts.push(
+            youDontHaveQuestions() + '\n' +
+            randomElement([
+                `You can ${randomElement(['ask', 'tell'])} me to add questions for you`,
+            ]),
+        );
     }
 
     return sendMessageSafely(chatId, messageParts, {

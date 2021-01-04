@@ -3,6 +3,7 @@ export default function formList(Array: (string|number)[], format: {
     suffix?: string,
     comma?: string,
     conj?: 'and' | 'or' | '&' | '',
+    noSpaces?: true,
 } = {
     prefix: '#',
     comma: ',',
@@ -10,12 +11,17 @@ export default function formList(Array: (string|number)[], format: {
 }): string
 {
 
-    const prfx = format.prefix ? format.prefix : '';
-    const sffx = format.suffix ? format.suffix : '';
-    const conj = format.conj   ? format.conj   : '';
-    const comma = format.comma ? format.comma  : '';
+    // define format with applying defaults to not specified props:
+    const prfx    = format.prefix   !== undefined ? format.prefix : '';
+    const sffx    = format.suffix   !== undefined ? format.suffix : '';
+    const conj    = format.conj     !== undefined ? format.conj   : '';
+    const comma   = format.comma    !== undefined ? format.comma  : ',';
+    const noSpace = format.noSpaces !== undefined ? format.noSpaces : false;
+
 
     const len = Array.length;
+
+    const s = noSpace ? '' : ' ';
 
     if (len === 0) {
         return '';
@@ -24,7 +30,7 @@ export default function formList(Array: (string|number)[], format: {
         return `${prfx}${Array[0]}${sffx}`;
 
     } else if (len === 2) {
-        return `${prfx}${Array[0]}${sffx}${conj ? ` ${conj} ` : `${comma} `}${prfx}${Array[1]}${sffx}`;
+        return `${prfx}${Array[0]}${sffx}${conj ? `${s}${conj}${s}` : `${comma}${s}`}${prfx}${Array[1]}${sffx}`;
 
     } else {
 
@@ -33,8 +39,8 @@ export default function formList(Array: (string|number)[], format: {
         const last = (i: number) => i === len - 1;
         const _2ndLast = (i: number) => i === len - 2;
 
-        const glue = `${comma} `;
-        const glue2ndLast = conj ? `${comma} ${conj} ` : `${comma} `;
+        const glue = `${comma}${s}`;
+        const glue2ndLast = conj ? `${comma}${s}${conj}${s}` : `${comma}${s}`;
         const glueLast = '';
 
         for (let i = 0; i < len; i++) {

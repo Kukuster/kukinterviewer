@@ -1,7 +1,7 @@
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
 
-type result =
+export type turnTagsOnOff_result =
 {
     hasChanges: false,
     reason: 'no such Tags' |
@@ -20,16 +20,16 @@ type result =
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
  * @param Tags list of `tags` to switch `enabled` status. Will be validated.
  * @param status whether to turn on or off questions
- * @return {Promise<result>}
+ * @return {Promise<turnTagsOnOff_result>}
  *
  */
 export default async function turnTagsOnOff(chatId: number, args: {Tags: string[] | 'all', status: 'on' | 'off'})
-    : Promise<result>
+    : Promise<turnTagsOnOff_result>
 {
     const {Tags, status} = args;
 
     return queryChat(chatId, { "Tags": true },
-    (chat, save): result =>{
+    (chat, save): turnTagsOnOff_result =>{
 
         const applyStatus = status === 'on' ? true : false;
         

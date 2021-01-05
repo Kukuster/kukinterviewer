@@ -91,8 +91,6 @@ You can ask me to:
     - «tell me what time do you start ask me questions»
     - «tell me what time do you start interviewing me»
 
-• Enable/disable bot Command
-
 • improve askMeAQuestion when asked to ask a question by tag:
 Don't require that tag to be enabled for queried questions. Only require all other tags for the questions have to be enabled.
 
@@ -112,6 +110,12 @@ Don't require that tag to be enabled for queried questions. Only require all oth
     - «show me how many enabled tags do we have»
     - «count me how many enabled tags do we have»
     - «calculate me how many enabled tags do we have»
+
+• turnTagsOnOff, turnQuestionsOnOff, addTagsToQuestions, removeTagsFromQuestions Commands' display methods wierdly have way too much in common. Consider DRYing it out to some abstraction.
+
+• automatically count number of questions with a tag and save the amount to the field in Tag document, so that:
+    1. Number of questions that have the tag is available at hand
+    2. When number becames 0, Tag document can be deleted, or at least won't be showed when asked to list all tags
 
 
 

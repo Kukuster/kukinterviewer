@@ -31,18 +31,18 @@ export default async function turnQuestionsOnOff_display(msg: IIMessage, data: t
                     ]));
                 } else if (data.response.qidsAffected.length > 1) {
                     messageParts.push(either([
-                        `${status?'Enbaled':'Disabled'} the following questions: \n` +
+                        `${status?'Enbaled':'Disabled'} the following questions:\n` +
                         `<i>${formList(data.response.qidsAffected, { prefix: '#', comma: ',', conj: 'and' })}</i>`,
                     ]));
                 }
                 if (data.response.qidsUnaffected.length === 1){
                     messageParts.push(either([
-                        `Question #${data.response.qidsAffected[0]} is already ${status?'enbaled':'disabled'}`,
+                        `Question #${data.response.qidsUnaffected[0]} is already ${status?'enbaled':'disabled'}`,
                     ]));
                 } else if (data.response.qidsUnaffected.length > 1) {
                     messageParts.push(either([
                         `The following questions are already ${status?'enbaled':'disabled'}:\n` +
-                        `<i>${formList(data.response.qidsAffected, { prefix: '#', comma: ',', conj: 'and' })}</i>`,
+                        `<i>${formList(data.response.qidsUnaffected, { prefix: '#', comma: ',', conj: 'and' })}</i>`,
                     ]));
                 }
             }
@@ -63,7 +63,8 @@ export default async function turnQuestionsOnOff_display(msg: IIMessage, data: t
                         ]));
                     } else if (data.request.questions.length > 1) {
                         messageParts.push(either([
-                            `You've asked me to ${status?'enable':'disable'} questions <i>${formList(data.request.questions,{prefix:'#',comma:',',conj:'and'})}</i>\n` + 
+                            `You've asked me to ${status?'enable':'disable'} questions <i>${formList(data.request.questions,{prefix:'#',comma:',',conj:'and'})}</i>\n`
+                            + 
                             `Sorry, there are no such questions`,
                         ]));
                     }

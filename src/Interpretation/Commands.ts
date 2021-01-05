@@ -40,12 +40,15 @@ import listTags_display from "./Commands/listTags/display";
 import { turnTagsOnOff_tree } from "./Commands/turnTagsOnOff/matchTree";
 import turnTagsOnOff_prepare from "./Commands/turnTagsOnOff/prepare";
 import turnTagsOnOff_execute from "./Commands/turnTagsOnOff/execute";
+import turnTagsOnOff_display from "./Commands/turnTagsOnOff/display";
 import { addTagsToQuestions_tree } from "./Commands/addTagsToQuestions/matchTree";
 import addTagsToQuestions_prepare from "./Commands/addTagsToQuestions/prepare";
 import addTagsToQuestions_execute from "./Commands/addTagsToQuestions/execute";
+import addTagsToQuestions_display from "./Commands/addTagsToQuestions/display";
 import { removeTagsFromQuestions_tree } from "./Commands/removeTagsFromQuestions/matchTree";
 import removeTagsFromQuestions_prepare from "./Commands/removeTagsFromQuestions/prepare";
 import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/execute";
+import removeTagsFromQuestions_display from "./Commands/removeTagsFromQuestions/display";
 import { setAskingTime_tree } from "./Commands/setAskingTime/matchTree";
 import setAskingTime_prepare from "./Commands/setAskingTime/prepare";
 import setAskingTime_execute from "./Commands/setAskingTime/execute";
@@ -53,6 +56,7 @@ import setAskingTime_display from "./Commands/setAskingTime/display";
 import { turnAskingOnOff_tree } from "./Commands/turnAskingOnOff/matchTree";
 import turnAskingOnOff_prepare from "./Commands/turnAskingOnOff/prepare";
 import turnAskingOnOff_execute from "./Commands/turnAskingOnOff/execute";
+import turnAskingOnOff_display from "./Commands/turnAskingOnOff/display";
 
 
 import suggestMethod_test_match from "./Commands/suggestMethod_test/match";
@@ -138,16 +142,19 @@ export const turnTagsOnOff_command = new Command(
     match_byTree(turnTagsOnOff_tree, {unmatchesInRow:20}),
     turnTagsOnOff_prepare,
     turnTagsOnOff_execute,
+    turnTagsOnOff_display,
 );
 export const addTagsToQuestions_command = new Command(
     match_byTree(addTagsToQuestions_tree, {unmatchesInRow:20}),
     addTagsToQuestions_prepare,
     addTagsToQuestions_execute,
+    addTagsToQuestions_display,
 );
 export const removeTagsFromQuestions_command = new Command(
     match_byTree(removeTagsFromQuestions_tree, {unmatchesInRow:20}),
     removeTagsFromQuestions_prepare,
     removeTagsFromQuestions_execute,
+    removeTagsFromQuestions_display,
 );
 export const setAskingTime_command = new Command(
     match_byTree(setAskingTime_tree, {unmatchesInRow:20}),
@@ -159,6 +166,7 @@ export const turnAskingOnOff_command = new Command(
     match_byTree(turnAskingOnOff_tree, {unmatchesInRow:20}),
     turnAskingOnOff_prepare,
     turnAskingOnOff_execute,
+    turnAskingOnOff_display,
 );
 
 export const suggestMethod_test_command = new Command(

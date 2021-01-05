@@ -4,22 +4,20 @@ import { IIMessage } from "../../../core/Command/Command";
 import scheduleNextQuestion from "../../../core/schedule/scheduleNextQuestion";
 import switchAsking from "../../../core/sheet/methods/chat/switchAsking";
 import queryChat from "../../../core/sheet/methods/functions/queryChat";
-import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
-import { askMeAQuestion_response } from "../askMeAQuestion/execute";
 import { shoot } from "./matchTree";
 
+
+export type turnAskingOnOff_execute_return = { 
+    request: shoot,
+    response: {
+        switchedAsking: Ichat,
+        scheduledNext: Ichat | Job | maybeTelegramBotMessage[] | null | undefined
+    }
+};
+
 export default async function turnAskingOnOff_execute(msg: IIMessage, arg: shoot)
-    : Promise<{ 
-        request: shoot,
-        response: {
-            switchedAsking: Ichat,
-            scheduledNext: Ichat | {
-                request: questionsQuery;
-                response: askMeAQuestion_response;
-            } | Job | maybeTelegramBotMessage[] | null | undefined
-        }
-    }>
+    : Promise<turnAskingOnOff_execute_return>
 {
 
     const chatId = msg.chat.id;

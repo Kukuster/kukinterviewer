@@ -74,9 +74,16 @@ export default async function setAskingTime_display(msg: IIMessage, data: setAsk
         }
 
         if (data.request.interval && typeof data.response.interval_ms === 'number'){
-            askingInterval_str += either([
-                ` every ${prettyMilliseconds(data.response.interval_ms, { verbose: true })}`,
-            ]);
+            if ((data.request.from && typeof data.response.from === 'number') ||
+                (data.request.to   && typeof data.response.to   === 'number')){
+                askingInterval_str += either([
+                    ` every ${prettyMilliseconds(data.response.interval_ms, { verbose: true })}`,
+                ]);
+            } else {
+                askingInterval_str += either([
+                    `${either([`Will be asking you`,`Will be asking you questions`,`Ok, I'm asking you`,`Ok, asking you questions`])} every ${prettyMilliseconds(data.response.interval_ms, { verbose: true })}`,
+                ]);
+            }
         }
 
     }

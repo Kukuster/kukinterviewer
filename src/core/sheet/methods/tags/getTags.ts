@@ -1,12 +1,13 @@
 'use strict';
-import { Ichat } from "../../models/ChatModel";
+import { Itag } from "../../models/TagModel";
 import queryChat from "../functions/queryChat";
 
 
 export type tagsQuery = {
     qids?:             number[],
-    tagsStrParts?:      string[],
-    enabled?:          boolean
+    tagsStrParts?:     string[],
+    enabled?:          boolean,
+    tagStr?:           string[],
 };
 
 /**
@@ -15,10 +16,13 @@ export type tagsQuery = {
  * @returns whether _query_ is a `tagsQuery` type and has at least one property
  */
 function isProperTagsQuery(query: number[] | 'all' | tagsQuery): query is tagsQuery {
-    return (query as tagsQuery).qids!              !== undefined ||
-           (query as tagsQuery).tagsStrParts!       !== undefined ||
-           (query as tagsQuery).enabled!           !== undefined;
-};
+    return query && (
+           (query as tagsQuery).qids               !== undefined ||
+           (query as tagsQuery).tagsStrParts       !== undefined ||
+           (query as tagsQuery).enabled            !== undefined || 
+           (query as tagsQuery).tagStr             !== undefined
+        );
+}
 
 /**
  *
@@ -28,35 +32,45 @@ function isProperTagsQuery(query: number[] | 'all' | tagsQuery): query is tagsQu
  *
  */
 export default async function getTags(chatId: number, query:  'all' | tagsQuery)
-    //: Promise<Ichat['Tags']>
+    // : Promise<Itag[]>
 {
 
     const select: { "Tags": true, "Questions"?: true } = { "Tags": true };
     if (isProperTagsQuery(query) && query.qids){
         select["Questions"] = true;
-    };
+    }
 
     return queryChat(chatId, select,
-    (chat): Ichat['Tags'] =>{
+    (chat): Itag[] => {
 
         const chatTags = Array.isArray(chat.Tags) ? chat.Tags : [];
-        
+
 
         console.log(query);
-        if (query && isProperTagsQuery(query)){
-            
-            let filteringTags = chatTags;
-            
+        if (isProperTagsQuery(query)){
+
+            let filteringTags = [...chatTags];
+
+
+            // leave only those that were queried by exact string (if were)
+            if (query.tagStr !== undefined) {
+                filteringTags = filteringTags.filter(T =>
+                    query.tagStr === undefined || query.tagStr.includes(T.str)
+                );
+            }
+
+
             // leave only those that match `enabled` field (if provided)
             if (query.enabled !== undefined){
                 filteringTags = filteringTags.filter(T =>
                     query.enabled === undefined || !!T.enabled === !!query.enabled
                 );
-            };
-            
+            }
+
+
             // leave only those that contain any of provided strings (if provided)
             if (query.tagsStrParts !== undefined && query.tagsStrParts.length > 0) {
-                let tagStrRegexps: RegExp[] = [];
+                const tagStrRegexps: RegExp[] = [];
                 query.tagsStrParts.forEach(s => {
                     s ?
                         tagStrRegexps.push(new RegExp(s, 'i'))
@@ -67,8 +81,8 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
                     filteringTags = filteringTags.filter(q =>
                         tagStrRegexps.some(r => q.str.match(r))
                     );
-                };
-            };
+                }
+            }
 
 
             // leave only those tags that questions with specified qids have
@@ -79,19 +93,17 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
                 chatQuestions.forEach(q=>{
                     if (query.qids?.includes(q.qid)){
                         specifiedQidsTags[q.qid] = q.Tags;
-                    };
+                    }
                 });
 
                 filteringTags = filteringTags.filter(T => 
-                    specifiedQidsTags.find((Tags) => {
-                        return Tags ? Tags.includes(T.str) : undefined;
-                    })
+                    specifiedQidsTags.find(Tags => Tags ? Tags.includes(T.str) : undefined)
                 );
-            };
+            }
 
             return filteringTags;
-            
-        } // if is questionsQuery
+
+        } // if is tagsQuery
 
         // if is 'all' or unset
         else if (query === 'all' || !query) {
@@ -100,10 +112,10 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
 
         else {
             return chatTags;
-        };        
+        }
 
 
     });
 
 
-};
+}

@@ -219,7 +219,7 @@ for (const c in Cs) {
     const casesLen = Cs[c].testCases.length;
 
     for (let i = 0; i < casesLen; i++){
-        test(c+'.matchTree message #'+(i+1)+': "' + Cs[c].testCases[i].m + '": ', () => {
+        test(`${c}.matchTree message #${i+1}: "${Cs[c].testCases[i].m}"`, () => {
             expect(
                 JSON.stringify(Cs_got_res[c][i])
             ).toEqual(

@@ -141,10 +141,10 @@ export function convertFromTZ(date: Date, tzString: string) {
     return DateTime.fromISO(date.toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();
 }
 
-export function convertTimeOfDayFromTZ(date: Date, tzString: string) {
+export function convertTimeOfDayFromTZ(timeOfDay: Date | number, tzString: string) {
     const rightNow = new Date();
     const today = getDateWithoutTime(rightNow);
-    const givenTimeOfDay_unix = getTimeWithoutDate(date);
+    const givenTimeOfDay_unix = getTimeWithoutDate(timeOfDay);
     const todayTime_datetime_unix = today.getTime() + givenTimeOfDay_unix;
 
     const converted_datetime = DateTime.fromISO((new Date(todayTime_datetime_unix)).toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();

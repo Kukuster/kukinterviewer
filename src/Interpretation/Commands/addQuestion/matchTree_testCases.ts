@@ -120,6 +120,11 @@ export const addQuestion_testCases: addQuestion_testCase[] = [
         action: 'ask to provide a questionText',
         questionText: null,
      } },
+
+    { m: "write down a new question",                                                      res: {
+        action: 'ask to provide a questionText',
+        questionText: null,
+     } },
      
     { m: "add new #web question ",                                                         res: {
         action: 'ask to provide a questionText',

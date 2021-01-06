@@ -1,5 +1,5 @@
-import ChatModel, { Ichat, settingsSet, settingsKey } from "../../src/core/sheet/models/ChatModel";
-import mongoose, { DBconnection } from "../../src/core/sheet/mongoose";
+import { Ichat, settingsSet, settingsKey } from "../../src/core/sheet/models/ChatModel";
+import { DBconnection } from "../../src/core/sheet/mongoose";
 import sheet from "../../src/core/sheet/sheet";
 import { Iquestion } from "../../src/core/sheet/models/QuestionModel";
 import { questionsQuery } from "../../src/core/sheet/methods/questions/getQuestions";
@@ -13,10 +13,7 @@ import { questionsQuery } from "../../src/core/sheet/methods/questions/getQuesti
 ////////////////////////////////////////////////////////
 
 
-//const chatId = 231079996;
 let chatId = 1729;
-
-const args: number[] | 'all' = [2];
 
 
 const settingsToSetObj: settingsSet[]
@@ -35,10 +32,10 @@ const settingsToSetObj: settingsSet[]
         'asking_timeOfDay_to': 19,
     },
 
-]
+];
 
 
-type settingsKeyValueTuple<T extends settingsKey> = [T, settingsSet[T]];
+// type settingsKeyValueTuple<T extends settingsKey> = [T, settingsSet[T]];
 
 const settingsToSetKeyAndValue: [settingsKey, settingsSet[settingsKey]][] = [
     ['enabled', true],
@@ -100,7 +97,7 @@ const getQuestionsQueries_and_Results: [NonNullable<questionsQuery>, number[]][]
        Tags: ['tag1', 'tag3', ''],
        questionTextParts: ['']},                [3,7]             ],
 
-]
+];
 
 
 
@@ -187,7 +184,7 @@ beforeAll(async () => {
         getChatSettingsAllResult_AfterSetSettingsObj.push(
             await sheet.getSettings(chatId)
         );
-    };
+    }
 
     // this is to compare with the first result of setSettings with key-value pairs
     getChatSettingsAllResult_AfterAllSetSettingsObj_BeforeAnySetSettingsKeyAndValue
@@ -204,7 +201,7 @@ beforeAll(async () => {
         getChatSettingsAllResult_AfterSetSettingsKeyAndValue.push(
             await sheet.getSettings(chatId)
         );
-    };
+    }
 
     // get all Setting after they were set
     getChatSettingsAllResult_AfterAllSetSettings =  await sheet.getSettings(chatId);
@@ -334,7 +331,7 @@ test('setSettings() rewrites only specified fields when passing object', () => {
 
         }
 
-    }; // for i
+    } // for i
 }); // test setSettings when passing object
 
 
@@ -369,9 +366,9 @@ test('setSettings() sets a specified setting when passing a key and a value', ()
                 getChatSettingsAllResult_AfterSetSettingsKeyAndValue[i]
             ));
 
-        };
+        }
 
-    }; // for i
+    } // for i
 }); // test setSettings when passing key-value pair
 
 

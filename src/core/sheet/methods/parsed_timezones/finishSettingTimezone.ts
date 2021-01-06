@@ -1,4 +1,5 @@
 'use strict';
+import { convertTimeOfDayFromTZ } from "../../../../reusable/datetime";
 import { Ichat } from "../../models/ChatModel";
 import queryChat from "../functions/queryChat";
 
@@ -20,8 +21,26 @@ export default async function finishSettingTimezone(chatId: number, timezone: st
         }
         chat.Settings.timezone = timezone;
 
+
+        ///// temporary fix /////
+        // sets default settings: ask every 2 hours from 10 AM to 8 PM
+        const twoHrs  =  7200000;
+        const tenAM   = 36000000;
+        const eightPM = 72000000;
+
+        const clientsTenAM_in_GMT   = convertTimeOfDayFromTZ(tenAM,   timezone);
+        const clientsEightPM_in_GMT = convertTimeOfDayFromTZ(eightPM, timezone);
+
+        chat.Settings.asking_period_ms = twoHrs;
+        chat.Settings.asking_timeOfDay_from = clientsTenAM_in_GMT;
+        chat.Settings.asking_timeOfDay_to   = clientsEightPM_in_GMT;
+
+        ///// /////
+
+
         chat.markModified('intermediate_data');
         chat.markModified('Settings');
+        console.log(`executing finishSettingTimezone`);
         
         saveChat();
 

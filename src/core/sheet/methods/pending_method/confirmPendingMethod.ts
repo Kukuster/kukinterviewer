@@ -3,6 +3,7 @@ import { confirmableSheetMethod, confirmableSheetMethod_returnType } from "../..
 import executeMethod from "../executeMethod";
 import queryChat from "../functions/queryChat";
 import { Awaited } from '../../../../reusable/Awaited.type';
+import { is_Ichat_schema_withNonEmptyFields } from "../../models/ChatModel";
 
 
 type confirmedResponse = {
@@ -36,13 +37,23 @@ export default async function confirmPendingMethod(chatId: number)
             const { sheet_method, args_tuple, prev_state } = pendingMethod;
 
             chat.state = prev_state;
-        
+
             const result = await executeMethod(chatId, sheet_method, args_tuple);
 
+            if (is_Ichat_schema_withNonEmptyFields(result, ['state']) && result.state) {
+                chat.state = result.state;
+            }
+            if (is_Ichat_schema_withNonEmptyFields(result, ['intermediate_data']) && result.intermediate_data) {
+                chat.intermediate_data = result.intermediate_data;
+            }
+
+            
             if (!chat.intermediate_data) {
                 chat.intermediate_data = {};
             }
             chat.intermediate_data.pending_method = null;
+
+
             chat.markModified('intermediate_data');
             // NOTE: if the executed sheet method returns Ichat and uses "intermediate_data" field,
             // the "intermediate_data" field won't be rewritten

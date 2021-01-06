@@ -37,8 +37,11 @@ const why = /^why[?!.,;:]*$/i;
 const ask = /^ask(ing?)?[?!.,;:]*$/i;
 const not = /^(n|no|not|nope|nah|nil|nicht|don'?t|won'?t|doesn'?t)[?!.,;:]*$/i;
 
-const emoji = /^(👌🏻|👍🏻|🆗|😉|🆗)[?!.,;:]*$/i;
+const emojiConfirm = /^(👌|👍|🆗|😉|🆗)/i;
 
+const emojiDeny = /^(🙅‍♀️|🙅|🙅‍♂️|🤦‍♀️|🤦|🤦‍♂️|❌|🚫)/i;
+
+const ok = /^(ok|k|okay|okey|key)[?!.,;:]*$/i;
 
 
 
@@ -118,7 +121,11 @@ export const confirm_tree =
             node(ask, [], confirmShoot as shoot),
         ]),
 
-        node(emoji, [], confirmShoot as shoot),
+        node(emojiConfirm, [], confirmShoot as shoot),
+
+        node(emojiDeny, [], denyShoot as shoot),
+
+        node(ok, [PARENTs_CHILDREN], confirmShoot as shoot),
 
 
     ]);

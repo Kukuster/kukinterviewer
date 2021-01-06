@@ -37,7 +37,8 @@ export default async function removeTagsFromQuestions_execute(msg: IIMessage, ar
     const queriedQuestions = await getQuestions(chatId, qids);
 
     const tooMany = queriedQuestions.length > 3 ||
-                    Tags.length > 3;
+                    Tags.length > 3 ||
+                    (Tags === 'all' && queriedQuestions.length > 1);
 
     if (tooMany) {
         return {

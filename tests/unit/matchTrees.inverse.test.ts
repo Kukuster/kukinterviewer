@@ -237,7 +237,7 @@ for (const c in Cs) {
         for (let i = 0; i < casesLen; i++) {
             // removes tests that originally evaluate to null (to test Commands to be nagative only against positive tests of other Commands)
             if (Cs[against_c].testCases[i].res !== null){
-                test(c + '.matchTree against ' + against_c + ' message #' + (i + 1) + ': "' + Cs[against_c].testCases[i].m + '": ', () => {
+                test(`${c}.matchTree against ${against_c} message #${i+1}: "${Cs[against_c].testCases[i].m}"`, () => {
                     expect(
                         Cs_got_res[c][against_c][i]
                     ).toEqual(

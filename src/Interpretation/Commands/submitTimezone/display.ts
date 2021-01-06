@@ -20,7 +20,7 @@ export default async function submitTimezone_display(msg: IIMessage, data: submi
     
     if (data.result.result === 'a single timezone') {
         const reply = `Got it.
-Going to sign up your timezone as <b>${data.result.timezone}</b> (${getTimezoneOffsetString(data.result.timezone)}), OK?.
+Going to sign up your timezone as <b>${data.result.timezone}</b> (${getTimezoneOffsetString(data.result.timezone)}), OK?
 
 This is going to be it with the set up, and I'll be able to write down your questions and start asking you when you want`;
 

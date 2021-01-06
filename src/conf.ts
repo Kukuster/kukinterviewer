@@ -31,9 +31,11 @@ export const mongoPORT = <number>evalConfig(config,'mongoPORT');
 
 export const TOKEN = <string>evalConfig(config,'TOKEN');
 
-export const PORT = <number>evalConfig(config,'PORT')
+export const PORT = <number>evalConfig(config,'PORT');
 
 export const HOST = <string>evalConfig(config,'HOST');
 
+// curently works only with 'GMT'
 export const TZ  =  <string>evalConfig(config,'TZ');
 
+export const APP_ENV = <'dev'|'prod'>evalConfig(config,'APP_ENV');

@@ -30,7 +30,7 @@ const user_mock = {
     is_bot: true
 };
 
-const telegram_msg_mock: Message = {
+const telegram_msg1_mock: Message = {
     text: 'Hi!',
     message_id: 2222,
     date: 3333,
@@ -48,6 +48,12 @@ const telegram_msg2_mock: Message = {
 };
 
 
+///// REPLY TEMPLATE /////
+
+const createChatCommand_reply = 'Greetings, %username%!';
+const createChatCommand_reply_short = 'Greetings!';
+const deleteChatCommand_reply = 'Goodbye, %username%! I won\'t remebmer you! :(';
+const deleteChatCommand_reply_short = 'Goodbye! I won\'t remebmer you! :(';
 
 
 ///// createChat COMMAND /////
@@ -63,13 +69,11 @@ const createChatMatch: Command_match<RegExpMatchArray>
     return message?.match(/(hi|hello)[\s\S]*/i);
 };
 
-
 const createChatPrepare: Command_prepare<RegExpMatchArray, createChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('createChat: Prepare');
     return { 'chatId': msg.chat.id };
 };
-
 
 const createChatExecute: Command_execute<createChatExecArgs, createChatDispArgs> 
 = async function (msg: IIMessage, args: createChatExecArgs) {
@@ -86,8 +90,8 @@ This command should not be available for those who already started!`);
 
     const reply =
         msg.from?.first_name ?
-            'Greetings, ' + msg.from.first_name + '!' :
-            'Greetings!';
+            createChatCommand_reply.replace('%username%', msg.from.first_name) :
+            createChatCommand_reply_short;
 
     try {        
         return {
@@ -98,11 +102,10 @@ This command should not be available for those who already started!`);
         return {
             error: e,
             reply: 'Something went wrong when i tried to sign you up... Sorry, try again later'
-        }
+        };
     }
 
 }; // createChatExecute
-
 
 const createChatDisplay: Command_display<createChatDispArgs>
 = async function (msg: IIMessage, response: createChatDispArgs){
@@ -112,14 +115,10 @@ const createChatDisplay: Command_display<createChatDispArgs>
 
 };
 
-
 /**
- * 
  * @state sets to `'ready'` if new user OR leaves unchanged otherwise
- * 
  */
 const createChat = new Command(createChatMatch, createChatPrepare, createChatExecute, createChatDisplay);
-
 
 
 
@@ -138,7 +137,6 @@ type deleteChatDispArgs = {
 };
 
 
-
 const deleteChatMatch: Command_match<RegExpMatchArray>
 = async function(msg: IIMessage){
     // console.log('deleteChat: Match');
@@ -146,13 +144,11 @@ const deleteChatMatch: Command_match<RegExpMatchArray>
     return message?.match(/(forget)[\s]*(me)[\s]*(forever)[\s\S]*/i);
 };
 
-
 const deleteChatPrepare: Command_prepare<RegExpMatchArray, deleteChatExecArgs> 
 = async function (msg: IIMessage, match: RegExpMatchArray) {
     // console.log('deleteChat: Prepare');
     return { 'chatId': msg.chat.id };
 };
-
 
 const deleteChatExecute: Command_execute<deleteChatExecArgs, deleteChatDispArgs> 
 = async function (msg: IIMessage, args: deleteChatExecArgs) {
@@ -169,8 +165,8 @@ This command should not be available for those who didn't start!`);
 
     const reply =
         msg.from?.first_name ?
-            'Goodbye, ' + msg.from.first_name + '! I won\'t remebmer you! :(' :
-            'Goodbye! I won\'t remebmer you! :(';
+            deleteChatCommand_reply.replace('%username%', msg.from.first_name) :
+            deleteChatCommand_reply_short;
 
     try {        
         return {
@@ -187,7 +183,6 @@ Sorry for that, you can try again later`
 
 }; // deleteChatExecute
 
-
 const deleteChatDisplay: Command_display<deleteChatDispArgs>
 = async function (msg: IIMessage, response: deleteChatDispArgs){
     // console.log('deleteChat: Display');
@@ -196,11 +191,8 @@ const deleteChatDisplay: Command_display<deleteChatDispArgs>
 
 };
 
-
 /**
- * 
  * @state sets to `undefined` by deleteing the chat document (equivalent to `'greet'`) OR leaves unchanged if user is new
- * 
  */
 const deleteChat = new Command(deleteChatMatch, deleteChatPrepare, deleteChatExecute, deleteChatDisplay);
 
@@ -218,12 +210,11 @@ const States = [greetState, readyState];
 
 
 
+
 ///// Variables that hold calculation results /////
 
-let resp1: any,
-    resp2: any;
-
-
+let resp1: { reply: string; result: { chatId: number; state: string; }; },
+    resp2: { reply: string; result: { n: number; ok: number; deletedCount: number; }; };
 
 
 ////////////////////////////////////////////////////////
@@ -233,15 +224,17 @@ let resp1: any,
 ////////////////////////////////////////////////////////
 
 
-
 beforeAll(async () => {
     await DBconnection;
 
-    resp1 = await decide(telegram_msg_mock,  States, greetState);
+    resp1 = await decide(telegram_msg1_mock,  States, greetState);
     resp2 = await decide(telegram_msg2_mock, States, greetState);
 
     return await (await DBconnection).disconnect();
 });
+
+
+
 
 
 
@@ -252,10 +245,8 @@ beforeAll(async () => {
 ////////////////////////////////////////////////////////
 
 
-
-
 test('test decide on custom States and Commands: message #1: assumed default State, matched a proper Command, produced proper results and reply', () => {
-    expect(resp1.reply).toEqual('Greetings, '+user_mock.first_name+'!');
+    expect(resp1.reply).toEqual(createChatCommand_reply.replace('%username%', user_mock.first_name));
     expect(resp1.result.chatId).toEqual(chatId);
 });
 
@@ -265,9 +256,8 @@ test('test decide on custom States and Commands: message #1: changed State in th
 
 
 
-
 test('test decide on custom States and Commands: message #2: properly read State from the DB, matched a proper Command, produced proper results and reply', () => {
-    expect(resp2.reply).toEqual('Goodbye, '+user_mock.first_name+'! I won\'t remebmer you! :(');
+    expect(resp2.reply).toEqual(deleteChatCommand_reply.replace('%username%', user_mock.first_name));
 });
 
 test('test decide on custom States and Commands: message #2: affected the DB properly', () => {
@@ -275,6 +265,5 @@ test('test decide on custom States and Commands: message #2: affected the DB pro
     expect(resp2.result.ok).toEqual(1);
     expect(resp2.result.deletedCount).toEqual(1);
 });
-
 
 

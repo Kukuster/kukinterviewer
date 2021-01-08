@@ -4,9 +4,7 @@ import { PORT, HOST, APP_ENV } from './conf';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { botAdmin_app } from './web/botAdmin/app';
-
-
-console.log('hello from server.js');
+import { logf } from './reusable/console';
 
 
 
@@ -84,7 +82,7 @@ server.get(/.(css|js|jpg|jpeg|png|svg)$/, (req, res) => {
 
 
 export default server.listen(PORT, HOST, () => {
-    console.log('server: Running at '+HOST+':'+PORT);
+    console.log(`server: Running at ${logf.u}${logf.fg.cyan}${HOST}:${PORT}${logf.end}`);
 });
 
 

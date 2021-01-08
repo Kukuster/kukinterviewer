@@ -1,16 +1,26 @@
 {
-    "app_url": {
+    "db_connection": {
         "env": "MONGODB_URI",
-        "default": "localhost"
+        "default": "mongodb://localhost/<db_name>"
+    },
+    "db_username": {
+        "env": "MONGODB_USERNAME",
+        "default": ""
+    },
+    "db_userpassword": {
+        "env": "MONGODB_USERPASSWORD",
+        "default": ""
     },
     "db_name": {
-        "env": "",
+        "env": "MONGODB_DBNAME",
         "default": "kukinterviewer"
     },
-    "mongoPORT": {
-        "env": "",
+    "db_PORT": {
+        "env": "MONGODB_PORT",
         "default": 27017
     },
+
+
     "TOKEN": {
         "env": "TOKEN",
         "default": null

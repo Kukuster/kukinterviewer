@@ -10,8 +10,16 @@ import cutMessage_by_matchTreePath from "./cutMessage_by_matchTreePath";
 
 export const prepareDatetime_fromPassedTree = (path: treeStep[], message: string, index_left: number, index_right: number) => {
     let request_part_substring = cutMessage_by_matchTreePath(path, message, index_left, index_right);
+
+    ///// a fix for that datejs lib /////
+    // NOTE: this may be a temporary fix
+
     request_part_substring = request_part_substring.replace(/a.m./ig, 'AM');
     request_part_substring = request_part_substring.replace(/p.m./ig, 'PM');
+    
+    ///// /////
+
+
     return request_part_substring;
 };
 
@@ -75,7 +83,34 @@ export const extractForthcomingDatetime_fromPassedTree = (path: treeStep[], mess
 
 
 export const extractDuration_fromPassedTree = (path: treeStep[], message: string, index_left: number, index_right: number) => {
-    return parseDuration(cutMessage_by_matchTreePath(path, message, index_left, index_right));
-};
+    let request_part_substring = cutMessage_by_matchTreePath(path, message, index_left, index_right);
 
+
+    ///// a fix for that parse-duration lib /////
+    // NOTE: this may be a temporary fix
+
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+(second|sec)\b/ig, 'every 1 second');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+(minute|min)\b/ig, 'every 1 minute');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+(hour|hr)\b/ig,    'every 1 hour');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+day\b/ig,          'every 1 day');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+(week|wk)\b/ig,    'every 1 week');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+fortnite\b/ig,     'every 1 fortnite');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+month\b/ig,        'every 1 month');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+(year|y)\b/ig,     'every 1 year');
+    request_part_substring = request_part_substring.replace(/\b(every|each)\s+decade\b/ig,       'every 1 decade');
+
+    request_part_substring = request_part_substring.replace(/\bdaily\b/ig, 'every 1 day');
+    request_part_substring = request_part_substring.replace(/\btwice\s+a\s+day\b/ig, 'every 12 hours');
+
+    request_part_substring = request_part_substring.replace(/\bevery\s+other\s+day\b/ig, 'every 2 days');
+
+
+
+    request_part_substring = request_part_substring.replace(/\b(every|each)\b/, '');
+
+    ///// /////
+
+    
+    return parseDuration(request_part_substring);
+};
 

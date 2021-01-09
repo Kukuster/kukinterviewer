@@ -1,6 +1,6 @@
 import { scheduleJob } from "node-schedule";
 import askMeAQuestion_execute from "../../Interpretation/Commands/askMeAQuestion/execute";
-import display_raw from "../../Interpretation/Commands/display_raw";
+import askMeAQuestion_display from "../../Interpretation/Commands/askMeAQuestion/display";
 import { verboseDatetime } from "../../reusable/datetime";
 import getChatProperty from "../sheet/methods/chat/getChatProperty";
 import getSettings from "../sheet/methods/chat/getSettings";
@@ -19,7 +19,7 @@ export const runScheduledQuestion = async (chatId: number, scheduleDatetime: Dat
         const result = await askMeAQuestion_execute(chatId, {
             enabled: true, havingTagsEnabled: true, random: true
         });
-        const display = await display_raw(chatId, result);
+        const display = await askMeAQuestion_display(chatId, result);
         const settings = await getSettings(chatId);
         if (result && result.response.questionsLeft && settings.enabled) {
             if (settings.asking_period_ms && settings.asking_timeOfDay_from && settings.asking_timeOfDay_to) {
@@ -32,7 +32,7 @@ export const runScheduledQuestion = async (chatId: number, scheduleDatetime: Dat
                 scheduleNextQuestion(chatId, new Date(nextTime));
             }
         }
-        return result;
+        return display;
     }
 };
 

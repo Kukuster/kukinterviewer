@@ -1,8 +1,10 @@
 import { Timezone as Timezone_obj, Country, getAllCountries as getAllCountries_original, getAllTimezones as getAllTimezones_original, getCountry as getCountry_original, getTimezone as getTimezone_original } from "countries-and-timezones";
+import { unemojify } from "node-emoji";
 import { Timezone as Timezone_str } from "node-schedule";
 import { uniquifyArray } from "../../core/misc";
 import { convertArrayToObject } from "../../reusable/convertArrayToObject";
 import excludeFromTypedArray from "../../reusable/excludeFromTypedArray";
+import { escapeRegExp } from "../../reusable/RegExp";
 import { splitToWords } from "../matchTree/extras/splitToWords";
 
 
@@ -17,6 +19,7 @@ export type parseTimezone_result = {
     description?: string,
 } | {
     result: 'a number of matching timezones within a country',
+    country_name: string,
     timezones: Timezone_str[],
     description?: string,
 } | {
@@ -120,7 +123,7 @@ export default function parseTimezone(input: string, preparsed?: {
 
 
 
-    const inputWordsAndSpaces = splitToWords(input);
+    const inputWordsAndSpaces = splitToWords(unemojify(input));
     const inputWords = inputWordsAndSpaces ? inputWordsAndSpaces.filter(w => !w.match(/^\s+$/g)) : null;
 
     //////////////////////////////////////////////////
@@ -135,7 +138,6 @@ export default function parseTimezone(input: string, preparsed?: {
 
     const inputWords_len = inputWords.length;
 
-    process.env.NODE_ENV !== 'test' && console.log({inputWords});
     //////////////////////////////////////////////////
     /////      try by literal timezone name      /////
     //////////////////////////////////////////////////
@@ -186,7 +188,7 @@ export default function parseTimezone(input: string, preparsed?: {
         if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object') {
 
             // if found a country by name
-            if (input.match(new RegExp(Countries[id].name, 'i'))) {
+            if (input.match(new RegExp(escapeRegExp(Countries[id].name), 'i'))) {
                 const country = Countries[id];
 
                 if (country.timezones.length === 1) {
@@ -210,7 +212,7 @@ export default function parseTimezone(input: string, preparsed?: {
     for (const id in Countries) {
         if (Object.prototype.hasOwnProperty.call(Countries, id) && typeof Countries[id] === 'object') {
             
-            const countryWords = ( Countries[id].name.replace(/[/_-]/g, " ") ).split(' ');
+            const countryWords = ( Countries[id].name.replace(/[:/_-]/g, " ") ).split(' ');
             const countryWords_len = countryWords.length;
 
             // if a country name is made of several words (its not that many of them)
@@ -224,11 +226,19 @@ export default function parseTimezone(input: string, preparsed?: {
                 }
 
                 if (countryWordsMatched === countryWords_len){
-                    return {
-                        result: 'a country with a number of timezones',
-                        country: Countries[id],
-                        description: "found several by all literal words of a country name (input contains all words of a country name)",
-                    };
+                    if (Countries[id].timezones.length === 1) {
+                        return {
+                            result: 'a single timezone',
+                            timezone: Countries[id].timezones[0],
+                            description: "found by all literal words of a country name (input contains all words of a country name)",
+                        };
+                    } else {
+                        return {
+                            result: 'a country with a number of timezones',
+                            country: Countries[id],
+                            description: "found several by all literal words of a country name (input contains all words of a country name)",
+                        };
+                    }
                 }
 
             }
@@ -273,14 +283,14 @@ export default function parseTimezone(input: string, preparsed?: {
     for (const name in Timezones) {
         if (Object.prototype.hasOwnProperty.call(Timezones, name) && typeof Timezones[name] === 'object') {
             
-            const timezoneWords = ( Timezones[name].name.replace(/[/_-]/g, " ") ).split(' ');
+            const timezoneWords = ( Timezones[name].name.replace(/[:/_-]/g, " ") ).split(' ');
             const timezoneWords_len = timezoneWords.length;
 
             timezoneWordsMatched = 0;
             
             for (let i = 0; i < timezoneWords_len; i++) {
                 for (let j = 0; j < inputWords_len; j++) {
-                    if (inputWords[j].match(new RegExp('^'+timezoneWords[i]+'$', 'i'))) {
+                    if (inputWords[j].match(new RegExp('^' +escapeRegExp(timezoneWords[i])+'$', 'i'))) {
                         timezoneWordsMatched++;
                     }
                 }
@@ -359,8 +369,8 @@ export default function parseTimezone(input: string, preparsed?: {
         if (Object.prototype.hasOwnProperty.call(Timezones, name) && typeof Timezones[name] === 'object') {
 
             for (let i = 0; i < notShortWords_len; i++) {
-                if (name.match(new RegExp(notShortWords[i], 'i'))){
-                    pushIfAbsent(MatchedTimezones2, notShortWords[i]);
+                if (name.match(new RegExp(escapeRegExp(notShortWords[i]), 'i'))){
+                    pushIfAbsent(MatchedTimezones2, name);
                 }
             } // for i in notShortWords
 

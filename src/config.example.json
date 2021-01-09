@@ -26,5 +26,9 @@
     "TZ": {
         "env": "TZ",
         "default": "GMT"
+    },
+    "APP_ENV": {
+        "env": "",
+        "default": "dev"
     }
 }

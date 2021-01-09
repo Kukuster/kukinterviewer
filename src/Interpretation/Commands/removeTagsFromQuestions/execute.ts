@@ -1,26 +1,57 @@
 import { IIMessage } from "../../../core/Command/Command";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
-import removeTagsFromQuestions from "../../../core/sheet/methods/questions/removeTagsFromQuestions";
+import getQuestions from "../../../core/sheet/methods/questions/getQuestions";
+import removeTagsFromQuestions, { removeTagsFromQuestions_result } from "../../../core/sheet/methods/questions/removeTagsFromQuestions";
+import { Ichat_withNonEmptyFields } from "../../../core/sheet/models/ChatModel";
+import { Iquestion } from "../../../core/sheet/models/QuestionModel";
 
 
-export default async function removeTagsFromQuestions_execute(msg: IIMessage, args: { qids: number[] | 'all', Tags: string[] | 'all' }) {
+export type removeTagsFromQuestions_execute_return = {
+    request: {
+        qids: number[] | 'all';
+        Tags: string[] | 'all';
+    };
+    action: 'ask confirmation';
+    queriedQuestions: Iquestion[];
+    response: Ichat_withNonEmptyFields<"intermediate_data">;
+} | {
+    request: {
+        qids: number[] | 'all';
+        Tags: string[] | 'all';
+    };
+    action: 'execute sheet method';
+    queriedQuestions: Iquestion[];
+    response: removeTagsFromQuestions_result;
+};
+
+export default async function removeTagsFromQuestions_execute(msg: IIMessage, args: { qids: number[] | 'all', Tags: string[] | 'all' })
+    : Promise<removeTagsFromQuestions_execute_return>
+{
 
     const chatId = msg.chat.id;
+
+    const { qids, Tags } = args;
     
     const sheetMethodArgs = Object.assign(args, { correctQuestionText: true });
 
-    const tooMuch = args.qids.length > 1 ||
-                    args.qids === 'all'  ||
-                    args.Tags === 'all';
+    const queriedQuestions = await getQuestions(chatId, qids);
 
-    if (tooMuch) {
+    const tooMany = queriedQuestions.length > 3 ||
+                    Tags.length > 3 ||
+                    (Tags === 'all' && queriedQuestions.length > 1);
+
+    if (tooMany) {
         return {
             request: args,
+            action: 'ask confirmation',
+            queriedQuestions,
             response: await askConfirmation(chatId, 'removeTagsFromQuestions', JSON.stringify(sheetMethodArgs)),
         };
     } else { 
         return {
             request: args,
+            action: 'execute sheet method',
+            queriedQuestions,
             response: await removeTagsFromQuestions(chatId, sheetMethodArgs)
         };
      }

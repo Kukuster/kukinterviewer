@@ -1,4 +1,5 @@
 'use strict';
+import { uniquifyArray } from "../../../misc";
 import { Ichat } from "../../models/ChatModel";
 import queryChat from "../functions/queryChat";
 
@@ -26,6 +27,7 @@ export default async function askForQuestionText(chatId: number, Tags?: string[]
 
             if (chat.intermediate_data.awaiting_questionText && chat.intermediate_data.awaiting_questionText.Tags) {
                 chat.intermediate_data.awaiting_questionText.Tags.push(...Tags);
+                chat.intermediate_data.awaiting_questionText.Tags = uniquifyArray(chat.intermediate_data.awaiting_questionText.Tags);
             } else {
                 chat.intermediate_data.awaiting_questionText = {
                     Tags: Tags || []

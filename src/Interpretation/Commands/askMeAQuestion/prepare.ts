@@ -7,7 +7,6 @@ import getTags_fromPassedTree from "../../matchTree/extras/getTags_fromPassedTre
 
 
 export default async function askMeAQuestion_prepare(msg: IIMessage, path: treeStep[]): Promise<questionsQuery> {
-    process.env.NODE_ENV !== 'test' && console.log(`askMeAQuestion.prepare(...)`);
     const theShoot: shoot = path[path.length - 1].shoot;
 
 

@@ -26,12 +26,14 @@ export type submitQuestionText_execute_args = {
 
 export type submitQuestionText_execute_action = 'add question' | 'deny' | 'ask to provide a questionText (only Tags provided)' | 'ask to provide smaller questionText';
 
+export type submitQuestionText_execute_return = {
+    request: submitQuestionText_execute_args,
+    response: Ichat,
+};
+
 
 export default async function submitQuestionText_execute(msg: IIMessage, args: submitQuestionText_execute_args)
-    : Promise<{
-        request: submitQuestionText_execute_args,
-        response: Ichat,
-    }>
+    : Promise<submitQuestionText_execute_return>
 {
 
     const chatId = msg.chat.id;

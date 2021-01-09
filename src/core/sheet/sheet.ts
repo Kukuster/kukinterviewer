@@ -26,6 +26,10 @@ import getAwaitingQuestionTags from "./methods/awaiting_questionText/getAwaiting
 
 import { ArrayElement } from "../../reusable/ArrayElement.type";
 import excludeFromTypedArray from "../../reusable/excludeFromTypedArray";
+import finishAddingQuestionText from "./methods/awaiting_questionText/finishAddingQuestionText";
+import askForTimezone from "./methods/parsed_timezones/askForTimezone";
+import getAwaitingParsedTimezones from "./methods/parsed_timezones/getAwaitingParsedTimezones";
+import finishSettingTimezone from "./methods/parsed_timezones/finishSettingTimezone";
 
 
 /**
@@ -52,9 +56,15 @@ class sheet {
     public turnTagsOnOff = turnTagsOnOff;
 
     public denyPendingMethod = denyPendingMethod;
+    
     public askForQuestionText = askForQuestionText;
     public getAwaitingQuestionTags = getAwaitingQuestionTags;
-    
+    public finishAddingQuestionText = finishAddingQuestionText;
+
+    public askForTimezone = askForTimezone;
+    public getAwaitingParsedTimezones = getAwaitingParsedTimezones;
+    public finishSettingTimezone = finishSettingTimezone;
+
 
 }
 

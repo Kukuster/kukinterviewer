@@ -1,5 +1,6 @@
 'use strict';
-import TelegramBot, { monospace, sendMessageError, sendMessageSafely } from "../../bot";
+import TelegramBot, { sendMessageSafely } from "../../bot";
+import { monospace, sendMessageError } from "../../botlib";
 import { IIMessage } from "../../core/Command/Command";
 
 /**
@@ -21,6 +22,7 @@ export default async function display_raw<T>(msg_or_chatId: IIMessage | number, 
     
     return sendMessageSafely(chatId, JSON.stringify(response, null, 2), {
         separator: '\n\n',
+        parse_mode: 'Markdown',
         processRightBeforeSend_Markdown: monospace,
     });
 

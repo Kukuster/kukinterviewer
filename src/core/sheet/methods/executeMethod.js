@@ -1,4 +1,3 @@
-/* eslint-disable */
 'use strict';
 
 import sheet from "../sheet";

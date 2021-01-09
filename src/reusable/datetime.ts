@@ -1,4 +1,5 @@
-import { DateTime } from "luxon";
+import { DateTime, DateTimeFormatOptions, LocaleOptions } from "luxon";
+import round from "./round";
 
 export function getDateWithoutTime(dateTime: Date): Date;
 export function getDateWithoutTime(dateTime_str: string):  Date;
@@ -137,8 +138,161 @@ export function convertTZ(date: Date, tzString: string) {
 }
 
 export function convertFromTZ(date: Date, tzString: string) {
-    return DateTime.fromISO(date.toISOString()).setZone(tzString, {keepLocalTime: true}).toJSDate();
+    return DateTime.fromISO(date.toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();
+}
+
+export function convertTimeOfDayFromTZ(timeOfDay: Date | number, tzString: string) {
+    const rightNow = new Date();
+    const today = getDateWithoutTime(rightNow);
+    const givenTimeOfDay_unix = getTimeWithoutDate(timeOfDay);
+    const todayTime_datetime_unix = today.getTime() + givenTimeOfDay_unix;
+
+    const converted_datetime = DateTime.fromISO((new Date(todayTime_datetime_unix)).toISOString()).setZone(tzString, { keepLocalTime: true }).toJSDate();
+
+    const converted_time_normalized = normalizeTimeOfDay(getTimeWithoutDate(converted_datetime));
+    return converted_time_normalized;
 }
 
 
+export function normalizeTimeOfDay(datetime: number){
+    return mod(datetime, timeUnitsVocabulary.days);
+}
+
+
+/**
+ * Consistently correctly working mathematical module function (works normal when the divisor is negative)
+ */
+export function mod(n: number, m: number) {
+    return ((n % m) + m) % m;
+}
+
+
+/**
+ * Forms a human readable string representation of the given timezone in terms of offset
+ * @param tzString client's timezone string
+ */
+export function getTimezoneOffsetString(tzString: string){
+    const fullOffset_inMins = DateTime.fromJSDate(new Date()).setZone(tzString).offset;
+    const fullOffset_inHrs  = fullOffset_inMins / 60;
+    const offsetHrs_inMins = round(fullOffset_inMins, 60, "down");
+    const offsetHrs_inHrs = offsetHrs_inMins / 60;
+    const offsetMins_inMins = fullOffset_inMins - offsetHrs_inMins;
+
+    const offset_sign = fullOffset_inMins < 0 ? '-' : '+';
+    const prefixZero = Math.abs(offsetHrs_inHrs) < 10 ? '0' : '';
+    
+    const minsStr = offsetMins_inMins === 0 ? '00' : offsetMins_inMins;
+
+    const offsetStr = `GMT${offset_sign}${prefixZero}${Math.abs(offsetHrs_inHrs)}:${minsStr}`;
+    return offsetStr;
+}
+
+
+/**
+ * Forms a human readable string representation of the given time of day relevant to the current datetime
+ * @param unix unix timestamp representing a datetime
+ * @param tzString client's timezone string
+ * @param now current datatime (needed for correct timezone convertion)
+ */
+export function datetime_toRelevantString(unix: number, tzString?: string, now?: number | Date) {
+    if (!now){
+        now = new Date();
+    } else if (typeof now === 'number'){
+        now = new Date(now);
+    }
+    const currentDate = DateTime.fromJSDate(now);
+
+
+    let options: LocaleOptions & DateTimeFormatOptions;
+
+    const date = tzString ? DateTime.fromJSDate(new Date(unix)).setZone(tzString) : DateTime.fromJSDate(new Date(unix));
+
+
+    if (date.year !== currentDate.year){
+        // if different year, include all the datetime info up to a year
+        options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            timeZoneName: 'short',
+        };
+    } else {
+        if (date.month !== currentDate.month){
+            // different month
+            options = {
+                month: 'short',
+                weekday: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                timeZoneName: 'short',
+            };
+        } else {
+            if (date.day !== currentDate.day){
+                // different day
+                if (Math.abs(date.day - currentDate.day) > 6){
+                    // different week
+                    options = {
+                        month: 'short',
+                        weekday: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        timeZoneName: 'short',
+                    };
+                } else {
+                    // same week, different day
+                    options = {
+                        weekday: 'short',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        timeZoneName: 'short',
+                    };
+                }
+            } else {
+                // same day
+                options = {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timeZoneName: 'short',
+                };
+            }
+        }
+    }
+
+
+    return date.toLocaleString(options);
+}
+
+
+/**
+ * Forms a human readable string representation of the given time of day
+ * @param unix unix timestamp representing timeOfDay (usually, a whole number between 0 and 1000*60*60*24)
+ * @param tzString client's timezone string
+ * @param now current datatime (needed for correct timezone convertion)
+ */
+export function timeOfDay_toString(unix: number, tzString?: string, now?: number | Date) {
+    unix = normalizeTimeOfDay(unix);
+    if (!now) {
+        now = new Date();
+    } else if (typeof now === 'number') {
+        now = new Date(now);
+    }
+    const currentDate = DateTime.fromJSDate(now);
+    const today = getDateWithoutTime(now).getTime();
+
+
+    const date = tzString ? DateTime.fromJSDate(new Date(unix + today)).setZone(tzString) : DateTime.fromJSDate(new Date(unix));
+
+    const options: LocaleOptions & DateTimeFormatOptions = {
+        hour: 'numeric',
+        minute: 'numeric',
+    };
+
+    return date.toLocaleString(options);
+
+}
 

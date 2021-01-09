@@ -26,6 +26,12 @@ bot.on('message', (msg) => {
     console.log(msg);
     console.log();
 
+    if (!msg.text) {
+        if (msg.sticker && msg.sticker.emoji) {
+            msg.text = msg.sticker.emoji;
+        }
+    }
+
     decide(msg, States, defaultState);
 
 });

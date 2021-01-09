@@ -1,14 +1,33 @@
 <Planned>
 
+• currently askingTimeOfDay_from and _to are being saved in GMT by converting from client time to the server time (GMT)
+Instead, I have to save the time in client's time, and wrap getters of these settings in converting it from client time to the server time (GMT).
+This way change to daylight savings time will automatically be accounted for, without rewriting to each client's Chat document.
+
 • change matchTrees.inverse test to works not for all the Commands, but only within States.
 
-• make addQuestion support telegram markdown
+• make addQuestion support telegram markdown and links
+To figure out formatting in the message for question text see "entities": "hashtag", "bold", "italic", "text_link", "code", "underline", "strikethrough"
+
+• if a questionText contains links, set a field in the question document: `"hasAttachments": true`, so that if a question has this field, when listing questions, this question will always be listed in a separate message.
+
+• Enrich addQuestion Command matchTree to support:
+    - «add new question with tag #web»
+
+• Enrich turnQuestionsOnOff and turnTagsOnOff Commands matchTrees to support:
+    - «enable all #lorem questions» (enabled all questions with tag #lorem)
+    - «don't ask #lorem questions» (disables #lorem tag)
+    - «don't ask me questions tagged #lorem» (disables #lorem tag)
+    - «don't ask me questions not tagged with #lorem» (disabled all tags except #lorem)
+    - «don't ask me untagged questions» (disables all untagged questions)
+    - «don't ask me questions #4, 6, 10» (disables list of questions by qids)
 
 • Add support for complex query logic for questionsQuery (and tagsQuery) 
 
 • Implement automatic questions asking with node-cron functionality
 
 • implement searchQuestions and searchTags (maybe just use .execute methods of listQuestions and listTags for them)
+When not using any quotes, search by words as separate terms. When using quotes, search by exact inclusion of (trimmed) text within the quotes.
 
 • With the new questionsQuery flag ('havingTagsEnabled'), add the following possibilities for the listQuestions matchTree:
     - lists all questions that are both enabled by question and by all of its tags:
@@ -72,9 +91,31 @@ You can ask me to:
     - «tell me what time do you start ask me questions»
     - «tell me what time do you start interviewing me»
 
-• Enable/disable bot Command
+• improve askMeAQuestion when asked to ask a question by tag:
+Don't require that tag to be enabled for queried questions. Only require all other tags for the questions have to be enabled.
 
+• for setAskingTime Command for messages:
+    - «ask me questions twice a day»
+    - «ask me questions 4 times a day»
+    - «ask me questions every other day»
+    - «ask me questions every minute»
+    - «ask me questions every hour»
+  Currently:
+  It doesn't understand "ask me questions twice a day", but it understands "ask me questions every 12 hours".
+  It doesn't understand "ask me questions every other day", but it understands "ask me questions every 2 days".
+  It doesn't understand "ask me questions every hour", but it understands "ask me questions every 1 hour".
 
+• extend listQuestions and listTags Commands functionality to support querying quantity:
+    - «tell me how many questions do we have»
+    - «show me how many enabled tags do we have»
+    - «count me how many enabled tags do we have»
+    - «calculate me how many enabled tags do we have»
+
+• turnTagsOnOff, turnQuestionsOnOff, addTagsToQuestions, removeTagsFromQuestions Commands' display methods wierdly have way too much in common. Consider DRYing it out to some abstraction.
+
+• automatically count number of questions with a tag and save the amount to the field in Tag document, so that:
+    1. Number of questions that have the tag is available at hand
+    2. When number becames 0, Tag document can be deleted, or at least won't be showed when asked to list all tags
 
 
 

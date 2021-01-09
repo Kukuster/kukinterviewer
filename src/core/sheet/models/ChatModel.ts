@@ -2,6 +2,7 @@
 
 import {Document, Schema, model} from "mongoose";
 import { validStateName } from "../../../Interpretation/States";
+import { isNotPrimitive } from "../../../reusable/isPrimitive";
 import { PickSubproperties_dotNotation } from "../../../reusable/mongooseSchemaUpdateSet.type";
 import { confirmableSheetMethod } from "../sheet";
 import { Iquestion, questionSchema } from "./QuestionModel";
@@ -61,6 +62,49 @@ export interface Ichat_schema {
 }
 
 export interface Ichat extends Document, Ichat_schema {}
+
+export function is_Document(value: unknown): value is Document {
+    return isNotPrimitive(value) && 
+           'model' in value &&
+           'save' in value;
+}
+
+export function is_Ichat_schema(value: unknown): value is Ichat_schema {
+    return isNotPrimitive(value) &&
+           'chatId' in value &&
+           'state' in value;
+}
+
+/**
+ * `is_Ichat_schema(value) && is_Document(value)`
+ * @param value a value to check
+ */
+export function is_Ichat(value: unknown): value is Ichat {
+    return is_Ichat_schema(value) && is_Document(value);
+}
+
+
+/**
+ * A subset of Ichat_schema with assertion about certain fields being necesserily defined and non-empty
+ */
+export type Ichat_schema_withNonEmptyFields<T extends keyof Ichat_schema> = Ichat_schema & {[key in T]-?: NonNullable<Ichat_schema[key]>};
+
+/**
+ * A subset of Ichat with assertion about certain fields being necesserily defined and non-empty
+ */
+export type Ichat_withNonEmptyFields<T extends keyof Ichat_schema> = Ichat & {[key in T]-?: NonNullable<Ichat_schema[key]>};
+
+
+export function is_Ichat_schema_withNonEmptyFields<T extends keyof Ichat_schema>(value: unknown, keys: readonly T[]): value is Ichat_schema_withNonEmptyFields<T> {
+    return isNotPrimitive(value) &&
+           keys.every(k => k in value);
+}
+
+export function is_Ichat_withNonEmptyFields<T extends keyof Ichat_schema>(value: unknown, keys: readonly T[]): value is Ichat_withNonEmptyFields<T> {
+    return is_Ichat_schema_withNonEmptyFields(value, keys) &&
+           is_Document(value);
+}
+
 
 /**
  * Members of this type are passed to mongoose.DocumentQuery.select method.

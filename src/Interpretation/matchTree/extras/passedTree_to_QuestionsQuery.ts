@@ -42,7 +42,15 @@ export function passedTree_to_QuestionsQuery(path: treeStep[]): questionsQuery |
 
 
         // STATUS //
+        // // TODO: matchTrees should figure out havingTagsEnabled flag
+        // if (theShoot.enabled === true) {
+        //     result.enabled = true;
+        //     result.havingTagsEnabled = true;
+        // } else if (theShoot.enabled === false) {
+        //     result.enabled = false;
+        // }
         result.enabled = theShoot.enabled;
+        
 
 
         return result;

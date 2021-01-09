@@ -13,9 +13,10 @@ const rootRE =  /[\s\S]+/g;
 const confirm = /^(confirm|proceed|sure|ofcourse|ofc|((you|u|yuo|yu|yo|ya)bet))[?!.,;:]*$/i;
 const deny    = /^(deny)[?!.,;:]*$/i;
 
-//const yes=/^y((e|u|a|o|ee|oo)(s|p)?)?[?!.,;:]*$/i;
+// const yes=/^y((e|u|a|o|ee|oo)(s|p)?)?[?!.,;:]*$/i;
 const yes = /^y((e|u|a|o|ee|oo)?(s|p))?[?!.,;:]*$/i;
-const no =  /^(n|no|nope|nah|nil|nicht|abort|cancel|don'?t|won'?t)[?!.,;:]*$/i;
+const no =  /^(n|no|nope|nah|nil|nicht|nein|net|abort|cancel|don'?t|won'?t|doesn'?t)[?!.,;:]*$/i;
+const nnooononon = /^(no*)+[?!.,;:]*$/i;
 
 const of = /^of[?!.,;:]*$/i;
 const course = /^course[?!.,;:]*$/i;
@@ -25,6 +26,23 @@ const bet = /^bet[?!.,;:]*$/i;
 
 // can be interpreted as either "you" or "yes"
 const ya  = /^y(e|u|a|o|ee|oo)[?!.,;:]*$/i;
+
+const thats = /^that'?s[?!.,;:]*$/i;
+const that  = /^that[?!.,;:]*$/i;
+const is    = /^'?(is|eez|ees|s)[?!.,;:]*$/i;
+const right = /^(right|rite|r8|->|reit|👉|▶️)[?!.,;:]*$/i;
+
+
+const why = /^why[?!.,;:]*$/i;
+const ask = /^ask(ing?)?[?!.,;:]*$/i;
+const not = /^(n|no|not|nope|nah|nil|nicht|don'?t|won'?t|doesn'?t)[?!.,;:]*$/i;
+
+const emojiConfirm = /^(👌|👍|🆗|😉|🆗)/i;
+
+const emojiDeny = /^(🙅‍♀️|🙅|🙅‍♂️|🤦‍♀️|🤦|🤦‍♂️|❌|🚫)/i;
+
+const ok = /^(ok|k|okay|okey|key)[?!.,;:]*$/i;
+
 
 
 export type shoot = 'confirm' | 'deny';
@@ -45,33 +63,39 @@ export const confirm_tree =
         node(yes, yes_children = [
             node(no, []),
             node(deny, []),
-        ], confirmShoot),
+        ], confirmShoot as shoot),
 
         node(no, [
             node(yes, []),
             node(confirm, [])
-        ], denyShoot),
+        ], denyShoot as shoot),
+
+        node(nnooononon, [
+            node(yes, []),
+            node(confirm, [])
+        ], denyShoot as shoot),
 
         node(confirm, [
             node(no, []),
             node(deny, []),
-        ], confirmShoot),
+        ], confirmShoot as shoot),
 
         node(deny, [
             node(yes, []),
             node(confirm, [])
-        ], denyShoot),
+        ], denyShoot as shoot),
         ]), //yes_no_confirm_deny
 
 
         node(you, you_children = [
             PARENTs_CHILDREN,
-            node(bet, yes_no_confirm_deny, confirmShoot),
+            node(bet, yes_no_confirm_deny, confirmShoot as shoot),
+            node(ask, [], confirmShoot as shoot),
         ]),
 
         node(of, [
             PARENTs_CHILDREN,
-            node(course, yes_no_confirm_deny, confirmShoot),
+            node(course, yes_no_confirm_deny, confirmShoot as shoot),
         ]),
 
         
@@ -80,7 +104,28 @@ export const confirm_tree =
             ...you_children
         ], confirmShoot),
 
+        node(thats, [
+            PARENTs_CHILDREN,
+            node(right, [], confirmShoot as shoot),
+        ]),
 
+        node(that, [
+            PARENTs_CHILDREN,
+            node(is, [
+                node(right, [], confirmShoot as shoot),
+            ]),
+        ]),
+
+        node(why, [
+            node(not, [], confirmShoot as shoot),
+            node(ask, [], confirmShoot as shoot),
+        ]),
+
+        node(emojiConfirm, [], confirmShoot as shoot),
+
+        node(emojiDeny, [], denyShoot as shoot),
+
+        node(ok, [PARENTs_CHILDREN], confirmShoot as shoot),
 
 
     ]);

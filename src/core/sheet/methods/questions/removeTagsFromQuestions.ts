@@ -3,10 +3,10 @@ import { validateTags } from "../functions/hashtag";
 
 
 
-type result =
+export type removeTagsFromQuestions_result =
 {
     hasChanges: false,
-    reason: 'no such Tags' |
+    reason: 'all provided Tags are invalid' |
             'no questions with such qids' |
             'the questions already don\'t have the Tags'
 }
@@ -22,17 +22,17 @@ type result =
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
  * @param Tags list of Tag strings (without hash) to remove. Will be validated.
  * @param qids list of `question` document `qid`s to remove Tags from. Will be validated.
- * @return {Promise<result>}
+ * @return {Promise<removeTagsFromQuestions_result>}
  *
  */
 export default async function removeTagsFromQuestions(chatId: number, args: {Tags: string[] | 'all', qids: number[] | 'all', correctQuestionText: boolean})
-    : Promise<result>
+    : Promise<removeTagsFromQuestions_result>
 {
 
     const {Tags, qids, correctQuestionText} = args;
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
-    (chat, save): result => {
+    (chat, save): removeTagsFromQuestions_result => {
 
         const chatQuestions = Array.isArray(chat.Questions)? chat.Questions: [];
         const chatTags      = Array.isArray(chat.Tags)     ? chat.Tags     : [];
@@ -45,9 +45,9 @@ export default async function removeTagsFromQuestions(chatId: number, args: {Tag
         if (validatedTags.length === 0){
             return {
                 hasChanges: false,
-                reason: 'no such Tags'
+                reason: 'all provided Tags are invalid'
             };
-        };
+        }
 
 
         const queriedQuestions =
@@ -60,7 +60,7 @@ export default async function removeTagsFromQuestions(chatId: number, args: {Tag
                 hasChanges: false,
                 reason: 'no questions with such qids'
             };
-        };
+        }
 
 
         let atLeastOne = false;
@@ -87,10 +87,10 @@ export default async function removeTagsFromQuestions(chatId: number, args: {Tag
                     if (correctQuestionText){
                         const qInChat = chatQuestions.find(chatQ => q.qid === chatQ.qid)!;
                         qInChat.questionText = qInChat.questionText.replace('#'+validatedTags[i], validatedTags[i]);
-                    };
+                    }
 
-                };
-            };            
+                }
+            }
         });
 
         if (!atLeastOne){
@@ -98,7 +98,7 @@ export default async function removeTagsFromQuestions(chatId: number, args: {Tag
                 hasChanges: false,
                 reason: 'the questions already don\'t have the Tags'
             };
-        };
+        }
 
 
         const qidsUnaffected = queriedQuestions.map(q=>q.qid).filter(x => !qidsAffected.includes(x));
@@ -117,4 +117,4 @@ export default async function removeTagsFromQuestions(chatId: number, args: {Tag
 
     }); // return queryChat
 
-};
+}

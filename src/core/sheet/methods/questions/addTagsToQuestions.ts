@@ -1,14 +1,14 @@
 import queryChat from "../functions/queryChat";
 import { validateTags } from "../functions/hashtag";
 import TagModel from "../../models/TagModel";
-import mongoose, { DBconnection } from "../../mongoose";
+import { DBconnection } from "../../mongoose";
 
 
 
-type result =
+export type addTagsToQuestions_result =
 {
     hasChanges: false,
-    reason: 'no such Tags' |
+    reason: 'all provided Tags are invalid' |
             'no questions with such qids' |
             'the questions already have the Tags'
 }
@@ -24,11 +24,11 @@ type result =
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
  * @param Tags list of Tag strings (without hash) to add. Will be validated.
  * @param qids list of `question` document `qid`s to add Tags to. Will be validated.
- * @return {Promise<result>}
+ * @return {Promise<addTagsToQuestions_result>}
  *
  */
 export default async function addTagsToQuestions(chatId: number, args: { Tags: string[], qids: number[] | 'all'})
-    : Promise<result>
+    : Promise<addTagsToQuestions_result>
 {
 
     const {Tags, qids} = args;
@@ -36,7 +36,7 @@ export default async function addTagsToQuestions(chatId: number, args: { Tags: s
     const connectedDB = await DBconnection;
 
     return queryChat(chatId, { "Questions": true, "Tags": true }, 
-    (chat, save): result => {
+    (chat, save): addTagsToQuestions_result => {
 
         const chatQuestions = Array.isArray(chat.Questions)? chat.Questions: [];
         const chatTags      = Array.isArray(chat.Tags)     ? chat.Tags     : [];
@@ -45,7 +45,7 @@ export default async function addTagsToQuestions(chatId: number, args: { Tags: s
         if (validatedTags.length === 0){
             return {
                 hasChanges: false,
-                reason: 'no such Tags'
+                reason: 'all provided Tags are invalid'
             };
         };
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import { node, nodeC } from "../../matchTree/node";
+import { node, nodeC, PARENTs_CHILDREN } from "../../matchTree/node";
 
 
 // any punctuation mark at the end:
@@ -12,7 +12,7 @@ const rootRE =  /[\s\S]+/g;
 
 const hello = /^(hello|hi|hey|hiya|ahoy|'ello|low|hey)[?!.,;:]*$/i;
 
-const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(ss|zz)up|yo|alrighty?)[?!.,;:]*$/i;
+const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(s|z)+u+p|yo|alrighty?)[?!.,;:]*$/i;
 
 const hello_foreign = /^(bonjour|hola|salaam|privet|aloha)[?!.,;:]*$/i;
 
@@ -71,6 +71,7 @@ const ok = /^(ok(ay|ey)?|alrighty?|fine)[?!.,;:]*$/i;
 const what = /^(what|wat)[?!.,;:]*$/i;
 const whats = /^(what|wat)'?s[?!.,;:]*$/i;
 const whats_up = /^(up|new|crackin(g|')?|happenin(g|')?)[?!.,;:]*$/i;
+const on = /^on[?!.,;:]*$/i;
 const the = /^(the|da|de)[?!.,;:]*$/i;
 const craic = /^(craic|crack|fuck)[?!.,;:]*$/i;
 
@@ -86,6 +87,12 @@ const its_been__ = /^(ages|decades|years|month|weeks)[?!.,;:]*$/i;
 const a = /^a[?!.,;:]*$/i;
 const while_ = /^while[?!.,;:]*$/i;
 const too = /^(too|2|two)[?!.,;:]*$/i;
+
+const who = /^w?hoo?[?!.,;:]*$/i;
+
+// can be interpreted as either "you" or "yes"
+const ya = /^y(e|u|a|o|ee|oo)[?!.,;:]*$/i;
+
 
 
 export type shoot = true;
@@ -181,6 +188,9 @@ export const start_tree =
             node(the, [
                 node(craic, [], shoot)
             ]),
+            node(going, [
+                node(on, [], shoot),
+            ]),
         ]),
         node(what, [
             node(is, whatsChildren),
@@ -205,6 +215,12 @@ export const start_tree =
             node(time, longtimeChildren),
         ]),
 
+        node(who, [
+            node(are, [
+                node(you, [], shoot),
+                node(ya, [], shoot),
+            ]),
+        ]),
 
     ]);
 

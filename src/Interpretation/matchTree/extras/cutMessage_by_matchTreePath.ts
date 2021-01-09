@@ -34,12 +34,10 @@ export default function cutMessage_by_matchTreePath(path: treeStep[], message: s
             substring += oneStepPiece;
             message = cutOffUpToWithFirstOccurance(message, path[i].word);
         } else {
-            process.env.NODE_ENV !== 'test' && console.log(`cutMessage_by_matchTreePath: «${substring}»`);
             return substring;
         }
     }
 
-    process.env.NODE_ENV !== 'test' && console.log(`cutMessage_by_matchTreePath: «${substring}»`);
     return substring;
 
 }

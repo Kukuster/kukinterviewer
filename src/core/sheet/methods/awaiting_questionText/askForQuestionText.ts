@@ -17,22 +17,28 @@ export default async function askForQuestionText(chatId: number, Tags?: string[]
     : Promise<Ichat>
 {
 
-    return queryChat(chatId, {"awaiting_questionText": true, "state": true}, (chat, saveChat) => {
+    return queryChat(chatId, {"intermediate_data": true, "state": true}, (chat, saveChat) => {
 
         if (Tags && Tags.length) {
-            if (chat.awaiting_questionText && chat.awaiting_questionText.Tags) {
-                chat.awaiting_questionText.Tags.push(...Tags);
+            if (!chat.intermediate_data){
+                chat.intermediate_data = {};
+            }
+
+            if (chat.intermediate_data.awaiting_questionText && chat.intermediate_data.awaiting_questionText.Tags) {
+                chat.intermediate_data.awaiting_questionText.Tags.push(...Tags);
             } else {
-                chat.awaiting_questionText = {
+                chat.intermediate_data.awaiting_questionText = {
                     Tags: Tags || []
                 };
             }
 
+            chat.markModified('intermediate_data');
             saveChat();
         }
 
         if (chat.state !== 'awaiting questionText') {
             chat.state  =  'awaiting questionText';
+            chat.markModified('intermediate_data');
             saveChat();
         }
 

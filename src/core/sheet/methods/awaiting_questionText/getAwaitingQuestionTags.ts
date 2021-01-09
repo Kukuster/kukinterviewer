@@ -11,10 +11,10 @@ import queryChat from "../functions/queryChat";
  */
 export default async function getAwaitingQuestionTags(chatId: number): Promise<string[] | null> {
 
-    return queryChat(chatId, { "awaiting_questionText": true }, async (chat) => {
+    return queryChat(chatId, { "intermediate_data": true }, async (chat) => {
         
-        if (chat.awaiting_questionText) { 
-            return chat.awaiting_questionText.Tags;
+        if (chat.intermediate_data && chat.intermediate_data.awaiting_questionText) { 
+            return chat.intermediate_data.awaiting_questionText.Tags;
         } else {
             return null;
         }

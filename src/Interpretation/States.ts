@@ -2,9 +2,10 @@
 
 import { ArrayElement } from "../reusable/ArrayElement.type";
 import greet from "./States/greet";
+import askingForTimezone from "./States/askingForTimezone";
 import ready from "./States/ready";
-import pendingConfirmation from "./States/pendingConfirmation";
 import awaitingQuestionText from "./States/awaitingQuestionText";
+import pendingConfirmation from "./States/pendingConfirmation";
 
 /**
  * Array of `State`s supported by the app.
@@ -12,9 +13,11 @@ import awaitingQuestionText from "./States/awaitingQuestionText";
  */
 const States = [
     greet,
+    askingForTimezone,
     ready,
-    pendingConfirmation,
+
     awaitingQuestionText,
+    pendingConfirmation,
 ] as const;
 
 export default States;

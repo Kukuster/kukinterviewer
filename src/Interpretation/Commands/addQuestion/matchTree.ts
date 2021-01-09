@@ -3,26 +3,26 @@ import { dquoteOpenRE, dquoteCloseRE, squoteOpenRE, squoteCloseRE, tquoteOpenRE,
 
 
 // any punctuation mark at the end: 
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
        const root = /[\s\S]+/g;
        const anyText = /^[\S]+$/g;
 
-       const add = /^(add|new|create|insert|submit)[\?\!\.,;:]*$/i;
-       const question = /^question[\?\!\.,;:]*$/i;
+       const add = /^(add|new|create|insert|submit)[?!.,;:]*$/i;
+       const question = /^question[?!.,;:]*$/i;
 export const newlineRE = /[\r\n]+/i;
-       const tagWord = /^(hash)?tag(s|g?ing|g?ed)?[\?\!\.,;:]*$/i;
+       const tagWord = /^(hash)?tag(s|g?ing|g?ed)?[?!.,;:]*$/i;
        const tag = /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;
 
 
-const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
+const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
 
 
 //forbidden words
-const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing))[\?\!\.,;:]*$/i;
+const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing))[?!.,;:]*$/i;
 
 // negation
-const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
+const neg = /^(don't|never|not?)*[?!.,;:]*$/i;
 
 
 export type delimiterType = quotesType | 'endline';

@@ -7,7 +7,7 @@
  * @returns returns an array of non-NaN numbers or undefined
  */
 export default function (str: string) {
-    let int = parseInt(str);
+    const int = parseInt(str);
 
     if (int) {
         return [int];

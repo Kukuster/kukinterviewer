@@ -34,13 +34,13 @@ export interface Ichat_schema {
     Questions?: Iquestion[];
     lastqid?: number;
     Tags?: Itag[];
-    Pending_to_delete?: {
-        msg_id: Schema.Types.ObjectId,
-        delete_time: Date
-    }[];
+    // Pending_to_delete?: {
+    //     msg_id: Schema.Types.ObjectId,
+    //     delete_time: Date
+    // }[];
     Settings: {
         enabled: boolean,
-        timezone?: number,
+        timezone?: string,
         asking_period_ms?: number,
         asking_timeOfDay_from?: number,
         asking_timeOfDay_to?: number,
@@ -48,9 +48,16 @@ export interface Ichat_schema {
     last_time_asked?: Date;
     running?: boolean;
     state: validStateName;
-    next_question?: Date,
-    pending_method: pending_method<confirmableSheetMethod> | null,
-    awaiting_questionText: awaiting_questionText | null;
+    next_question?: Date | null,
+    intermediate_data: {
+        awaiting_questionText?: awaiting_questionText | null;
+        parsed_timezones?: {
+            timezones?: string[],
+            country?: string,
+            countries?: string[],
+        } | null;
+        pending_method?: pending_method<confirmableSheetMethod> | null;
+    };
 }
 
 export interface Ichat extends Document, Ichat_schema {}
@@ -89,18 +96,19 @@ const chatSchema = new Schema({
     },
     Tags: {
         type: [tagSchema],
-        required: false },
-    Pending_to_delete: { 
-        type: [{
-            msg_id: Schema.Types.ObjectId, 
-            delete_time: Date
-        }],
         required: false
     },
+    // Pending_to_delete: { 
+    //     type: [{
+    //         msg_id: Schema.Types.ObjectId, 
+    //         delete_time: Date
+    //     }],
+    //     required: false
+    // },
     Settings: { 
         type: {
             enabled:  { type: Boolean, required: true },
-            timezone: { type: Number, required: false },
+            timezone: { type: String, required: false },
             asking_period_ms: { type: Number, required: false },
             asking_timeOfDay_from: { type: Number, required: false },
             asking_timeOfDay_to: { type: Number, required: false },
@@ -114,26 +122,48 @@ const chatSchema = new Schema({
         type: Date,
         required: false
     },
-    pending_method: {
+    intermediate_data: {
         type: {
-            sheet_method: {
-                type: String,
-                required: true,
-            },
-            args_tuple: {
-                type: String,
+            pending_method: {
+                type: {
+                    sheet_method: {
+                        type: String,
+                        required: true,
+                    },
+                    args_tuple: {
+                        type: String,
+                        required: false,
+                    },
+                    prev_state: {
+                        type: String,
+                        required: false,
+                    },
+                },
                 required: false,
             },
-            prev_state: {
-                type: String,
+            awaiting_questionText: {
+                type: {
+                    Tags: [String],
+                },
                 required: false,
             },
-        },
-        required: false,
-    },
-    awaiting_questionText: {
-        type: {
-            Tags: [String],
+            parsed_timezones: {
+                type: {
+                    timezones: {
+                        type: [String],
+                        required: false,
+                    },
+                    country: {
+                        type: [String],
+                        required: false,
+                    },
+                    countries: {
+                        type: [String],
+                        required: false,
+                    },
+                },
+                required: false,
+            },
         },
         required: false,
     },

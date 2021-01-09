@@ -1,38 +1,38 @@
-import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
+import { node, nodeLike, SELF } from "../../matchTree/node";
 import { questionsQueryShoot } from "../../matchTree/extras/questionsQueryShoot.type";
 
 
 // any punctuation mark at the end: 
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 const root = /[\s\S]+/g;
 
-const del = /^(delet(e|in(g|')?)?|eras(e|in(g|')?)?|remov(e|in(g|')?)?|eliminat(e|in(g|')?)?|drop(pin('|g)?)?|wip(e|in(g|')?)?)*[\?\!\.,;:]*$/i;
-const question = /^questions?[\?\!\.,;:]*$/i;
-const questions =/^questions[\?\!\.,;:]*$/i;
-const questionDigit = /^questions?[\?\!\.,;:]*(#|№|N|n|@)(\d+)[\?\!\.,;:]*/i;
+const del = /^(delet(e|in(g|')?)?|eras(e|in(g|')?)?|remov(e|in(g|')?)?|eliminat(e|in(g|')?)?|drop(pin('|g)?)?|wip(e|in(g|')?)?)*[?!.,;:]*$/i;
+const question = /^questions?[?!.,;:]*$/i;
+const questions =/^questions[?!.,;:]*$/i;
+const questionDigit = /^questions?[?!.,;:]*(#|№|N|n|@)(\d+)[?!.,;:]*/i;
 const tag = /#([0-9_]*([a-zA-Z]+[0-9_]*)+)/g;
-const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
-const all = /^(all|each|every)[\?\!\.,;:]*$/i;
-const tagWord = /^(hash)?tag(ged|ging|s)?[\?\!\.,;:]*$/i;
-const untagWord = /^un(hash)?tag(ged|ging)?[\?\!\.,;:]*$/i;
+const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
+const all = /^(all|each|every)[?!.,;:]*$/i;
+const tagWord = /^(hash)?tag(ged|ging|s)?[?!.,;:]*$/i;
+const untagWord = /^un(hash)?tag(ged|ging)?[?!.,;:]*$/i;
 
-const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[\?\!\.,;:]*$/i
-const on  =  /^on[\?\!\.,;:]*$/i;
-const off = /^off[\?\!\.,;:]*$/i;
+const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[?!.,;:]*$/i;
+const on  =  /^on[?!.,;:]*$/i;
+const off = /^off[?!.,;:]*$/i;
 
-const enable =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[\?\!\.,;:]*$/i;
-const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[\?\!\.,;:]*$/i;
+const enable =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[?!.,;:]*$/i;
+const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[?!.,;:]*$/i;
 
-//const add = /^(add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed))[\?\!\.,;:]*$/i;
+//const add = /^(add(ing|ed)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed))[?!.,;:]*$/i;
 
 
-const frb = /^(from|search|turn(in('|g)?)?|withdraw(in('|g)?)?|enabl(e|in('|g)?)|disabl(e|in('|g)?)|dismiss(in('|g)?)?|add(in('|g)?)?|new|creat(e|in('|g)?)|insert(in('|g)?)?|submit(in('|g)?)?|includ(e|in('|g)?)|ask(ed|in('|g)?)?)[\?\!\.,;:]*$/i;
+const frb = /^(from|search|turn(in('|g)?)?|withdraw(in('|g)?)?|enabl(e|in('|g)?)|disabl(e|in('|g)?)|dismiss(in('|g)?)?|add(in('|g)?)?|new|creat(e|in('|g)?)|insert(in('|g)?)?|submit(in('|g)?)?|includ(e|in('|g)?)|ask(ed|in('|g)?)?)[?!.,;:]*$/i;
 
-const neg  = /^(not?|without|don'?t|haven'?t|hadn'?t|weren'?t|aren'?t|ain'?t)[\?\!\.,;:]*$/i;
-const dont = /^(don't|never)[\?\!\.,;:]*$/i;
+const neg  = /^(not?|without|don'?t|haven'?t|hadn'?t|weren'?t|aren'?t|ain'?t)[?!.,;:]*$/i;
+const dont = /^(don't|never)[?!.,;:]*$/i;
 
-const from = /^from[\?\!\.,;:]*$/i;
+const from = /^from[?!.,;:]*$/i;
 
 
 export type shoot = questionsQueryShoot;

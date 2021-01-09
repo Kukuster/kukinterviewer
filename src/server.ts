@@ -1,7 +1,7 @@
 import http from 'http';
 import path from 'path';
 import fs from 'fs';
-import { PORT, HOST } from './conf';
+import { PORT, HOST, TZ } from './conf';
 import express from 'express';
 import { inspect } from 'util';
 import getChat from './core/sheet/methods/chat/getChat';
@@ -15,7 +15,9 @@ import humanInterval from 'human-interval';
 import datejs from 'date.js';
 import roundBy from './reusable/roundBy';
 import { setAskingTime_testBaseDate } from './Interpretation/Commands/setAskingTime/matchTree_testCases';
-import { getDateWithoutTime, getTimeDifference, getTimeWithoutDate } from './reusable/datetime';
+import { convertFromTZ, convertTZ, getDateWithoutTime, getTimeDifference, getTimeWithoutDate } from './reusable/datetime';
+import { getAllCountries, getAllTimezones } from 'countries-and-timezones';
+import parseTimezone from './Interpretation/textProcessing/parseTimezone';
 
 
 console.log('hello from server.js');
@@ -186,8 +188,18 @@ server.post('/bot-sendMessage', (req, res) => {
     console.log({ message_length: message.length });
 
     
-    // const currDate = new Date();
-    const currDate = setAskingTime_testBaseDate;
+    // const currDate = setAskingTime_testBaseDate;
+    const currDate = new Date();
+    const currDate_datetime_unix = currDate.getTime();
+    const currDate_date_unix     = getDateWithoutTime(currDate.getTime());
+    const currDate_time_unix     = getTimeWithoutDate(currDate.getTime());
+    
+    const clientTimezone = 'Europe/Kiev';
+    const clientCurrDate = convertTZ(currDate, clientTimezone);
+    const clientCurrDate_datetime_unix = clientCurrDate.getTime();
+    const clientCurrDate_date_unix     = getDateWithoutTime(clientCurrDate.getTime());
+    const clientCurrDate_time_unix     = getTimeWithoutDate(clientCurrDate.getTime());
+
 
     const parsed_duration  = parseDuration(message);
     const parsed_duration2 = humanInterval(message);
@@ -197,29 +209,64 @@ server.post('/bot-sendMessage', (req, res) => {
     // NO for human-interval. Choosing parse-duration.
 
     const parsed_datetime = datejs(message, currDate);
+    // const parsed_datetime = new Date(datejs(message, currDate).toUTCString());
     const parsed_datetime_unix = parsed_datetime.getTime();
     const parsed_date_unix = getDateWithoutTime(parsed_datetime_unix);
     const parsed_time_unix = getTimeWithoutDate(parsed_datetime_unix);
+
+    const TZparsed_datetime = convertFromTZ(datejs(message, currDate), clientTimezone);
+    // const TZparsed_datetime = new Date(datejs(message, currDate).toUTCString());
+    const TZparsed_datetime_unix = TZparsed_datetime.getTime();
+    const TZparsed_date_unix = getDateWithoutTime(TZparsed_datetime_unix);
+    const TZparsed_time_unix = getTimeWithoutDate(TZparsed_datetime_unix);
+
+
     const formulated_datetime = parsed_datetime.toDateString() + ' '  + parsed_datetime.toTimeString();
     // const parsed_datetime_diff = parsed_datetime.getTime() - currDate.getTime();
-    const parsed_datetime_diff = getTimeDifference(parsed_datetime, currDate, 'seconds');
+    const parsed_datetime_diff = getTimeDifference(parsed_datetime, currDate, 'seconds'); console.log({ parsed_datetime_diff});
     const formulated_datetime_diff = prettyMilliseconds(parsed_datetime_diff, { verbose: true });
-    const injected_to_message = `
-parse-duration: ${parsed_duration} 
+    const injected_datetime = `
+parse-duration: ${parsed_duration}
 formulated-duration: ${formulated_duration}
 
-human-interval: ${parsed_duration2}
-Formulated duration: ${formulated_duration2}
+now:            ${currDate}
+unix datetime:  ${currDate_datetime_unix}
+unix date:      ${currDate_date_unix}
+unix time:      ${currDate_time_unix}
+
+now_toLocaleStr:${currDate.toLocaleString("en-US", { timeZone: clientTimezone })}
+now_convertTZ:  ${clientCurrDate}
+unix datetime:  ${clientCurrDate_datetime_unix}
+unix date:      ${clientCurrDate_date_unix}
+unix time:      ${clientCurrDate_time_unix}
 
 date.js:        ${parsed_datetime}
 unix datetime:  ${parsed_datetime_unix}
 unix date:      ${parsed_date_unix}
 unix time:      ${parsed_time_unix}
-Formulated datetime: ${formulated_datetime}
-This time later: ${formulated_datetime_diff}`;
-    sendMessageSafely(chatId, message + monospace(injected_to_message), {
+
+date.js_TZ:     ${TZparsed_datetime}
+unix datetime:  ${TZparsed_datetime_unix}
+unix date:      ${TZparsed_date_unix}
+unix time:      ${TZparsed_time_unix}
+
+`;
+// This time later: ${formulated_datetime_diff}`;
+
+    const parsed_timezone = parseTimezone(message);
+    // console.log('\n\n\n\n\n\n\n\n');
+    // console.log(getAllCountries());
+    // console.log('\n\n\n\n');
+    // console.log(getAllTimezones());
+    // console.log('\n\n\n\n\n\n\n\n');
+
+    // console.log({parsed_timezone});
+
+    // sendMessageSafely(chatId, message +'\n'+ JSON.stringify(parsed_timezone, null, 2), {
+    sendMessageSafely(chatId, message +'\n'+ monospace(injected_datetime), {
         parse_mode: parseMode,
         emojify: reqBody.emojify,
+        // processBeforeSend: monospace,
     });
 
     // console.log('Got POST request body: ', req.body);

@@ -22,9 +22,12 @@ export default async function askConfirmation(chatId: number, method: confirmabl
     : Promise<Ichat>
 {
 
-    return queryChat(chatId, {"pending_method": true, "state": true}, (chat, saveChat) => {
+    return queryChat(chatId, {"intermediate_data": true, "state": true}, (chat, saveChat) => {
 
-        chat.pending_method = {
+        if (!chat.intermediate_data){
+            chat.intermediate_data = {};
+        }
+        chat.intermediate_data.pending_method = {
             prev_state: chat.state,
             sheet_method: method,
             args_tuple: args_serialized
@@ -32,6 +35,7 @@ export default async function askConfirmation(chatId: number, method: confirmabl
 
         chat.state = "pending confirmation";
 
+        chat.markModified('intermediate_data');
         saveChat();
 
         return chat;

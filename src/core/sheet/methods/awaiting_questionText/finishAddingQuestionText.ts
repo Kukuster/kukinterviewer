@@ -12,10 +12,14 @@ import queryChat from "../functions/queryChat";
  */
 export default async function finishAddingQuestionText(chatId: number): Promise<Ichat> {
 
-    return queryChat(chatId, { "awaiting_questionText": true, "state": true }, async (chat, saveChat) => {
-
+    return queryChat(chatId, { "intermediate_data": true, "state": true }, async (chat, saveChat) => {
+        console.log('finishAddingQuestionText');
         chat.state = 'ready';
-        chat.awaiting_questionText = null;
+        if (!chat.intermediate_data){
+            chat.intermediate_data = {};
+        }
+        chat.intermediate_data.awaiting_questionText = null;
+        chat.markModified('intermediate_data');
         saveChat();
 
         return chat;

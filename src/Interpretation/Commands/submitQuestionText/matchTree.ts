@@ -1,29 +1,29 @@
 'use strict';
 
-import { node, nodeLike, PARENTs_CHILDREN, SELF } from "../../matchTree/node";
+import { node, PARENTs_CHILDREN, SELF } from "../../matchTree/node";
 
 
 // any punctuation mark at the end:
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 
 const rootRE = /[\s\S]+/g;
 
 
-// const deny = /^(deny|decline|abort|cancel)[\?\!\.,;:]*$/i;
-// const no = /^(n|no|nope|nah|nil|nicht)[\?\!\.,;:]*$/i;
-// const neg = /^(don't|never|not?)*[\?\!\.,;:]*$/i;
+// const deny = /^(deny|decline|abort|cancel)[?!.,;:]*$/i;
+// const no = /^(n|no|nope|nah|nil|nicht)[?!.,;:]*$/i;
+// const neg = /^(don't|never|not?)*[?!.,;:]*$/i;
 
-const neg = /^(don'?t|never|n|no|nope|nah|nil|nicht|deny|decline|abort|cancel)[\?\!\.,;:]*$/i;
+const neg = /^(don'?t|never|n|no|nope|nah|nil|nicht|deny|decline|abort|cancel)[?!.,;:]*$/i;
 
 
 const anyText = /^[\S]+$/g;
 
-const add = /^(add(ing)?|new(ing)?|creat(e|ing)|insert(ing)?|submit(ing)?)[\?\!\.,;:]*$/i;
-const article_or_adjective = /^(a|de|the|thou|any|this|no|new|another|other)[\?\!\.,;:]*$/i;
-const question = /^questions?[\?\!\.,;:]*$/i;
+const add = /^(add(ing)?|new(ing)?|creat(e|ing)|insert(ing)?|submit(ing)?)[?!.,;:]*$/i;
+const article_or_adjective = /^(a|de|the|thou|any|this|no|new|another|other)[?!.,;:]*$/i;
+const question = /^questions?[?!.,;:]*$/i;
 
-const to = /^(to|2)[\?\!\.,;:]*$/i;
+const to = /^(to|2)[?!.,;:]*$/i;
 
 
 
@@ -74,16 +74,6 @@ export const submitQuestionText_tree =
             SELF,
             node(anyText, [], textProvidedShoot as shoot),
         ], denyShoot as shoot),
-
-
-        // node(neg, [
-        //     node(add, [PARENTs_CHILDREN], denyShoot as shoot),
-        //     node(question, [PARENTs_CHILDREN], denyShoot as shoot),
-        //     node(article_or_adjective, [PARENTs_CHILDREN], denyShoot as shoot),
-        //     node(to, [PARENTs_CHILDREN], denyShoot as shoot),
-        //     SELF,
-        //     node(anyText, [], textProvidedShoot as shoot),
-        // ], denyShoot as shoot),
 
         // root -> 
         node(anyText, [], textProvidedShoot as shoot),

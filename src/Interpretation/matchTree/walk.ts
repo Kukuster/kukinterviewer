@@ -1,6 +1,6 @@
 'use strict';
 
-import { nodeC, nodeLike } from "./node";
+import { nodeLike } from "./node";
 
 
 export type treeStep = { childIndex: number; match: RegExpMatchArray; word: string; shoot: any; };

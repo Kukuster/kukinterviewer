@@ -1,7 +1,6 @@
 import { tagsQuery } from "../../../core/sheet/methods/tags/getTags";
 import { tagsQueryShoot } from "./tagsQueryShoot.type";
 import { treeStep } from "../walk";
-import { parseTags } from "../../../core/sheet/methods/functions/hashtag";
 
 /**
  * 
@@ -15,7 +14,7 @@ export function passedTree_to_TagsQuery(path: treeStep[]): tagsQuery | 'all' {
     
     const theShoot: tagsQueryShoot = path[path.length - 1].shoot;
 
-    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[\?\!\.,;:]*/gi;
+    const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
     
 
     if (theShoot === 'all') {

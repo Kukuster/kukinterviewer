@@ -33,15 +33,15 @@ export async function decide <A extends readonly State<any>[], S extends ArrayEl
         if (!DB_chat.state) {
             console.error(new Error('ERROR while getting chat state. Got chat document object, but it has no *state* property'));
             return;
-        };
+        }
 
         theState = States.find(s => s.name === DB_chat.state);
 
         if (!theState) {
             theState = defaultState;
-        };
+        }
 
-    };
+    }
    
     /**
      * Given the state and its array of Commands that the bot may expect,
@@ -55,9 +55,9 @@ export async function decide <A extends readonly State<any>[], S extends ArrayEl
             const args = await theState.Commands[i].prepare(message, match);
             const resp = await theState.Commands[i].execute(message, args);
                   return await theState.Commands[i].display(message, resp);
-        };
+        }
 
-    };
+    }
 
 
-};
+}

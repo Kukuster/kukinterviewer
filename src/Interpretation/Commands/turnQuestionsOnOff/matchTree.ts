@@ -2,24 +2,22 @@ import { node, nodeLike, SELF, PARENTs_CHILDREN } from "../../matchTree/node";
 
 
 // any punctuation mark at the end: 
-// [\?\!\.,;:]*$
+// [?!.,;:]*$
 // (?:\?|\!|\.|,|;|:|$)+
 const root = /[\s\S]+/g;
-const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[\?\!\.,;:]*$/i
-const enable  =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[\?\!\.,;:]*$/i;
-const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[\?\!\.,;:]*$/i;
-const on  =  /^on[\?\!\.,;:]*$/i;
-const off = /^off[\?\!\.,;:]*$/i;
+const turn = /^(turn(ing|ed)?|switch(ing|ed)?)[?!.,;:]*$/i;
+const enable  =  /^(enabl(e|ing|ed)|activat(e|ing|ed))[?!.,;:]*$/i;
+const disable = /^(disabl(e|ing|ed)|deactivat(e|ing|ed))[?!.,;:]*$/i;
+const on  =  /^on[?!.,;:]*$/i;
+const off = /^off[?!.,;:]*$/i;
 
 
 const question = /^questions?(\S*)*/i;
-const all = /^(all|each|every)[\?\!\.,;:]*$/i;
+const all = /^(all|each|every)[?!.,;:]*$/i;
 const digit = /(\d+)/g;
 
 
-let OnDigitRecursiveShoot: nodeLike,
-   OffDigitRecursiveShoot: nodeLike,
-    turnOnBranch: nodeLike[],
+let turnOnBranch: nodeLike[],
     turnOffBranch:nodeLike[] ;
 
 
@@ -28,7 +26,7 @@ export type shoot = { turn: 'on'|'off', questions: 'all'|'some' };
 const allOn  :shoot = { turn: 'on',  questions: 'all' },
       allOff :shoot = { turn: 'off', questions: 'all' },
      someOn  :shoot = { turn: 'on',  questions: 'some' },
-     someOff :shoot = { turn: 'off', questions: 'some' }
+     someOff :shoot = { turn: 'off', questions: 'some' };
 
 
 export const turnQuestionsOnOff_tree =

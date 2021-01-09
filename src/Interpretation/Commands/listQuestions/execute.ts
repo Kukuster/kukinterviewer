@@ -8,4 +8,4 @@ export default async function listQuestions_execute (msg: IIMessage, query: ques
         response: await getQuestions(msg.chat.id, query)
     };
 
-};
+}

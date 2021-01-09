@@ -8,6 +8,9 @@ import display_raw from "./Commands/display_raw";
 import { start_tree } from "./Commands/start/matchTree";
 import start_prepare from "./Commands/start/prepare";
 import start_execute from "./Commands/start/execute";
+import submitTimezone_match from "./Commands/submitTimezone/match";
+import submitTimezone_prepare from "./Commands/submitTimezone/prepare";
+import submitTimezone_execute from "./Commands/submitTimezone/execute";
 import { listQuestions_tree } from "./Commands/listQuestions/matchTree";
 import listQuestions_prepare from "./Commands/listQuestions/prepare";
 import listQuestions_execute from "./Commands/listQuestions/execute";
@@ -38,6 +41,10 @@ import removeTagsFromQuestions_execute from "./Commands/removeTagsFromQuestions/
 import { setAskingTime_tree } from "./Commands/setAskingTime/matchTree";
 import setAskingTime_prepare from "./Commands/setAskingTime/prepare";
 import setAskingTime_execute from "./Commands/setAskingTime/execute";
+import { turnAskingOnOff_tree } from "./Commands/turnAskingOnOff/matchTree";
+import turnAskingOnOff_prepare from "./Commands/turnAskingOnOff/prepare";
+import turnAskingOnOff_execute from "./Commands/turnAskingOnOff/execute";
+
 
 import suggestMethod_test_match from "./Commands/suggestMethod_test/match";
 import suggestMethod_test_prepare from "./Commands/suggestMethod_test/prepare";
@@ -53,7 +60,6 @@ import { submitQuestionText_tree } from "./Commands/submitQuestionText/matchTree
 import submitQuestionText_prepare from "./Commands/submitQuestionText/prepare";
 import submitQuestionText_execute from "./Commands/submitQuestionText/execute";
 
-
 Command.default_display = display_raw;
 
 
@@ -62,6 +68,10 @@ Command.default_display = display_raw;
 
 export const start_command = new Command(match_byTree(start_tree), start_prepare, start_execute);
 
+
+// ASKING FOR TIMEZONE State //
+
+export const submitTimezone_command = new Command(submitTimezone_match, submitTimezone_prepare, submitTimezone_execute);
 
 
 // READY State //
@@ -76,6 +86,7 @@ export const           turnTagsOnOff_command = new Command(            match_byT
 export const      addTagsToQuestions_command = new Command(       match_byTree(addTagsToQuestions_tree),       addTagsToQuestions_prepare,      addTagsToQuestions_execute);
 export const removeTagsFromQuestions_command = new Command(  match_byTree(removeTagsFromQuestions_tree),  removeTagsFromQuestions_prepare, removeTagsFromQuestions_execute);
 export const           setAskingTime_command = new Command(            match_byTree(setAskingTime_tree),            setAskingTime_prepare,           setAskingTime_execute);
+export const         turnAskingOnOff_command = new Command(          match_byTree(turnAskingOnOff_tree),          turnAskingOnOff_prepare,         turnAskingOnOff_execute);
 
 export const      suggestMethod_test_command = new Command(                    suggestMethod_test_match,       suggestMethod_test_prepare,      suggestMethod_test_execute,      suggestMethod_test_display);
 

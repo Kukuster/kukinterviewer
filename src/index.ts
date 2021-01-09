@@ -8,7 +8,10 @@ import { decide } from "./Interpretation/decide";
 import States, { defaultState } from "./Interpretation/States";
 import { DBconnection } from "./core/sheet/mongoose";
 import server from "./server";
+import scheduleQuestionsForEveryone from "./core/sheet/methods/scheduleQuestionsForEveryone";
+import { TZ } from "./conf";
 
+process.env.TZ = TZ;
 
 DBconnection;
 server;
@@ -26,4 +29,8 @@ bot.on('message', (msg) => {
     decide(msg, States, defaultState);
 
 });
+
+
+// REschedules questions for everyone on start
+scheduleQuestionsForEveryone();
 

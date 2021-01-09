@@ -11,12 +11,18 @@ export default async function start_execute(msg: IIMessage, arg: boolean) {
     if (chat){
         return {
             request: arg,
-            response: chat,
+            response: {
+                chat,
+                description: "the chat document already exists, here it is",
+            },
         };
     } else {
         return {
             request: arg,
-            response: await createNewChat(chatId)
+            response: {
+                chat: await createNewChat(chatId, {state: 'asking for timezone'}),
+                description: "created a new chat document, now waiting for timezone",
+            },
         };
     }
 

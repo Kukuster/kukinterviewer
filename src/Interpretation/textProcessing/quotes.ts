@@ -17,20 +17,20 @@ export const aquoteClose = ">>";
 
 
 //double quote
-export const dquoteOpenRE = /^[\?\!\.,;:]*"(\S)*$/i;
-export const dquoteCloseRE = /^(\S)*"[\?\!\.,;:]*$/i;
+export const dquoteOpenRE = /^[?!.,;:]*"(\S)*$/i;
+export const dquoteCloseRE = /^(\S)*"[?!.,;:]*$/i;
 
 //single quote
-export const squoteOpenRE = /^[\?\!\.,;:]*'(\S)*$/i;
-export const squoteCloseRE = /^(\S)*'[\?\!\.,;:]*$/i;
+export const squoteOpenRE = /^[?!.,;:]*'(\S)*$/i;
+export const squoteCloseRE = /^(\S)*'[?!.,;:]*$/i;
 
 //telegram quote
-export const tquoteOpenRE = /^[\?\!\.,;:]*«(\S)*$/i;
-export const tquoteCloseRE = /^(\S)*»[\?\!\.,;:]*$/i;
+export const tquoteOpenRE = /^[?!.,;:]*«(\S)*$/i;
+export const tquoteCloseRE = /^(\S)*»[?!.,;:]*$/i;
 
 //angle brackets quote
-export const aquoteOpenRE = /^[\?\!\.,;:]*<<(\S)*$/i;
-export const aquoteCloseRE = /^(\S)*>>[\?\!\.,;:]*$/i;
+export const aquoteOpenRE = /^[?!.,;:]*<<(\S)*$/i;
+export const aquoteCloseRE = /^(\S)*>>[?!.,;:]*$/i;
 
 
 

@@ -94,6 +94,13 @@ E.g.:
  - «turn all #web questions off»
  - «enable all questions from tag #web»
 
+• Extend matchTree and functionality of turnTagsOnOff:
+ - «ask me only #web questions»
+ - «ask me #web questions as well»
+ - «ask me no #web questions»
+ - «ask me #web questions»
+ - «don't ask me #web questions»
+
 • Add support for adding other (attached) objects to Question (images, voice, files)
 This may require storing this data in the database and reuploading it to Telegram when asking a question
 

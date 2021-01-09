@@ -20,6 +20,7 @@
                 "plugin:@typescript-eslint/recommended"
             ],
             "rules": {
+                "indent": ["warning", 4],
                 "semi": 1, // will be autofixed
                 "no-extra-semi": 1, // will be autofixed
                 "no-undef": 1,
@@ -44,6 +45,7 @@
                 "es6": true,
             },
             "rules": {
+                "indent": ["warning", 4],
                 "semi": 1, // will be autofixed
                 "no-extra-semi": 1, // will be autofixed
                 "no-undef": 1,

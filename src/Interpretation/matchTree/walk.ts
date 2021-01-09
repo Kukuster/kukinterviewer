@@ -25,6 +25,7 @@ export function traverse(node: nodeLike, Words: string[], path: treeStep[]) {
 
         const node_children_length = node.children.length;
         children: for (let i=0; i<node_children_length; i++) {
+            // console.log(`trying "${word}" against ${node.children[i].pattern}`);
             match = null;
             if (match = node.children[i].matchedBy(word)) {
 

@@ -22,8 +22,8 @@ export default async function getSettings(chatId: number, settings?: undefined)
  * @returns the value of the _settings_ field, if specified. Entire Settings object otherwise.
  *
  */
-export default async function getSettings(chatId: number, settings?: settingsKey)
-    : Promise<Settings[settingsKey]>;
+export default async function getSettings<K extends settingsKey>(chatId: number, settings?: K)
+    : Promise<Settings[K]>;
 /**
  *
  * @param chatId id of Telegram Chat. Also used to identify a user's Chat document in the DB
@@ -32,8 +32,8 @@ export default async function getSettings(chatId: number, settings?: settingsKey
  * @returns the value of the _settings_ field, if specified. Entire Settings object otherwise.
  *
  */
-export default async function getSettings(chatId: number, setting?: settingsKey )
-    : Promise<Settings | Settings[settingsKey]>
+export default async function getSettings<K extends settingsKey>(chatId: number, setting?: K)
+    : Promise<Settings | Settings[K]>
 {
 
     const selectArg: { [key: string]: boolean } = {}

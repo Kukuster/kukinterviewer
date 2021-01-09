@@ -7,8 +7,15 @@ import { inspect } from 'util';
 import getChat from './core/sheet/methods/chat/getChat';
 import getAllChats from './core/sheet/methods/chat/getAllChats';
 import bodyParser from 'body-parser';
-import { sendMessageSafely } from './bot';
+import { monospace, sendMessageSafely } from './bot';
 import { ParseMode } from 'node-telegram-bot-api';
+import parseDuration from "parse-duration";
+import prettyMilliseconds from "pretty-ms";
+import humanInterval from 'human-interval';
+import datejs from 'date.js';
+import roundBy from './reusable/roundBy';
+import { setAskingTime_testBaseDate } from './Interpretation/Commands/setAskingTime/matchTree_testCases';
+import { getDateWithoutTime, getTimeDifference, getTimeWithoutDate } from './reusable/datetime';
 
 
 console.log('hello from server.js');
@@ -168,7 +175,7 @@ server.post('/bot-sendMessage', (req, res) => {
     const message = reqBody.message;
     const parseMode = reqBody.parse_mode ? reqBody.parse_mode : undefined;
 
-    if (!chatId || !message) { 
+    if (!chatId || !message) {
         console.log('Got POST request body: ', req.body);
         res.sendStatus(400);
         return;
@@ -178,7 +185,39 @@ server.post('/bot-sendMessage', (req, res) => {
     console.log('');
     console.log({ message_length: message.length });
 
-    sendMessageSafely(chatId, message, {
+    
+    // const currDate = new Date();
+    const currDate = setAskingTime_testBaseDate;
+
+    const parsed_duration  = parseDuration(message);
+    const parsed_duration2 = humanInterval(message);
+    const formulated_duration  = parsed_duration  ? prettyMilliseconds(parsed_duration,  { verbose: true }) : null;
+    const formulated_duration2 = parsed_duration2 ? prettyMilliseconds(parsed_duration2, { verbose: true }) : null;
+
+    // NO for human-interval. Choosing parse-duration.
+
+    const parsed_datetime = datejs(message, currDate);
+    const parsed_datetime_unix = parsed_datetime.getTime();
+    const parsed_date_unix = getDateWithoutTime(parsed_datetime_unix);
+    const parsed_time_unix = getTimeWithoutDate(parsed_datetime_unix);
+    const formulated_datetime = parsed_datetime.toDateString() + ' '  + parsed_datetime.toTimeString();
+    // const parsed_datetime_diff = parsed_datetime.getTime() - currDate.getTime();
+    const parsed_datetime_diff = getTimeDifference(parsed_datetime, currDate, 'seconds');
+    const formulated_datetime_diff = prettyMilliseconds(parsed_datetime_diff, { verbose: true });
+    const injected_to_message = `
+parse-duration: ${parsed_duration} 
+formulated-duration: ${formulated_duration}
+
+human-interval: ${parsed_duration2}
+Formulated duration: ${formulated_duration2}
+
+date.js:        ${parsed_datetime}
+unix datetime:  ${parsed_datetime_unix}
+unix date:      ${parsed_date_unix}
+unix time:      ${parsed_time_unix}
+Formulated datetime: ${formulated_datetime}
+This time later: ${formulated_datetime_diff}`;
+    sendMessageSafely(chatId, message + monospace(injected_to_message), {
         parse_mode: parseMode,
         emojify: reqBody.emojify,
     });

@@ -79,15 +79,66 @@ export const setAskingTime_testCases: setAskingTime_testCase[] = [
             interval_ms: 86400000,
         },
      } },
+
+    { m: "ask me a question every day",                                                   res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 86400000,
+        },
+     } },
     
     // not supported by parse-duration yet
-    // // ask -> question[s] -> INTERVAL
-    // { m: "ask me questions every day",                                                      res: {
-    //     interval_ms: 86400000,
-    //  } },
-    // { m: "ask me questions daily",                                                          res: {
-    //     interval_ms: 86400000,
-    //  } },
+    // ask -> question[s] -> INTERVAL
+    { m: "ask me questions every day",                                                      res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 86400000,
+        },
+     } },
+    { m: "ask me questions daily",                                                          res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 86400000,
+        },
+     } },
+    { m: "ask me questions every minute",                                                   res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 60000,
+        },
+     } },
+    { m: "ask me questions every hour",                                                     res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 3600000,
+        },
+     } },
+    { m: "ask me questions every other day",                                                res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 172800000,
+        },
+     } },
+
+
      
     // ask -> question[s] -> regularly
     { m: "ask me questions regularly",                                                      res: {
@@ -542,6 +593,23 @@ export const setAskingTime_testCases: setAskingTime_testCase[] = [
             shiftByTimezone: true,
         },
      } },
+    { m: "ask me questions every hour from 10:00 am to 7:00 pm",                          res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        interval: {
+            interval_ms: 3600000,
+        },
+        from: {
+            datetime: 36000000,
+            shiftByTimezone: true,
+        },
+        to: {
+            datetime: 68400000,
+            shiftByTimezone: true,
+        },
+     } },
     { m: "ask me questions every 5 minutes from 7:00 pm to 10:00 am",                       res: {
         now: {
             datetime: setAskingTime_testBaseDate_unix,
@@ -571,7 +639,7 @@ export const setAskingTime_testCases: setAskingTime_testCase[] = [
             shiftByTimezone: true,
         },
      } },
-    { m: "keep asking me until 7:00 pm",                                                    res: {
+    { m: "keep asking me until 7:00 p.m.",                                                    res: {
         now: {
             datetime: setAskingTime_testBaseDate_unix,
             shiftByTimezone: false,

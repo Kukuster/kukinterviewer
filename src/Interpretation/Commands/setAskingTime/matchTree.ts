@@ -86,7 +86,7 @@ const frb = /^((hash)?tag(ged|ging)|question(ed|ing)|eras(e|ing)|remov(e|ing)|tu
 
 ////////////////// SHOOTS //////////////////
 
-export type interval_shoot = 'interval (amount)' | 'interval (timeunit)' | 'interval (adverb)' | 'interval "regularly"' | 'interval word';
+export type interval_shoot = 'interval (amount)' | 'interval (timeunit)' | 'interval (adverb)' | 'interval "regularly"' | 'interval word' | 'interval (timeunit without amount)' | 'interval "every"';
 export type     from_shoot =       'from (time)' | 'from (meridiem)';
 export type       to_shoot =         'to (time)' |   'to (meridiem)';
 export type       at_shoot = 'at (point of time)' |   'at (time difference)' | 'at (either a point or a difference)';
@@ -168,11 +168,11 @@ const INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, sho
 
 
 // every [-> number ] -> timeunit
-const EVERY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_timeunitWithoutAmount?: shoot) => BRANCH([
+const EVERY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_timeunitWithoutAmount?: shoot, shoot_every?: shoot) => BRANCH([
     node(every, [
         ...INTERVAL([THIS_BRANCH_ITSELF, ...fork], deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunitWithoutAmount),
         deadLeaf ? node(deadLeaf, []) : nullnode,
-    ]),
+    ], shoot_every as shoot),
     node(timeunit_ly, fork, shoot_timeunit_ly as shoot),
 ], [fork]);
 
@@ -282,13 +282,13 @@ const FINISHING_timeclock = (fork: nodeLike[], deadLeaf?: RegExp, shoot_time?: s
  * @param shoot_every 
  * @param shoot_timeunitWithoutAmount means a timeunit was referenced in text without number before it ("a minute")
  */
-const REGULARITY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_regularly?: shoot, shoot_every?: shoot, shoot_timeunitWithoutAmount?: shoot) => BRANCH([
+const REGULARITY_INTERVAL = (fork: nodeLike[], deadLeaf?: RegExp, shoot_amount?: shoot, shoot_timeunit?: shoot, shoot_timeunit_ly?: shoot, shoot_regularly?: shoot, shoot_timeunitWithoutAmount?: shoot, shoot_every?: shoot) => BRANCH([
     node(regularly, [
-        ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_timeunitWithoutAmount),
+        ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_timeunitWithoutAmount, shoot_every),
         ...fork,
         deadLeaf ? node(deadLeaf, []) : nullnode,
     ], shoot_regularly as shoot),
-    ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_timeunitWithoutAmount),
+    ...EVERY_INTERVAL(fork, deadLeaf, shoot_amount, shoot_timeunit, shoot_timeunit_ly, shoot_timeunitWithoutAmount, shoot_every),
 ], [fork]);
 
 
@@ -371,7 +371,7 @@ export const setAskingTime_tree =
                     // ask -> question[s]
                     ...STARTING_FROM_timeclock([
                         ...FINISHING_UPTO_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'to (time)', 'to (meridiem)'),
                         node(frb, []),
@@ -380,18 +380,18 @@ export const setAskingTime_tree =
                     // ask -> question[s]
                     ...FINISHING_UPTO_timeclock([
                         ...STARTING_FROM_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'from (time)', 'from (meridiem)'),
                         node(frb, []),
                     ], frb, 'to (time)', 'to (meridiem)'),
 
-                ], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
-                
+                ], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
+
                 // ask -> question[s]
                 ...STARTING_FROM_timeclock([
                     ...FINISHING_UPTO_timeclock([
-                        ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                        ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                         node(frb, []),
                     ], frb, 'to (time)', 'to (meridiem)'),
                     node(frb, []),
@@ -400,7 +400,7 @@ export const setAskingTime_tree =
                 // ask -> question[s]
                 ...FINISHING_UPTO_timeclock([
                     ...STARTING_FROM_timeclock([
-                        ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                        ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                         node(frb, []),
                     ], frb, 'from (time)', 'from (meridiem)'),
                     node(frb, []),
@@ -474,12 +474,12 @@ export const setAskingTime_tree =
                 // start -> ask[ing]
                 node(question_s, [
                     // start -> ask[ing] -> question[s]
-                    ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                    ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
 
                     // start -> ask[ing] -> question[s]
                     AT_timeclock([
                         ...FINISHING_UPTO_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'to (time)', 'to (meridiem)'),
                     ], frb, 'from (time)', 'from (meridiem)'),
@@ -495,7 +495,7 @@ export const setAskingTime_tree =
                 node(me, start_ask_me_branch = [
                     AT_timeclock([
                         ...FINISHING_UPTO_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'to (time)', 'to (meridiem)'),
                     ], frb, 'from (time)', 'from (meridiem)'),
@@ -524,7 +524,7 @@ export const setAskingTime_tree =
                     // finish -> ask[ing] -> question[s]
                     AT_timeclock([
                         ...STARTING_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'from (time)', 'from (meridiem)'),
                     ], frb, 'to (time)', 'to (meridiem)'),
@@ -540,7 +540,7 @@ export const setAskingTime_tree =
                 node(me, finish_ask_me_branch = [
                     AT_timeclock([
                         ...STARTING_timeclock([
-                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval word'),
+                            ...REGULARITY_INTERVAL([], frb, 'interval (amount)', 'interval (timeunit)', 'interval (adverb)', 'interval "regularly"', 'interval (timeunit without amount)', 'interval "every"'),
                             node(frb, []),
                         ], frb, 'from (time)', 'from (meridiem)'),
                     ], frb, 'to (time)', 'to (meridiem)'),

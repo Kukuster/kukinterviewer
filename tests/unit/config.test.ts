@@ -5,26 +5,20 @@ const ij = process.env.NODE_ENV === 'test';
 
 if (ij){
 
-    // console.log(config);
-    // console.log(config_json);
-    
-    test('config.app_url', () => {
-        expect(config.app_url).toBe(config_json.app_url.default);
-    })
+    test('config.db_connection', () => {
+        expect(config.db_connection).toBe(config_json.db_connection.default);
+    });
     test('config.db_name', () => {
         expect(config.db_name).toBe(config_json.db_name.default);
-    })
-    test('config.mongoPORT', () => {
-        expect(config.mongoPORT).toBe(config_json.mongoPORT.default);
-    })
-    test('config.app_url_mongo', () => {
-        expect(config.app_url_mongo).toBe(
-            'mongodb://' +
-            config_json.app_url.default +
-            '/' //+
-            + config_json.db_name.default
-        );
-        //console.log(config.app_url_mongo);
+    });
+    test('config.db_username', () => {
+        expect(config.db_username).toBe(config_json.db_username.default);
+    });
+    test('config.TOKEN', () => {
+        expect(config.TOKEN).toBe(config_json.TOKEN.default);
+    });
+    test('config.PORT', () => {
+        expect(config.PORT).toBe(config_json.PORT.default);
     });
 
 } else {

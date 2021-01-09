@@ -19,15 +19,16 @@ const evalConfig = (config: kukconfig, prop: string): anyJSONvalue =>
         config[prop].default;
 
 
-export const app_url = <string>evalConfig(config,'app_url');
-export const app_url_http = 'http://' + app_url + '/';
-export const app_url_https = 'https://' + app_url + '/';
-
-
 export const db_name = <string>evalConfig(config,'db_name');
-export const app_url_mongo = 'mongodb://' + app_url + '/' + db_name;
 
-export const mongoPORT = <number>evalConfig(config,'mongoPORT');
+export const db_username = <string>evalConfig(config,'db_username');
+
+export const db_userpassword = <string>evalConfig(config,'db_userpassword');
+
+export const db_connection = <string>evalConfig(config,'db_connection');
+
+export const db_PORT = <number>evalConfig(config,'db_PORT');
+
 
 export const TOKEN = <string>evalConfig(config,'TOKEN');
 

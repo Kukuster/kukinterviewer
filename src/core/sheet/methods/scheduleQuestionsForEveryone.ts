@@ -4,15 +4,20 @@ import getAllChats from "./chat/getAllChats";
 export default async function scheduleQuestionsForEveryone(){
     const allChats = await getAllChats({"chatId": true, "Settings": true, "next_question": true});
 
-    if (allChats && allChats.length){
-        for (let i = 0; i < allChats.length; i++){
-            const chat = allChats[i];
+    let Nrescheduled = 0;
 
-            if (chat.Settings.enabled && chat.next_question){
-                scheduleNextQuestion(chat.chatId, chat.next_question);
-            }
+    for (let i = 0; i < allChats.length; i++){
+        const chat = allChats[i];
 
+        if (chat.Settings.enabled && chat.next_question){
+            scheduleNextQuestion(chat.chatId, chat.next_question) && Nrescheduled++;
         }
+
     }
+
+    return {
+        rescheduled_count: Nrescheduled,
+        totalChats_count: allChats.length,
+    };
 
 }

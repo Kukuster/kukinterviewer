@@ -96,7 +96,7 @@ export default async function setAskingTime_prepare (msg: IIMessage, path: treeS
             }
 
 
-        } else if (shoot === 'interval (amount)' || shoot === 'interval (timeunit)' || shoot === 'interval (adverb)' || shoot === 'interval word') {
+        } else if (shoot === 'interval (amount)' || shoot === 'interval (timeunit)' || shoot === 'interval (adverb)' || shoot === 'interval word' || shoot === 'interval "every"' || shoot === 'interval (timeunit without amount)') {
             if (
                 !interval_words.length ||
                 interval_words[interval_words.length - 1] === i - 1

@@ -58,8 +58,6 @@ So that it can be further extended to support such queries:
 
 • Add data encryption for user data
 
-• implement display methods for all Commands
-
 • add "fallback" Command for each State.
 The command's intent is to check if some of the key words that are used in other Commmnads in the State, and make the bot respond with something like:
 << Sorry, I don't get what do you want me to "tag". Try something simpler.
@@ -78,10 +76,6 @@ You can ask me to:
 
 • correct description and comments for the Command class (core/Command/Command.ts)
 
-• improve setAskingTime Command:
-    - so that it recognises «every *timeunit*» as to be equivalent to «every 1 *timeunit*»
-    - so that it recognises «8 p.m.» as to be equivalent to «8 pm»
-
 • showSetting Command for messages:
     - «tell me when will you ask me next question»
     - «tell me what time of day do you ask me»
@@ -93,17 +87,6 @@ You can ask me to:
 
 • improve askMeAQuestion when asked to ask a question by tag:
 Don't require that tag to be enabled for queried questions. Only require all other tags for the questions have to be enabled.
-
-• for setAskingTime Command for messages:
-    - «ask me questions twice a day»
-    - «ask me questions 4 times a day»
-    - «ask me questions every other day»
-    - «ask me questions every minute»
-    - «ask me questions every hour»
-  Currently:
-  It doesn't understand "ask me questions twice a day", but it understands "ask me questions every 12 hours".
-  It doesn't understand "ask me questions every other day", but it understands "ask me questions every 2 days".
-  It doesn't understand "ask me questions every hour", but it understands "ask me questions every 1 hour".
 
 • extend listQuestions and listTags Commands functionality to support querying quantity:
     - «tell me how many questions do we have»
@@ -177,4 +160,20 @@ For this, i'll have to save data about last executed command in the database, in
             run this in mongo shell, and it will remove question #34 from that chat
 
 • currently bot memorizes all tags as lowercase. Consider changing it to like they did with emails, i.e. case-insensitive, except it memorizes the case with the first time.
+
+• improve setAskingTime Command so that it recognises:
+    - «every *timeunit*» (as to be equivalent to «every 1 *timeunit*»)
+    - «ask me questions twice a day»
+    - «ask me questions 4 times a day»
+    - «ask me questions every other day»
+    - «ask me questions every minute»
+    - «ask me questions every hour»
+ Currently:
+  It didn't understand "ask me questions twice a day", but it understands "ask me questions every 12 hours".
+  It didn't understand "ask me questions every other day", but it understands "ask me questions every 2 days".
+  It didn't understand "ask me questions every hour", but it understands "ask me questions every 1 hour".
+  Now there's a so-so fix for most of these cases.
+
+• abstract out the terminology of Interpretation/textProcessing/parseTimezone to one or more functions the do the same search/parsing but against arbitrary arrays.
+Then define parseTimezone function in terms of those functions.
 

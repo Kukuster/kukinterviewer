@@ -131,16 +131,18 @@ export type Ichat_set = Partial<
 
 const chatSchema = new Schema({
     chatId:     { type: Number,                              required: true, unique: true },
-    Questions:  { type: [questionSchema],                    required: false },
+    Questions:  { type: [questionSchema],                    required: false, unique: false, },
     lastqid:    { 
         type: Number,
         get: (v: number) => Math.round(v),
         set: (v: number) => Math.round(v),
-        required: false
+        required: false,
+        unique: false,
     },
     Tags: {
         type: [tagSchema],
-        required: false
+        required: false,
+        unique: false,
     },
     // Pending_to_delete: { 
     //     type: [{
@@ -157,14 +159,16 @@ const chatSchema = new Schema({
             asking_timeOfDay_from: { type: Number, required: false },
             asking_timeOfDay_to: { type: Number, required: false },
         },
-        required: true
+        required: true,
+        unique: false,
     },
-    last_time_asked: { type: Date,          required: false },
-    running:         { type: Boolean,       required: false },
-    state:           { type: String,        required: true },
+    last_time_asked: { type: Date,          required: false, unique: false, },
+    running:         { type: Boolean,       required: false, unique: false, },
+    state:           { type: String,        required: true,  unique: false, },
     next_question: {
         type: Date,
-        required: false
+        required: false,
+        unique: false,
     },
     intermediate_data: {
         type: {
@@ -210,6 +214,7 @@ const chatSchema = new Schema({
             },
         },
         required: false,
+        unique: false,
     },
 });
 

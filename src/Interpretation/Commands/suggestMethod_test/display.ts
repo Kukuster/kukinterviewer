@@ -1,10 +1,11 @@
 import { IIMessage } from "../../../core/Command/Command";
-import TelegramBot, { bot } from "../../../bot";
+import { sendMessageSafely } from "../../../bot";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
+import { maybeTelegramBotMessage } from "../../../botlib";
 
 
 export default async function suggestMethod_test_display(msg: IIMessage, chat: Ichat)
-    : Promise<TelegramBot.Message>
+    : Promise<maybeTelegramBotMessage[]>
 {
     console.log('suggestMethod_test.display');
     
@@ -17,9 +18,9 @@ export default async function suggestMethod_test_display(msg: IIMessage, chat: I
 \`sheet.${sheet_method}(${chatId},${args_tuple})\`
 ?`;
 
-    await bot.sendMessage(chatId, pre_response);
+    await sendMessageSafely(chatId, pre_response);
 
-    return bot.sendMessage(chatId, response, {
+    return sendMessageSafely(chatId, response, {
         parse_mode: 'Markdown'
     });
 }

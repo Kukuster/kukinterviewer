@@ -161,7 +161,6 @@ const Cs: {[key: string]: {testCases: matchTree_testCase[], tree: nodeC, matchfu
 ///////////                                  ///////////
 ////////////////////////////////////////////////////////
 
-
 MockDate.set(setAskingTime_testBaseDate_unix);
 
 const mock_telegram_message = (messageText: string): IIMessage => ({

@@ -4,22 +4,22 @@
   "description": "server app for kukinterviewer",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --runInBand",
-    "jest": "jest --detectOpenHandles --runInBand",
-    "build": "tsc",
+    "test": "env TZ='GMT' jest --detectOpenHandles --runInBand",
+    "jest": "env TZ='GMT' jest --detectOpenHandles --runInBand",
+    "build": "env TZ='GMT' tsc && bash build-frontend.sh --prod --install && npm run test",
     "tsc": "tsc",
     "tsc--help": "tsc --help",
     "tsc-v": "tsc -v",
-    "start.ts": "ts-node src/index.ts",
-    "start.js": "node dist/index.js",
+    "start.ts": "env TZ='GMT' ts-node src/index.ts",
+    "start.js": "env TZ='GMT' node dist/index.js",
     "watch.ts": "tsc -w",
-    "watch.js": "nodemon --watch dist --exec node dist/index.js",
-    "ts-node": "ts-node",
-    "ts": "ts-node",
+    "watch.js": "env TZ='GMT' nodemon --watch dist --exec node dist/index.js",
+    "ts-node": "env TZ='GMT' ts-node",
+    "ts": "env TZ='GMT' ts-node",
     "lint": "eslint . --ext .ts",
     "watch_frontend.ts": "nodemon --watch src/web/frontend/src --ext '*' --exec bash build-frontend.sh",
-    "build_all": "tsc && bash build-frontend.sh",
-    "start": "node dist/index.js"
+    "build_all": "env TZ='GMT' tsc && bash build-frontend.sh",
+    "start": "env TZ='GMT' nodemon -x 'node dist/index.js || echo restarting the app && touch dist/index.js'"
   },
   "engines": {
     "node": "12.x"
@@ -38,7 +38,8 @@
     "node-telegram-bot-api": "^0.40.0",
     "now": "^21.0.1",
     "parse-duration": "^0.4.4",
-    "pretty-ms": "^7.0.1"
+    "pretty-ms": "^7.0.1",
+    "nodemon": "^2.0.6"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.32",
@@ -61,11 +62,13 @@
     "eslint": "^7.12.1",
     "jest": "^26.6.0",
     "mockdate": "^3.0.2",
-    "nodemon": "^2.0.6",
     "ts-essentials": "^7.0.1",
     "ts-jest": "^26.1.1",
     "ts-node": "^8.5.4",
     "ts-node-dev": "^1.0.0-pre.51",
     "typescript": "^4.1.2"
+  },
+  "jest": {
+    "globalSetup": "./global-setup.js"
   }
 }

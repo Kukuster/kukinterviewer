@@ -17,7 +17,7 @@ export const questionSchema = new Schema({
     qid: {
         type: Number, 
         required: true,
-        unique: true, 
+        unique: false, 
         get: (v: number) => Math.round(v),
         set: (v: number) => Math.round(v),
     },

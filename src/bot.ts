@@ -1,22 +1,40 @@
 'use strict';
 
 import TelegramBot from 'node-telegram-bot-api';
-import ec from "./ec";
 import { TOKEN } from './conf';
 import { emojify } from 'node-emoji';
 import { TelegramBotSendMessageOptions_plus, maybeTelegramBotMessage, prepareMessages_fromSnippets, TelegramMessageLengthSoftLimit } from './botlib';
 
-if (!TOKEN) {
-    process.exit(ec.noTelegramBotApiTOKEN);
-}
 
 export default TelegramBot;
 
 
 
-export const fancyBot = false as const;
+export const BotErrors = {
+    noTelegramBotApiTOKEN:  new Error('Could not resolve Telegram Bot API TOKEN'),
+    failedToInstantiateBot: new Error('Failed to instantiate Telegram Bot API instance'),
+    failedToValidateTOKEN:  new Error('Could not validate Telegram Bot API TOKEN'),
+} as const;
 
-export const bot = new TelegramBot(TOKEN, { polling: true });
+
+export const botPromise = new Promise<TelegramBot>((resolve, reject) => TOKEN.then(TOKENval => {
+    if (TOKENval && typeof TOKENval === 'string'){
+        let maybeBot: TelegramBot;
+        try {
+            maybeBot = new TelegramBot(TOKENval, { polling: true });
+            return resolve(maybeBot);
+        } catch (e){
+            if (e){
+                BotErrors.failedToInstantiateBot.message = e.message;
+                BotErrors.failedToInstantiateBot.name    = e.name;
+                BotErrors.failedToInstantiateBot.stack   = e.stack;
+            }
+            return reject(BotErrors.failedToInstantiateBot);
+        }
+    } else {
+        return reject(BotErrors.noTelegramBotApiTOKEN);
+    }
+}));
 
 
 
@@ -46,20 +64,24 @@ export function sendMessageSafely(chatId: string | number, text: string | string
     }
 
 
+    /** number of messages to send */
     const n = messagesToSend.length;
+    if (n === 0){
+        return new Promise(res => res([]));
+    }
 
-    
+
     // if func is not defined, set equal to the identity function
     const processBeforeSend =
         options?.processBeforeSend ?
             options.processBeforeSend :
             (str: string) => str;
-    
+
     const processRightBeforeSend_default =
         options?.processRightBeforeSend_default ?
             options.processRightBeforeSend_default :
             (str: string) => str;
-    
+
     let processRightBeforeSend_ParseMode: (str: string) => string;
     if (!options?.parse_mode) {
         processRightBeforeSend_ParseMode =
@@ -71,7 +93,7 @@ export function sendMessageSafely(chatId: string | number, text: string | string
             options?.processRightBeforeSend_Markdown ?
                 options.processRightBeforeSend_Markdown :
                 (str: string) => str;
-        
+
     } else if (options?.parse_mode === 'MarkdownV2') {
         processRightBeforeSend_ParseMode =
             options?.processRightBeforeSend_MarkdownV2 ?
@@ -101,15 +123,17 @@ export function sendMessageSafely(chatId: string | number, text: string | string
 
     const sendSequenceOfMessages = (async () => {
         let sentMessage;
+        const bot = await botPromise;
+
         for (let i = 0; i < n; i++) {
             if (messagesToSend[i].trim()){
                 sentMessage = await bot.sendMessage(chatId, processParseMode(messagesToSend[i]), Object.assign(options, { parse_mode: parseMode }))
-                    .then((m) => {
+                    .then(m => {
                         return m;
                     })
                     .catch((errorMarkdown: Error) => {
                         return bot.sendMessage(chatId, processDefault(messagesToSend[i]), Object.assign(options, { parse_mode: undefined }))
-                            .then((m) => {
+                            .then(m => {
                                 console.log(`messagesToSend[${i}]: sent with default parse_mode of length ${messagesToSend[i].length}`);
                                 return m;
                             })

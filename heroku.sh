@@ -41,7 +41,7 @@ ProgramOptions_description[amend]="changes the latest commit message for heroku 
 
 # ----- reusable -----
 
-#echoes number of characters of the longest argument passed to the function
+# echoes number of characters of the longest argument passed to the function
 max(){
     #$@ - any strings of characters
     declare args=("$@")
@@ -69,7 +69,7 @@ Nspaces(){
     echo "$spaces"
 }
 
-#echoes given string "$1" adjusted by length "$2" (trimmed, or appended spaces)
+# echoes given string "$1" adjusted by length "$2" (trimmed, or appended spaces)
 adjusttolen(){
     #$1 - string
     #$2 - length (has to be integer)
@@ -95,12 +95,17 @@ adjusttolen(){
 
 
 push(){
+    #$1 - a key to push
+    local key=""
+    if [ "$1" == "-f" ]; then
+        key="$1"
+    fi
     heroku ps:scale web=0 && sleep 2
-    git push heroku master
+    git push "$key" heroku master && \
     heroku ps:scale web=1
 }
 
-#Add All, Commit And Push
+# Add All, Commit And Push
 aacap(){
     #$1 - commit message
     git add -A && git commit -m "$1"
@@ -187,7 +192,7 @@ case "$1" in
         restart
         ;;
     "${ProgramOptions[push]}" )
-        push
+        push "$2"
         ;;
     "${ProgramOptions[aacap]}" )
         if [ -z "$2" ]; then

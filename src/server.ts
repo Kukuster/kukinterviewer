@@ -1,10 +1,17 @@
 import path from 'path';
 import fs from 'fs';
-import { PORT, HOST, APP_ENV } from './conf';
+import * as config from './conf';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { botAdmin_app } from './web/botAdmin/app';
 import { logf } from './reusable/console';
+import { Server } from 'http';
+
+
+export const ServerErrors = {
+    failedToResolveAddress: new Error('Failed to resolve DB credentials'),
+    failedToListenToServerAddress: new Error('Failed to listen to server at a given address'),
+} as const;
 
 
 
@@ -15,9 +22,6 @@ server.use(express.static('web/frontend'));
 
 server.use(bodyParser.urlencoded({ extended: true }));
 
-if (APP_ENV === 'dev'){
-    server.use(botAdmin_app);
-}
 
 server.get('', (req, res) => {
     console.log("server.get('')");
@@ -81,8 +85,44 @@ server.get(/.(css|js|jpg|jpeg|png|svg)$/, (req, res) => {
 
 
 
-export default server.listen(PORT, HOST, () => {
-    console.log(`server: Running at ${logf.u}${logf.fg.cyan}${HOST}:${PORT}${logf.end}`);
-});
+export default new Promise<Server>((resolve, reject) => (async () => {
+
+    let PORT: string | number, HOST: string, APP_ENV;
+
+    try {
+        [PORT, HOST, APP_ENV] = await Promise.all(
+            [config.PORT, config.HOST, config.APP_ENV]
+        );
+        if (typeof PORT === 'string'){
+            PORT = parseInt(PORT);
+        }
+    } catch (error) {
+        ServerErrors.failedToResolveAddress.message = error.message;
+        ServerErrors.failedToResolveAddress.name    = error.name;
+        ServerErrors.failedToResolveAddress.stack   = error.stack;
+        reject(ServerErrors.failedToResolveAddress);
+        return;
+    }
+
+
+    if (APP_ENV === 'dev') {
+        server.use(botAdmin_app);
+    }
+
+
+    try {
+        const listening = server.listen(PORT, HOST, () => {
+            console.log(`server: Running at ${logf.u}${logf.fg.cyan}${HOST}:${PORT}${logf.end}`);
+        });
+        resolve(listening);
+    } catch (e) {
+        ServerErrors.failedToListenToServerAddress.message = e.message;
+        ServerErrors.failedToListenToServerAddress.name    = e.name;
+        ServerErrors.failedToListenToServerAddress.stack   = e.stack;
+        reject(ServerErrors.failedToListenToServerAddress);
+    }
+
+
+})());
 
 

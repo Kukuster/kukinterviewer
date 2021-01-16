@@ -49,7 +49,9 @@ export const DBconnection = new Promise<Mongoose>((resolve, reject) => (async ()
                         .replace("<db_userpassword>", db_userpassword);
 
     mongoose.connect(mongoURI, options).then(DB => {
-        console.log(`mongoose: connected to ${logf.u}${logf.fg.yellow}${mongoURI}${logf.end}`);
+        if (process.env.NODE_ENV !== 'test'){
+            console.log(`mongoose: connected to ${logf.u}${logf.fg.yellow}${mongoURI}${logf.end}`);
+        }
         process.on('beforeExit', async () => {
             try {
                 await DB.disconnect();

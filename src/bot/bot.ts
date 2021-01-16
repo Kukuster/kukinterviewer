@@ -134,7 +134,7 @@ export function sendMessageSafely(chatId: string | number, text: string | string
                     .catch((errorMarkdown: Error) => {
                         return bot.sendMessage(chatId, processDefault(messagesToSend[i]), Object.assign(options, { parse_mode: undefined }))
                             .then(m => {
-                                console.log(`messagesToSend[${i}]: sent with default parse_mode of length ${messagesToSend[i].length}`);
+                                // console.log(`messagesToSend[${i}]: sent with default parse_mode of length ${messagesToSend[i].length}`);
                                 return m;
                             })
                             .catch((errorDefault: Error) => {

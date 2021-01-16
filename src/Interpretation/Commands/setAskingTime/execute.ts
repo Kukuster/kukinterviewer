@@ -83,8 +83,6 @@ export type setAskingTime_execute_return = {
 export default async function setAskingTime_execute(msg: IIMessage, args: setAskingTime_partialArgs | null)
     : Promise<setAskingTime_execute_return | null>
 {
-    console.log(`setAskingTime.execute(...)`);
-
     if (args === null){
         return null;
     }
@@ -107,79 +105,63 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
 
     // set DB settings in accord to requested asking interval
     if (args.interval && typeof args.interval.interval_ms === 'number') {
-        console.log('\x1b[2m%s\x1b[0m','going to set Settings.asking_period_ms');
         queriesResult.interval = await setSettings(chatId, {setting: "asking_period_ms", value: args.interval.interval_ms});
         if (args.interval.interval_ms === queriesResult.interval.Settings.asking_period_ms) {
-            console.log('\x1b[2m%s\x1b[0m',`set Settings.asking_period_ms = ${args.interval}`);
             results.interval_ms = args.interval.interval_ms;
         } else {
-            console.log('\x1b[2m%s\x1b[0m','failed to set Settings.asking_period_ms');
             results.interval_ms = 'failed to save';
         }
     } else if (args.interval?.interval_ms === 'matched by a matchTree but failed to parse') {
-        console.log('\x1b[2m%s\x1b[0m','failed to parse Settings.asking_period_ms');
         results.interval_ms = 'failed to parse';
     }
 
 
     // set DB settings in accord to requested next question time
     if (args.next_unix   && typeof args.next_unix.datetime === 'number') {
-        console.log('\x1b[2m%s\x1b[0m','going to set next_question');
         if (args.next_unix.shiftByTimezone && timezone){
             args.next_unix.datetime = convertFromTZ(new Date(args.next_unix.datetime), timezone).getTime();
         }
         // queriesResult.next_unix = await setScheduledAsk(chatId, new Date(args.next_unix));
         queriesResult.next_unix = await setChatProperty(chatId, {property: "next_question", value: new Date(args.next_unix.datetime)});
         if (args.next_unix.datetime === queriesResult.next_unix.next_question?.getTime()){
-            console.log('\x1b[2m%s\x1b[0m',`set next_question = ${args.next_unix}`);
             results.next_unix = args.next_unix.datetime;
         } else {
-            console.log('\x1b[2m%s\x1b[0m','failed to set next_question');
             results.next_unix = 'failed to save';
         }
 
     } else if (args.next_unix?.datetime === 'matched by a matchTree but failed to parse') {
-        console.log('\x1b[2m%s\x1b[0m','failed to parse next_question');
         results.next_unix = 'failed to parse';
     }
     
 
     // set DB settings in accord to requested asking time of day (from)
     if (args.from        && typeof args.from.datetime === 'number') {
-        console.log('\x1b[2m%s\x1b[0m','going to set Settings.asking_timeOfDay_from');
         if (args.from.shiftByTimezone && timezone) {
             args.from.datetime = convertTimeOfDayFromTZ(new Date(args.from.datetime), timezone);
         }
         queriesResult.from = await setSettings(chatId, {setting: "asking_timeOfDay_from", value: args.from.datetime});
         if (args.from.datetime === queriesResult.from.Settings.asking_timeOfDay_from) {
-            console.log('\x1b[2m%s\x1b[0m',`set Settings.asking_timeOfDay_from=${args.from}`);
             results.from = args.from.datetime;
         } else {
-            console.log('\x1b[2m%s\x1b[0m','failed to set Settings.asking_timeOfDay_from');
             results.from = 'failed to save';
         }
     } else if (args.from?.datetime === 'matched by a matchTree but failed to parse') {
-        console.log('\x1b[2m%s\x1b[0m','failed to parse Settings.asking_timeOfDay_from');
         results.from = 'failed to parse';
     }
 
 
     // set DB settings in accord to requested asking time of day (to)
     if (args.to          && typeof args.to.datetime === 'number') {
-        console.log('\x1b[2m%s\x1b[0m','going to set Settings.asking_timeOfDay_to');
         if (args.to.shiftByTimezone && timezone) {
             args.to.datetime = convertTimeOfDayFromTZ(new Date(args.to.datetime), timezone);
         }
         queriesResult.to = await setSettings(chatId, {setting: "asking_timeOfDay_to", value: args.to.datetime});
         if (args.to.datetime === queriesResult.to.Settings.asking_timeOfDay_to) {
-            console.log('\x1b[2m%s\x1b[0m',`set Settings.asking_timeOfDay_to=${args.to.datetime}`);
             results.to = args.to.datetime;
         } else {
-            console.log('\x1b[2m%s\x1b[0m','failed to set Settings.asking_timeOfDay_to');
             results.to = 'failed to save';
         }
     } else if (args.to?.datetime === 'matched by a matchTree but failed to parse') {
-        console.log('\x1b[2m%s\x1b[0m','failed to parse Settings.asking_timeOfDay_to');
         results.from = 'failed to parse';
     }
 
@@ -188,7 +170,6 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
     // either in accord to requested "next asking time"
     // or automatically based on the asking interval and asking time of day
     if (typeof results.next_unix === 'number') {
-        console.log('\x1b[2m%s\x1b[0m','going to scheduleNextQuestion by given next_unix number');
         scheduleNextQuestion(chatId, new Date(results.next_unix));
     } else if (typeof results.interval_ms === 'number') {
         const settings = await getSettings(chatId);
@@ -203,7 +184,6 @@ export default async function setAskingTime_execute(msg: IIMessage, args: setAsk
 
             // if was saved properly
             if (results.next_unix === queriesResult.next_unix.next_question?.getTime()) {
-                console.log('\x1b[2m%s\x1b[0m','going to scheduleNextQuestion by given interval');
                 scheduleNextQuestion(chatId, new Date(results.next_unix));
             } else {
                 results.next_unix = 'failed to save';

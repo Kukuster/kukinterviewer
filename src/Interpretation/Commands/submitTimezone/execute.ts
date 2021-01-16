@@ -26,8 +26,6 @@ export const parsingFailed = (result: parseTimezone_result) => !result || result
 export default async function submitTimezone_execute(msg: IIMessage, message: string)
     : Promise<submitTimezone_execute_return | null>
 {
-    console.log('submitTimezone.execute');
-
     const chatId = msg.chat.id;
 
     const preparsed_timezones = await getAwaitingParsedTimezones(chatId);

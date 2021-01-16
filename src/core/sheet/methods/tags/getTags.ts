@@ -46,7 +46,6 @@ export default async function getTags(chatId: number, query:  'all' | tagsQuery)
         const chatTags = Array.isArray(chat.Tags) ? chat.Tags : [];
 
 
-        console.log(query);
         if (isProperTagsQuery(query)){
 
             let filteringTags = [...chatTags];

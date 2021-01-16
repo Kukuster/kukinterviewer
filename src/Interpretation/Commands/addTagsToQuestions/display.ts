@@ -10,13 +10,9 @@ import youDontHaveQuestions from "../../textForming/youDontHaveQuestions";
 export default async function addTagsToQuestions_display(msg: IIMessage, data: addTagsToQuestions_execute_return)
     : Promise<maybeTelegramBotMessage[]>
 {
-    console.log('addTagsToQuestions_display');
-    
     const chatId = msg.chat.id;
-    
-    const messageParts: string[] = [];
 
-    console.log({ data });
+    const messageParts: string[] = [];
 
     const Tags = data.request.Tags;
     const Tags_humanList = '<i>'+formList(Tags,{prefix:'#',conj:'&'})+'</i>';

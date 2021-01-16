@@ -100,6 +100,12 @@ Don't require that tag to be enabled for queried questions. Only require all oth
     1. Number of questions that have the tag is available at hand
     2. When number becames 0, Tag document can be deleted, or at least won't be showed when asked to list all tags
 
+• add 'hey' Command.
+It should accept requests like:
+    - «hey»
+    - «hi»
+and repond:
+    - «hey»
 
 
 <Optional>

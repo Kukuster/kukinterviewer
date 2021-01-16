@@ -30,6 +30,7 @@ const ya  = /^y(e|u|a|o|ee|oo)[?!.,;:]*$/i;
 const thats = /^that'?s[?!.,;:]*$/i;
 const that  = /^that[?!.,;:]*$/i;
 const is    = /^'?(is|eez|ees|s)[?!.,;:]*$/i;
+const isnt  = /^'?(is|eez|ees|s)n'?t[?!.,;:]*$/i;
 const right = /^(right|rite|r8|->|reit|👉|▶️)[?!.,;:]*$/i;
 
 
@@ -66,6 +67,14 @@ export const confirm_tree =
         ], confirmShoot as shoot),
 
         node(no, [
+            node(not, [
+                node(ok, [], denyShoot as shoot),
+            ], denyShoot as shoot),
+
+            node(isnt, [
+                node(ok, [], denyShoot as shoot),
+            ], denyShoot as shoot),            
+
             node(yes, []),
             node(confirm, [])
         ], denyShoot as shoot),
@@ -127,6 +136,13 @@ export const confirm_tree =
 
         node(ok, [PARENTs_CHILDREN], confirmShoot as shoot),
 
+        node(not, [
+            node(ok, [], denyShoot as shoot),
+        ], denyShoot as shoot),
+
+        node(isnt, [
+            node(ok, [], denyShoot as shoot),
+        ], denyShoot as shoot),
 
     ]);
 

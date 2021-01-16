@@ -1,6 +1,6 @@
 'use strict';
 
-import { node, nodeC, PARENTs_CHILDREN } from "../../matchTree/node";
+import { node, nodeC } from "../../matchTree/node";
 
 
 // any punctuation mark at the end:
@@ -11,8 +11,9 @@ const rootRE =  /[\s\S]+/g;
 
 
 const hello = /^(hello|hi|hey|hiya|ahoy|'ello|low|hey)[?!.,;:]*$/i;
+const hello_emoji = /^((✋|👋|🤙|🖖|🤚|🖐)(🏻|🏼|🏽|🏾|🏿)?)+[?!.,;:]*$/i;
 
-const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(s|z)+u+p|yo|alrighty?)[?!.,;:]*$/i;
+const greet = /^(greetings|morning?|afternoon|evening?|g'day|g'morning?|g'afternoon|goodmorrow|howdy|holler|sup|wh?a(t'?)?(s|z)+u+p|yo|alrighty?)[?!.,;:]*$/i;
 
 const hello_foreign = /^(bonjour|hola|salaam|privet|aloha)[?!.,;:]*$/i;
 
@@ -109,6 +110,7 @@ let goodBranch:      nodeC,
 export const start_tree = 
     node(rootRE, [
         node(hello, [], shoot),
+        node(hello_emoji, [], shoot),
         node(greet, [], shoot),
         node(hello_foreign, [], shoot),
 

@@ -17,6 +17,8 @@ export const newlineRE = /[\r\n]+/i;
 
 const digit = /(#|№|@|n(um(ber)?)?)?(\d+)(st|nd|rd|th)?[?!.,;:]*/gi;
 
+const write = /^(write|rite|->|👉(🏻|🏼|🏽|🏾|🏿)?|▶️)[?!.,;:]*$/i;
+
 
 //forbidden words
 const frb = /^(eras(e|ing)|remov(e|ing)|turn(ing)?|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|enabl(e|ing)|disabl(e|ing)|dismiss(ing))[?!.,;:]*$/i;
@@ -36,12 +38,12 @@ export type shoot =
 
 
 let addQuestionChildren: nodeLike[];
-
+let addChildren: nodeLike[];
 
 export const addQuestion_tree =
 node(root, [
 
-    node(add, [
+    node(add, addChildren = [
 
         node(tag, [PARENTs_CHILDREN]),
 
@@ -105,14 +107,14 @@ node(root, [
 
             // add -> question -> ...
             node(tag, [PARENTs_CHILDREN]),
-            
+
             // add -> question -> ...
             node(digit, []),
             node(frb, []),
             node(neg, []),
 
         ], { delimiters: null } as shoot), // add -> question
-        
+
         // add -> 
         node(digit, []),
         node(frb, []),
@@ -120,8 +122,11 @@ node(root, [
     ]), // add
 
 
+    node(write, addChildren),
+
     node(question, [
         node(add, addQuestionChildren),
+        node(write, addQuestionChildren),
         node(tag, [PARENTs_CHILDREN]),
         node(digit, []),
         node(frb, []),

@@ -24,6 +24,23 @@ export const start_testCases: start_testCase[] = [
  
  
     { m: "hi!",                                  res: true },
+
+    // emojies
+    { m: "✋",                                   res: true },
+    { m: "👋",                                   res: true },
+    { m: "🤙",                                   res: true },
+    { m: "🖖",                                   res: true },
+    { m: "🤚",                                   res: true },
+    { m: "🖐",                                   res: true },
+
+    // emojies of color
+    { m: "✋🏻",                                   res: true },
+    { m: "🤚🏻",                                   res: true },
+    { m: "🖐🏻",                                   res: true },
+    { m: "🖐",                                   res: true },
+    { m: "👋🏿",                                   res: true },
+    { m: "🤙🏿",                                   res: true },
+    { m: "🤙🏿",                                   res: true },
  
     { m: "Morning!",                             res: true },
     { m: "afternoon!",                           res: true },
@@ -80,6 +97,7 @@ export const start_testCases: start_testCase[] = [
     { m: "hey there",                            res: true },
 
     { m: "what's up?",                           res: true },
+    { m: "whatsup?",                             res: true },
     { m: "sup?",                                 res: true },
     { m: "sup",                                  res: true },
     { m: "whazzup",                              res: true },

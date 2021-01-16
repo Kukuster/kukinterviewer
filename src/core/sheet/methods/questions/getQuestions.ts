@@ -58,7 +58,6 @@ export default async function getQuestions(chatId: number, query?: number[] | 'a
     
         // if is array of numbers (qids)
         if (Array.isArray(query) && query.length){
-            // console.log('is Array');
             return chatQuestions.filter(q => 
                 query.includes(q.qid)
             );

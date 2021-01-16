@@ -62,8 +62,6 @@ export default async function scheduleNextQuestion(chatId: number, datetime: Dat
     // save next asking time to the DB
     await setScheduledAsk(chatId, scheduleDatetime);
 
-    console.log({ scheduleDatetime: scheduleDatetime.getTime(), now });
-    
     // if scheduleDatetime is within a second from now, don't schedule but execute right away
     if (scheduleDatetime.getTime() - 1000 <= now) {
         return runScheduledQuestion(chatId, scheduleDatetime);

@@ -8,8 +8,6 @@ import { getTimezoneOffsetString } from "../../../reusable/datetime";
 export default async function submitTimezone_display(msg: IIMessage, data: submitTimezone_execute_return | null)
     : Promise<maybeTelegramBotMessage[] | null>
 {
-    console.log('submitTimezone.display');
-    
     const chatId = msg.chat.id;
 
     if (!data) {

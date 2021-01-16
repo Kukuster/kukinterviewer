@@ -51,7 +51,7 @@ const dummyDisplay = async function (this: Command<any,any,any>, msg: IIMessage,
     //msg.text;
 
     const chatId = msg.chat.id;
-    console.log(JSON.stringify(response, null, 2));
+    // console.log(JSON.stringify(response, null, 2));
 
     return new Promise<string>((resolve, _) => {
         resolve(response);

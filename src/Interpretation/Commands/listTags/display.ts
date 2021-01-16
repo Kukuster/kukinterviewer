@@ -10,8 +10,6 @@ import formList from "../../textForming/formList";
 export default async function listTags_display(msg: IIMessage, data: listTags_execute_return)
     : Promise<maybeTelegramBotMessage[]>
 {
-    console.log(`listTags_display()`);
-
     const chatId = msg.chat.id;
 
     const messageParts: string[] = [];

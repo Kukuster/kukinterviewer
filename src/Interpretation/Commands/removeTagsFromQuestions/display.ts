@@ -10,13 +10,9 @@ import youDontHaveQuestions from "../../textForming/youDontHaveQuestions";
 export default async function removeTagsFromQuestions_display(msg: IIMessage, data: removeTagsFromQuestions_execute_return)
     : Promise<maybeTelegramBotMessage[]>
 {
-    console.log('removeTagsFromQuestions_display');
-    
     const chatId = msg.chat.id;
-    
-    const messageParts: string[] = [];
 
-    console.log({ data });
+    const messageParts: string[] = [];
 
     const Tags = data.request.Tags;
     const Tags_humanList = Tags==='all' ? Tags : '<i>'+formList(Tags,{prefix:'#',conj:'&'})+'</i>';

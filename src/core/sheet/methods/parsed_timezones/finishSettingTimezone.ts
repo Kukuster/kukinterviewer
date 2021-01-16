@@ -40,8 +40,7 @@ export default async function finishSettingTimezone(chatId: number, timezone: st
 
         chat.markModified('intermediate_data');
         chat.markModified('Settings');
-        console.log(`executing finishSettingTimezone`);
-        
+
         saveChat();
 
         return chat;

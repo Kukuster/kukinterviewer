@@ -24,8 +24,6 @@ server.use(bodyParser.urlencoded({ extended: true }));
 
 
 server.get('', (req, res) => {
-    console.log("server.get('')");
-
     const home = '/web/frontend/dist/html/home.html';
     const home_full = __dirname + home;
     fs.readFile(home_full, (error, content) => {
@@ -36,12 +34,8 @@ server.get('', (req, res) => {
         } else {
             res.writeHead(200, { 'Content-Type': 'text/html' }) &&
                 res.end(content, 'utf-8');
-            console.log('successfully server contents of a requested file ' + home_full + '');
         }
     });
-    // res.redirect('/app');
-
-    console.log('server.ts: ',{__dirname});
 });
 
 
@@ -58,7 +52,6 @@ server.get('/app', (req, res) => {
         } else {
             res.writeHead(200, { 'Content-Type': 'text/html' }) &&
             res.end(content, 'utf-8');
-            console.log('successfully server contents of a requested file '+frontendApp_full+'');
         }
     });
     console.log('server.ts: ',{__dirname});
@@ -66,13 +59,8 @@ server.get('/app', (req, res) => {
 
 
 server.get(/.(css|js|jpg|jpeg|png|svg)$/, (req, res) => {
-    console.log('server.get(/.(css|js|jpg|jpeg|png|svg)$/');
-    
-    console.log({ __dirname, req_url: req.url});
-    // const filePath = __dirname + '/web/frontend/' + req.url;
     const filePath = __dirname + '/web/frontend/dist/' + req.url;
     res.sendFile(path.resolve(filePath), (error) => {
-
         if (error){
             console.error({ error });
             res.writeHead(404, { 'Content-Type': 'text/html' });

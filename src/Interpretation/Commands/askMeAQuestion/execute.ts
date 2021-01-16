@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import switchAsking from "../../../core/sheet/methods/chat/switchAsking";
 import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import turnQuestionsOnOff from "../../../core/sheet/methods/questions/turnQuestionsOnOff";

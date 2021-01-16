@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import confirmPendingMethod from "../../../core/sheet/methods/pending_method/confirmPendingMethod";
 import denyPendingMethod from "../../../core/sheet/methods/pending_method/denyPendingMethod";
 import { confirmableSheetMethod_returnType } from "../../../core/sheet/sheet";

@@ -1,10 +1,10 @@
 import { BotErrors, botPromise } from "./bot";
-import { decide } from "./Interpretation/decide";
-import States, { defaultState } from "./Interpretation/States";
-import scheduleQuestionsForEveryone from "./core/sheet/methods/scheduleQuestionsForEveryone";
-import * as config from "./conf";
-import httpsGetJSON from "./reusable/httpsGetJSON";
-import { isNotPrimitive } from "./reusable/isPrimitive";
+import { decide } from "../Interpretation/decide";
+import States, { defaultState } from "../Interpretation/States";
+import scheduleQuestionsForEveryone from "../core/sheet/methods/scheduleQuestionsForEveryone";
+import * as config from "../conf";
+import httpsGetJSON from "../reusable/httpsGetJSON";
+import { isNotPrimitive } from "../reusable/isPrimitive";
 
 
 const getWebhookInfo_url = `https://api.telegram.org/bot<TOKEN>/getWebhookInfo`;

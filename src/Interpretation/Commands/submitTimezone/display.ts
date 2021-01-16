@@ -1,6 +1,6 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { sendMessageSafely } from "../../../bot";
-import { maybeTelegramBotMessage } from "../../../botlib";
+import { IIMessage } from "../../../bot/botlib";
+import { sendMessageSafely } from "../../../bot/bot";
+import { maybeTelegramBotMessage } from "../../../bot/botlib";
 import { submitTimezone_execute_return } from "./execute";
 import { getTimezoneOffsetString } from "../../../reusable/datetime";
 

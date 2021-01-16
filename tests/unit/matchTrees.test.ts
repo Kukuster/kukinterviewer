@@ -1,5 +1,6 @@
 import { nodeC } from "../../src/Interpretation/matchTree/node";
-import { Command_match, Command_prepare, IIMessage } from "../../src/core/Command/Command";
+import { Command_match, Command_prepare } from "../../src/core/Command/Command";
+import { IIMessage } from "../../src/bot/botlib";
 import MockDate from "mockdate";
 
 import { matchTree_testCase } from "../../src/Interpretation/matchTree/extras/matchTree_testCase.type";

@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import autoNextAskingTime from "../../../core/schedule/autoNextAskingTime";
 import scheduleNextQuestion from "../../../core/schedule/scheduleNextQuestion";
 import getSettings from "../../../core/sheet/methods/chat/getSettings";

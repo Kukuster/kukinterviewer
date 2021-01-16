@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { treeStep } from "../../matchTree/walk";
 import { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { passedTree_to_QuestionsQuery } from "../../matchTree/extras/passedTree_to_QuestionsQuery";

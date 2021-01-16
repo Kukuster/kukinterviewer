@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
 import { confirmableSheetMethod } from "../../../core/sheet/sheet";
 import { Ichat } from "../../../core/sheet/models/ChatModel";

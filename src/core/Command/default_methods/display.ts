@@ -1,5 +1,6 @@
 'use strict';
-import Command, { IIMessage } from "../Command";
+import { IIMessage } from "../../../bot/botlib";
+import Command from "../Command";
 
 /**
  *

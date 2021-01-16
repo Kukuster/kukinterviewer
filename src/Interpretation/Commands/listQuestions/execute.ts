@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { Iquestion } from "../../../core/sheet/models/QuestionModel";
 

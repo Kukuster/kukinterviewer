@@ -1,7 +1,7 @@
 'use strict';
 
 import TelegramBot from 'node-telegram-bot-api';
-import { TOKEN } from './conf';
+import { TOKEN } from '../conf';
 import { emojify } from 'node-emoji';
 import { TelegramBotSendMessageOptions_plus, maybeTelegramBotMessage, prepareMessages_fromSnippets, TelegramMessageLengthSoftLimit } from './botlib';
 

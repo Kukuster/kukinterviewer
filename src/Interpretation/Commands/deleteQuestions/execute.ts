@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
 import getQuestions, { questionsQuery } from "../../../core/sheet/methods/questions/getQuestions";
 import { Ichat_withNonEmptyFields } from "../../../core/sheet/models/ChatModel";

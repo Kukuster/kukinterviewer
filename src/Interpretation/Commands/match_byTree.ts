@@ -1,6 +1,5 @@
 'use strict';
-import { TelegramMessageLengthHardLimit } from "../../botlib";
-import { IIMessage } from "../../core/Command/Command";
+import { IIMessage, TelegramMessageLengthHardLimit } from "../../bot/botlib";
 import { splitToWords } from "../matchTree/extras/splitToWords";
 import { nodeLike } from "../matchTree/node";
 import { traverse, treeStep } from "../matchTree/walk";

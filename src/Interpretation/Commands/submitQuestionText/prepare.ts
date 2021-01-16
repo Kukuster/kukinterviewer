@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { treeStep } from "../../matchTree/walk";
 import parseTags_fromQuestionText from "../../textProcessing/parseTags_fromQuestionText";
 import prepareQuestionText from "../../textProcessing/prepareQuestionText";

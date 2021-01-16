@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import createNewChat from "../../../core/sheet/methods/chat/createNewChat";
 import getChat from "../../../core/sheet/methods/chat/getChat";
 import { Ichat } from "../../../core/sheet/models/ChatModel";

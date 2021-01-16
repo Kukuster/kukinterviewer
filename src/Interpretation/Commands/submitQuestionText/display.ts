@@ -1,6 +1,6 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { sendMessageSafely } from "../../../bot";
-import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../botlib";
+import { IIMessage } from "../../../bot/botlib";
+import { sendMessageSafely } from "../../../bot/bot";
+import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../bot/botlib";
 import { submitQuestionText_execute_return } from "./execute";
 import either from "../../../reusable/randomElement";
 import formQuestionOutput from "../../textForming/formQuestionOutput";

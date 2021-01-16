@@ -1,7 +1,6 @@
 'use strict';
-import TelegramBot, { sendMessageSafely } from "../../bot";
-import { monospace, sendMessageError } from "../../botlib";
-import { IIMessage } from "../../core/Command/Command";
+import TelegramBot, { sendMessageSafely } from "../../bot/bot";
+import { IIMessage, monospace, sendMessageError } from "../../bot/botlib";
 
 /**
  *

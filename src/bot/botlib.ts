@@ -1,4 +1,58 @@
-import { IIMessage } from "./core/Command/Command";
+import { isNotPrimitive } from "../reusable/isPrimitive";
+
+
+
+const CTChatType =['private',  'group',  'supergroup',  'channel'] as const;
+type  TTChatType = typeof CTChatType[number];
+
+export interface IIChat {
+    id: number;
+    type: TTChatType;
+}
+
+export interface IIUser {
+    id: number,
+    first_name: string,
+    is_bot: boolean
+}
+
+export interface IIMessage {
+    message_id: number;
+    from?: IIUser;
+    date: number;
+    chat: IIChat;
+    reply_to_message?: IIMessage;
+    author_signature?: string;
+    text?: string;
+    reply_markup?: { inline_keyboard: any[][]; };
+}
+
+
+export function is_TTChatType(value: unknown): value is TTChatType {
+    return CTChatType.includes(value as TTChatType);
+}
+
+export function is_IIChat(value: unknown): value is IIChat {
+    return isNotPrimitive(value) &&
+                  'id' in value && typeof value.id === 'number' && 
+                'type' in value && is_TTChatType(value.type);
+}
+
+export function is_IIUser(value: unknown): value is IIUser {
+    return isNotPrimitive(value) &&
+                  'id' in value && typeof value.id === 'number' &&
+          'first_name' in value && typeof value.first_name === 'string' &&
+              'is_bot' in value && typeof value.is_bot === 'boolean';
+}
+
+export function is_IIMessage(value: unknown): value is IIMessage {
+    return isNotPrimitive(value) &&
+          'message_id' in value && typeof value.message_id === 'number' &&
+                'date' in value && typeof value.date === 'number' &&
+           (  !('from' in value)|| is_IIUser(value.from) )  &&
+                'chat' in value && is_IIChat(value.chat);
+}
+
 
 
 

@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { splitToWords } from "../../matchTree/extras/splitToWords";
 
 export default async function submitTimezone_match(msg: IIMessage)

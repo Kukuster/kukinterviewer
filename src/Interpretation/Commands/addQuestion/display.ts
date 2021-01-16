@@ -1,9 +1,9 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../botlib";
+import { IIMessage } from "../../../bot/botlib";
+import { maybeTelegramBotMessage, TelegramMessageLengthSoftLimit } from "../../../bot/botlib";
 import { addQuestion_execute_return } from "./execute";
 import either from "../../../reusable/randomElement";
 import formQuestionOutput from "../../textForming/formQuestionOutput";
-import { sendMessageSafely } from "../../../bot";
+import { sendMessageSafely } from "../../../bot/bot";
 
 
 export default async function addQuestion_display(msg: IIMessage, data: addQuestion_execute_return | null)

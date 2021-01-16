@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askForQuestionText from "../../../core/sheet/methods/awaiting_questionText/askForQuestionText";
 import addQuestion from "../../../core/sheet/methods/questions/addQuestion";
 import { Ichat, Ichat_withNonEmptyFields } from "../../../core/sheet/models/ChatModel";

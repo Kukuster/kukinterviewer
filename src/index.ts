@@ -7,8 +7,8 @@ import * as conf from "./conf";
 import ec from "./ec";
 import { DBconnection as connectToDB, MongooseErrors } from "./core/sheet/mongoose";
 import startServer, { ServerErrors } from "./server";
-import startBotApp from "./botapp";
-import { BotErrors } from "./bot";
+import startBotApp from "./bot/botapp";
+import { BotErrors } from "./bot/bot";
 
 
 

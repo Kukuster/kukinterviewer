@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import getTags, { tagsQuery } from "../../../core/sheet/methods/tags/getTags";
 import { Itag } from "../../../core/sheet/models/TagModel";
 

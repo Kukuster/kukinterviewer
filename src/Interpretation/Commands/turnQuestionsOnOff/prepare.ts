@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { treeStep } from "../../matchTree/walk";
 import { shoot } from "./matchTree";
 import getQids_fromPassedTree from "../../matchTree/extras/getQids_fromPassedTree";

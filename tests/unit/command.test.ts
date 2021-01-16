@@ -1,4 +1,5 @@
-import Command, { IIMessage } from "../../src/core/Command/Command";
+import { IIMessage } from "../../src/bot/botlib";
+import Command from "../../src/core/Command/Command";
 
 
 ////////////////////////////////////////////////////////

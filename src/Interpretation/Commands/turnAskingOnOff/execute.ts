@@ -1,6 +1,6 @@
 import { Job } from "node-schedule";
-import { maybeTelegramBotMessage } from "../../../botlib";
-import { IIMessage } from "../../../core/Command/Command";
+import { maybeTelegramBotMessage } from "../../../bot/botlib";
+import { IIMessage } from "../../../bot/botlib";
 import scheduleNextQuestion from "../../../core/schedule/scheduleNextQuestion";
 import switchAsking from "../../../core/sheet/methods/chat/switchAsking";
 import queryChat from "../../../core/sheet/methods/functions/queryChat";

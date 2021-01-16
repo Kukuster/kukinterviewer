@@ -1,6 +1,6 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { sendMessageSafely } from "../../../bot";
-import { maybeTelegramBotMessage } from "../../../botlib";
+import { IIMessage } from "../../../bot/botlib";
+import { sendMessageSafely } from "../../../bot/bot";
+import { maybeTelegramBotMessage } from "../../../bot/botlib";
 import { setAskingTime_execute_return } from "./execute";
 import either from "../../../reusable/randomElement";
 import { datetime_toRelevantString, timeOfDay_toString } from "../../../reusable/datetime";

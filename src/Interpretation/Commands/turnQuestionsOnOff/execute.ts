@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
 import getQuestions from "../../../core/sheet/methods/questions/getQuestions";
 import turnQuestionsOnOff, { turnQuestionsOnOff_result } from "../../../core/sheet/methods/questions/turnQuestionsOnOff";

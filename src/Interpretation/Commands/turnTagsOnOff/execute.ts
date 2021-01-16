@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
 import getTags from "../../../core/sheet/methods/tags/getTags";
 import turnTagsOnOff, { turnTagsOnOff_result } from "../../../core/sheet/methods/tags/turnTagsOnOff";

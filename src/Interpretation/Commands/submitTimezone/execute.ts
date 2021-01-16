@@ -1,6 +1,6 @@
 import { Country } from "countries-and-timezones";
 import { unemojify } from "node-emoji";
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import askConfirmation from "../../../core/sheet/methods/functions/askConfirmation";
 import askForTimezone from "../../../core/sheet/methods/parsed_timezones/askForTimezone";
 import getAwaitingParsedTimezones from "../../../core/sheet/methods/parsed_timezones/getAwaitingParsedTimezones";

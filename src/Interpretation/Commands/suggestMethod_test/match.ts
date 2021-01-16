@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { cutOffUpToWithFirstOccurance } from "../../../core/misc";
 import { confirmableSheetMethod, is_confirmableSheetMethod } from "../../../core/sheet/sheet";
 import { splitToWords } from "../../matchTree/extras/splitToWords";

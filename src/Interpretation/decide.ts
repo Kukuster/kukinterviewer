@@ -1,5 +1,5 @@
 'use strict';
-import { IIMessage } from "../core/Command/Command";
+import { IIMessage } from "../bot/botlib";
 import getChat from "../core/sheet/methods/chat/getChat";
 import State from "../core/State/State";
 import { ArrayElement } from "../reusable/ArrayElement.type";

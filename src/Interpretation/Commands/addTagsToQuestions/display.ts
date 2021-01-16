@@ -1,6 +1,6 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { sendMessageSafely } from "../../../bot";
-import { maybeTelegramBotMessage } from "../../../botlib";
+import { IIMessage } from "../../../bot/botlib";
+import { sendMessageSafely } from "../../../bot/bot";
+import { maybeTelegramBotMessage } from "../../../bot/botlib";
 import { addTagsToQuestions_execute_return } from "./execute";
 import formList from "../../textForming/formList";
 import either from "../../../reusable/randomElement";

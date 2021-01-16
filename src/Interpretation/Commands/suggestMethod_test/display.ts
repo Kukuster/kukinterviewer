@@ -1,7 +1,7 @@
-import { IIMessage } from "../../../core/Command/Command";
-import { sendMessageSafely } from "../../../bot";
+import { IIMessage } from "../../../bot/botlib";
+import { sendMessageSafely } from "../../../bot/bot";
 import { Ichat } from "../../../core/sheet/models/ChatModel";
-import { maybeTelegramBotMessage } from "../../../botlib";
+import { maybeTelegramBotMessage } from "../../../bot/botlib";
 
 
 export default async function suggestMethod_test_display(msg: IIMessage, chat: Ichat)

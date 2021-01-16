@@ -5,31 +5,8 @@ import { EventEmitter } from "events";
 import { Model, Document } from "mongoose";
 import ChatModel from "../sheet/models/ChatModel";
 import QuestionModel from "../sheet/models/QuestionModel";
+import { IIMessage } from "../../bot/botlib";
 
-
-type TTChatType = 'private' | 'group' | 'supergroup' | 'channel';
-
-export interface IIChat {
-    id: number;
-    type: TTChatType;
-}
-
-export interface IIUser {
-    id: number,
-    first_name: string,
-    is_bot: boolean
-}
-
-export interface IIMessage {
-    message_id: number;
-    from?: IIUser;
-    date: number;
-    chat: IIChat;
-    reply_to_message?: IIMessage;
-    author_signature?: string;
-    text?: string;
-    reply_markup?: { inline_keyboard: any[][]; };
-}
 
 
 /**
@@ -67,31 +44,32 @@ export interface ICommand {
 
 }
 
-// export interface bot_interface extends EventEmitter {
 
-// }
-
-// export interface model_interface {
-    
-// }
-
-export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand{
+export default class Command<ArgsPrep, ArgsExec, ArgsDisp> implements ICommand {
     public match:   Command_match  <ArgsPrep>; 
     public prepare: Command_prepare<ArgsPrep,ArgsExec>;
     public execute: Command_execute<ArgsExec,ArgsDisp>;
     public display: Command_display<ArgsDisp>;
     /**
      * 
-     * @param {Function} match Accepts {TelegramBot.Message} and returns message text or {RegExpMatchArray},
-     * returns false-equvalent value if the message doesn't satistfy necessary conditions for executing the Command
-     * @param {Function} prepare Accepts {RegExpMatchArray}
-     * and processes it to and returns arguments for the execute method
+     * All 4 methods accept {IIMessage} as the first argument and return promise.
+     * 
+     * @param {Function} match Performs a test on the given message: whether this message is a request for this Command
+     * returns non-nullish value if the Command "matches" the message, usually, with the data of how exactly it matches (and how to execute the Command),
+     * returns nullish value if the message doesn't satistfy necessary conditions for executing the Command
+     * 
+     * @param {Function} prepare Accepts match method's result and processes it with the message into proper arguments object for the execute method.
+     * This method's purpose is only to form the arguments for the execute method.
+     * Other calculations, especially external requests should be in the execute method.
+     * 
      * @param {Function} execute Performes the core purpose of the Command.
-     * Accepts preprocessed argumens instead of human-readable query (or however the Command was triggered)
-     * Returns stringified object with result or error property for the display method
-     * @param {Function} display Produces output of the result of execute method
+     * Accepts preprocessed argumens instead of the message request.
+     * Returns a result of the execution.
+     * All (or most) external requests should be performed in this method.
+     * 
+     * @param {Function} display Produces output of the result of execute method, however defined
      */
-    constructor(
+    constructor (
             match:    Command_match  <ArgsPrep>,
             prepare:  Command_prepare<ArgsPrep,ArgsExec>,
             execute:  Command_execute<ArgsExec,ArgsDisp>,

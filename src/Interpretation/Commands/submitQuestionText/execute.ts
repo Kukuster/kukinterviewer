@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import finishAddingQuestionText from "../../../core/sheet/methods/awaiting_questionText/finishAddingQuestionText";
 import getAwaitingQuestionTags from "../../../core/sheet/methods/awaiting_questionText/getAwaitingQuestionTags";
 import askForQuestionText from "../../../core/sheet/methods/awaiting_questionText/askForQuestionText";

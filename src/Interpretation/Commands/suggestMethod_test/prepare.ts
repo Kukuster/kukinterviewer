@@ -1,4 +1,4 @@
-import { IIMessage } from "../../../core/Command/Command";
+import { IIMessage } from "../../../bot/botlib";
 import { confirmableSheetMethod } from "../../../core/sheet/sheet";
 
 

@@ -107,6 +107,11 @@ It should accept requests like:
 and repond:
     - «hey»
 
+• add Command for changing Timezone:
+It should react on something like:
+    - «change the timezone» - change to askTimezone command
+    - «change the timezone to us» - react, then try to parse the message after the matchTree, if parsed successfully, either set a timezone or add several candidates while switching to the askingTimezone state.
+
 
 <Optional>
 

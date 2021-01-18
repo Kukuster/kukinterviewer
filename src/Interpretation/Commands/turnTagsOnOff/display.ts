@@ -57,7 +57,7 @@ export default async function turnTagsOnOff_display(msg: IIMessage, data: turnTa
                     if (data.request.Tags.length === 1){
                         messageParts.push(either([
                             `Sorry, there's no tag #${data.request.Tags[0]}`,
-                            `Sorry, there's no tag #${data.request.Tags[0]} in out questions list`,
+                            `Sorry, there's no tag #${data.request.Tags[0]} in our questions list`,
                             `Sorry, we don't have a tag #${data.request.Tags[0]}`,
                             `Sorry, I don't have a tag #${data.request.Tags[0]}`,
                         ]));

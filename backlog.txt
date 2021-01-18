@@ -11,16 +11,10 @@ To figure out formatting in the message for question text see "entities": "hasht
 
 • if a questionText contains links, set a field in the question document: `"hasAttachments": true`, so that if a question has this field, when listing questions, this question will always be listed in a separate message.
 
-• Enrich addQuestion Command matchTree to support:
-    - «add new question with tag #web»
-
 • Enrich turnQuestionsOnOff and turnTagsOnOff Commands matchTrees to support:
     - «enable all #lorem questions» (enabled all questions with tag #lorem)
-    - «don't ask #lorem questions» (disables #lorem tag)
-    - «don't ask me questions tagged #lorem» (disables #lorem tag)
     - «don't ask me questions not tagged with #lorem» (disabled all tags except #lorem)
     - «don't ask me untagged questions» (disables all untagged questions)
-    - «don't ask me questions #4, 6, 10» (disables list of questions by qids)
 
 • Add support for complex query logic for questionsQuery (and tagsQuery) 
 
@@ -148,10 +142,6 @@ E.g.:
 
 • Extend matchTree and functionality of turnTagsOnOff:
  - «ask me only #web questions»
- - «ask me #web questions as well»
- - «ask me no #web questions»
- - «ask me #web questions»
- - «don't ask me #web questions»
 
 • Add support for adding other (attached) objects to Question (images, voice, files)
 This may require storing this data in the database and reuploading it to Telegram when asking a question

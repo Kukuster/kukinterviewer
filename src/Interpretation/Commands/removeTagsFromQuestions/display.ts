@@ -88,7 +88,7 @@ export default async function removeTagsFromQuestions_display(msg: IIMessage, da
                     if (data.request.qids.length === 1) {
                         messageParts.push(either([
                             `Sorry, there's no question #${data.request.qids[0]}`,
-                            `Sorry, there's no question #${data.request.qids[0]} in out list`,
+                            `Sorry, there's no question #${data.request.qids[0]} in our list`,
                             `Sorry, we don't have a question #${data.request.qids[0]}`,
                             `Sorry, I don't have a question #${data.request.qids[0]}`,
                         ]));

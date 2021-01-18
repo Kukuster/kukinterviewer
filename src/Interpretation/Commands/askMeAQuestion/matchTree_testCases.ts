@@ -134,7 +134,7 @@ export const askMeAQuestion_testCases: askMeAQuestion_testCase[] = [
 
     // more -> # -> question
     { m: "more #web questions ",                                                           res: { 
-        enabled: true, havingTagsEnabled: true,
+        enabled:  true, havingTagsEnabled: true,
         Tags: ['web'],
         random: true
      } },
@@ -167,12 +167,12 @@ export const askMeAQuestion_testCases: askMeAQuestion_testCase[] = [
         random: true
      } },
 
-    // interview -> me -> #
-    { m: "interview me on #web ",                                                          res: { 
-        enabled: true, havingTagsEnabled: true,
-        Tags: ['web'],
-        random: true
-     } },
+    // // interview -> me -> #
+    // { m: "interview me on #web ",                                                          res: { 
+    //     enabled: true, havingTagsEnabled: true,
+    //     Tags: ['web'],
+    //     random: true
+    //  } },
 
 
     // question -> dig

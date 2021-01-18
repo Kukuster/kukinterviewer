@@ -27,7 +27,7 @@ const botasking = /^(bot|ask(ing|ed|er)?|interview(ing|ed|er)?|questionnaire)[?!
 
 
 
-const frb = /^((hash)?tag(ged|ging)?|eras(e|ing)|remov(e|ing)|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|add(ing)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)?|each|every|all|\d+|list|show|display|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))+|)[?!.,;:]*$/i;
+const frb = /^((hash)?tag(ged|ging)?|eras(e|ing)|remov(e|ing)|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|add(ing)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)?|each|every|all|\d+|list|show|display|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))+|tag(s|ged|ging)?)[?!.,;:]*$/i;
 const frb_askingTime = /((0?\d|1[012]).(0?\d|1\d|2\d|3[01]).(0?\d|1\d|2[01234])|(\d{1,2})([:.](\d{1,2}))([:.](\d{1,2}))?|(sun(day)?|mon(day)?|tues(day)?|wed(nesday)?|thur(sday|s)?|fri(day)?|sat(urday)?|tomorrow)|((\d{1,2})\s*(st|nd|rd|th))\s(day\s)?(of\s)?(january|february|march|april|may|june|july|august|september|october|november|december)|(morning|noon|afternoon|night|evening|midnight)|(second|minute|hour|day|week|month|year)|([ap]\.?m\.?))/i;
 
 

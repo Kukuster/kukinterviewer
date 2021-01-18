@@ -54,7 +54,7 @@ const at = /^(at|@|on)[?!.,;:]*$/i;
 
 const up = /^up[?!.,;:]*$/i;
 
-const until = /^(untill?|before|to)[?!.,;:]*$/i;
+const until = /^(untill?|before|to|earlier)[?!.,;:]*$/i;
 
 const after = /^after[?!.,;:]*$/i;
 

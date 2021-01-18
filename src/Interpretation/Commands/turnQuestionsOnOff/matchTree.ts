@@ -16,7 +16,15 @@ const question = /^questions?(\S*)*/i;
 const all = /^(all|each|every)[?!.,;:]*$/i;
 const digit = /(\d+)/g;
 
-const frb = /^((hash)?tag(ged|ging)?|eras(e|ing)|remov(e|ing)|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|add(ing)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)?|list|show|display|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))+|)[?!.,;:]*$/i;
+const frb = /^((hash)?tag(ged|ging)?|eras(e|ing)|remov(e|ing)|delet(e|ing|ed)|eliminat(e|ing|ed)|destro(y|ing|ed)|drop(ping|ped)?|wip(e|ing|ed)|withdraw(ing|ed)?|add(ing)?|new|creat(e|ing|ed)|insert(ing|ed)?|submit(ing|ed)?|includ(e|ing|ed)?|list|show|display|(#([0-9_]*([a-zA-Z]+[0-9_]*)+))+|after|am|pm|a.m.|p.m.|start|stop|finish|continue|begin|end)[?!.,;:]*$/i;
+
+
+
+const dont = /^(do(es)?n'?t|haven'?t|hadn'?t|weren'?t|aren'?t|ain'?t|never)[?!.,;:]*$/i;
+
+const ask = /^(ask(ing|ed)?|interview(ed|ing)?)[?!.,;:]*$/i;
+
+
 
 let turnOnBranch: nodeLike[],
     turnOffBranch:nodeLike[] ;
@@ -34,7 +42,7 @@ export const turnQuestionsOnOff_tree =
     node(root, [
         node(turn, [
 
-            //turn
+            // turn -> ...
             node(on, turnOnBranch = [
                 node(all, [
                     node(question, [], allOn as shoot),
@@ -54,7 +62,7 @@ export const turnQuestionsOnOff_tree =
                 ]),
             ]),
 
-            //turn
+            // turn -> ...
             node(off, turnOffBranch = [
                 node(all, [
                     node(question, [], allOff as shoot),
@@ -74,7 +82,7 @@ export const turnQuestionsOnOff_tree =
                 ]),
             ]),
 
-            //turn
+            // turn -> ...
             node(all, [
                 node(question, [
                     node(on,  [], allOn as shoot),
@@ -84,7 +92,7 @@ export const turnQuestionsOnOff_tree =
                 node(frb, []),
             ]),
 
-            //turn
+            // turn -> ...
             node(question, [
                 node(on,  [
                     node(digit, [SELF], someOn as shoot),
@@ -102,7 +110,7 @@ export const turnQuestionsOnOff_tree =
                 ]),
             ]),
 
-            //turn
+            // turn -> ...
             node(digit, [
                 node(on, [
                     node(question, [
@@ -140,9 +148,44 @@ export const turnQuestionsOnOff_tree =
 
         ]),
 
+
+
+
+
         // "enable" and "disable" are treated as "turn on" and "turn off" respectively
         node(enable,  turnOnBranch),
         node(disable, turnOffBranch),
+
+
+
+
+        node(dont, [
+            // don't -> ...
+            node(ask, [
+                // don't -> ask -> ...
+                node(question, [
+                    node(digit, [
+                        SELF,
+                        node(frb, []),
+                    ], someOff as shoot),
+                ]),
+
+                // don't -> ask -> ...
+                node(digit, [
+                    node(question, [
+                        node(digit, [PARENTs_CHILDREN], someOff as shoot),
+                        node(frb, []),
+                    ], someOff as shoot),
+                    SELF,
+                    node(frb, []),
+                ]),
+            ]),
+
+            // don't -> ...
+            node(frb, []),
+        ]),
+
+
 
         node(frb, []),
 

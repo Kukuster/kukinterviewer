@@ -732,6 +732,16 @@ export const setAskingTime_testCases: setAskingTime_testCase[] = [
             shiftByTimezone: true,
         }
      } },
+    { m: "don't ask me earlier than 7 am",                                                  res: {
+        now: {
+            datetime: setAskingTime_testBaseDate_unix,
+            shiftByTimezone: false,
+        },
+        from: {
+            datetime: 25200000,
+            shiftByTimezone: true,
+        }
+     } },
     
     // don't -> finish -> ask -> question[s] -> UNTIL
     { m: "don't stop asking me any questions before 6 pm",                                  res: {

@@ -45,6 +45,11 @@ export const turnQuestionsOnOff_testCases: turnQuestionsOnOff_testCase[] = [
     { m: "Disable every question, please",                      res: { turn: 'off', questions: 'all' } },
 
 
+    // [ don't -> ask -> questions -> dig ]
+    { m: "don't ask me questions #4, 6, 10",                    res: { turn: 'off',  questions: [4, 6, 10] } },
+    { m: "don't ask me #4, 6, 10 questions",                    res: { turn: 'off',  questions: [4, 6, 10] } },
+
+
     // [ ✕ ]
     { m: "",                                                    res: null },
     { m: "all questions off",                                   res: null },

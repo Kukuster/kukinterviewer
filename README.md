@@ -1,10 +1,10 @@
 # kukinterviewer
 
-A Telegram messenger bot written in node based on `node-telegram-bot-api`. Helps you prepare for an interview.
+A [Telegram messenger](https://telegram.org/) bot written in node based on [`node-telegram-bot-api`](https://github.com/yagop/node-telegram-bot-api). Helps you prepare for an interview.
 
-Add a bot: [@kukinterviewerbot](https://t.me/kukinterviewerbot). Greet it.
+Add this guy: [@kukinterviewerbot](https://t.me/kukinterviewerbot). Greet it.
 
-You can tell it to add questions, manage tags in questions, tell it to ask you random questions regularly, set the time and frequency you want to be asked, disable any questions or tags so it won't ask them.
+You can tell it to add questions to his list, tag questions, tell it to ask you random questions regularly, how often do you want to be asked and what time of day, and such.
 
 All communicated in chat in human English in the imperative form, a command per message.
 
